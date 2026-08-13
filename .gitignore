@@ -13,6 +13,8 @@
 # sind ALLE verschluesselten Secrets (API-Keys, SMTP, OAuth-Token) unlesbar.
 /config/config.php
 /config/license.json
+# Privater Lizenz-Signierschluessel — NUR beim Hersteller, NIE ausliefern.
+/config/license-signing-key.SECRET
 
 # --- Laufzeitdaten (Kundeninhalte — unter allen Umstaenden erhalten) ---
 /storage/
