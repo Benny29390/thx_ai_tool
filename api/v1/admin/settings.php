@@ -107,7 +107,7 @@ switch ($method) {
         $updated = 0;
 
         // Prefixe / Keys, die wir automatisch anlegen dürfen (sobald sie noch nicht existieren)
-        $allowedPrefixes = ['smtp_', 'asana_', 'sistrix_', 'brave_', 'openai_', 'anthropic_', 'google_', 'local_', 'qdrant_', 'embedding_', 'app_', 'lam_', 'mail_', 'brevo_', 'crm_', 'chat_', 'rerank_'];
+        $allowedPrefixes = ['smtp_', 'asana_', 'sistrix_', 'brave_', 'openai_', 'anthropic_', 'google_', 'local_', 'qdrant_', 'embedding_', 'app_', 'lam_', 'mail_', 'brevo_', 'crm_', 'chat_', 'rerank_', 'brand_'];
         $allowedExact    = ['default_model', 'app_logo', 'app_name', 'app_url'];
 
         foreach ($input as $key => $value) {

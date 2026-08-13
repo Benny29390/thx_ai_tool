@@ -27,6 +27,35 @@
 </div>
 
 <div class="settings-card">
+    <h2>Primärfarbe</h2>
+    <p class="settings-card-sub">Bestimmt die Hauptfarbe der Oberfläche (Buttons, Aktivmarkierungen, Akzente). Leer lassen für den Standard.</p>
+    <form id="form-brandcolor" onsubmit="event.preventDefault(); SettingsSave(this, { successMsg: 'Farbe gespeichert — Seite wird neu geladen' }).then(()=>setTimeout(()=>location.reload(),700));">
+        <div class="settings-row" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <?php $bc = $valueOf('brand_primary_color', ''); ?>
+            <input type="color" id="brand_primary_color_picker"
+                   value="<?= htmlspecialchars($bc !== '' ? $bc : '#006fb9') ?>"
+                   style="width:52px;height:40px;border:1px solid var(--slate-300);border-radius:8px;background:none;cursor:pointer;"
+                   oninput="document.getElementById('brand_primary_color').value=this.value;">
+            <div class="settings-field" style="margin:0;">
+                <label for="brand_primary_color" style="font-size:11px;">Hex-Wert</label>
+                <input type="text" id="brand_primary_color" name="brand_primary_color"
+                       value="<?= htmlspecialchars($bc) ?>" placeholder="#006fb9"
+                       pattern="^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+                       style="width:130px;font-family:monospace;"
+                       oninput="try{document.getElementById('brand_primary_color_picker').value=this.value;}catch(e){}">
+            </div>
+            <span style="font-size:var(--d-fs-sm);color:var(--slate-500);">Standard: <code>#006fb9</code> (Thoxan-Blau)</span>
+        </div>
+        <div class="settings-actions">
+            <button type="submit" class="thx-btn thx-btn-primary">Speichern</button>
+            <?php if ($bc !== ''): ?>
+            <button type="button" class="thx-btn" onclick="App.post('/admin/settings',{brand_primary_color:''}).then(()=>location.reload());">Auf Standard zurücksetzen</button>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
+
+<div class="settings-card">
     <h2>Logo &amp; Branding</h2>
     <p class="settings-card-sub">SVG-Code direkt einfügen oder Datei (SVG/PNG) hochladen.</p>
     <form id="logo-form" onsubmit="event.preventDefault(); SettingsSave(this, { successMsg: 'Logo gespeichert' });">

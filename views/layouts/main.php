@@ -1,23 +1,9 @@
 <?php
-// Branding-Settings laden (Logo + App-Name)
-$appLogo = null;
-$appName = APP_NAME;
-try {
-    $db = \Core\Database::getInstance();
-    $brandRows = $db->query(
-        "SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('app_logo', 'app_name')"
-    );
-    foreach ($brandRows as $row) {
-        if ($row['setting_key'] === 'app_logo' && !empty($row['setting_value'])) {
-            $appLogo = $row['setting_value'];
-        }
-        if ($row['setting_key'] === 'app_name' && !empty($row['setting_value'])) {
-            $appName = $row['setting_value'];
-        }
-    }
-} catch (\Exception $e) {
-    // Ignorieren wenn Settings noch nicht existieren
-}
+// Branding (White-Label) zentral ueber Core\Brand — Fallbacks = heutige Thoxan-Werte.
+$appName = \Core\Brand::name();
+$appLogo = \Core\Brand::logo(); // Pfad (hochgeladen), Inline-SVG (Altbestand) oder null
+// Ist der Logo-Wert ein Pfad/URL? Dann als <img> rendern, sonst roh (Alt-Inline-SVG).
+$appLogoIsPath = is_string($appLogo) && (bool) preg_match('#^(/|https?://|data:)#', $appLogo);
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -52,6 +38,11 @@ try {
     <link rel="stylesheet" href="/assets/css/thx-tokens.css?v=<?= filemtime(ROOT_PATH . '/assets/css/thx-tokens.css') ?>">
     <link rel="stylesheet" href="/assets/css/lam.css?v=<?= filemtime(ROOT_PATH . '/assets/css/lam.css') ?>">
     <link rel="stylesheet" href="/assets/css/thx-components.css?v=<?= filemtime(ROOT_PATH . '/assets/css/thx-components.css') ?>">
+    <link rel="icon" href="<?= htmlspecialchars(\Core\Brand::favicon()) ?>">
+    <?php $brandCss = \Core\Brand::cssVars(); if ($brandCss !== ''): ?>
+    <!-- White-Label: Kundenfarbe ueberschreibt die --thoxan-*-Tokens (nach thx-tokens.css) -->
+    <style><?= $brandCss ?></style>
+    <?php endif; ?>
     <style>
         .nav-icon {
             font-size: 20px;
@@ -279,13 +270,15 @@ try {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <?php if ($appLogo): ?>
+                <?php if ($appLogo && $appLogoIsPath): ?>
+                    <a href="/" class="logo logo-custom logo-full"><img src="<?= htmlspecialchars($appLogo) ?>" alt="<?= htmlspecialchars($appName) ?>" style="max-height:32px;"></a>
+                <?php elseif ($appLogo): ?>
                     <a href="/" class="logo logo-custom logo-full"><?= $appLogo ?></a>
                 <?php else: ?>
                     <a href="/" class="logo logo-full"><?= htmlspecialchars($appName) ?></a>
                 <?php endif; ?>
-                <a href="/" class="logo logo-icon" title="Thoxan">
-                    <img src="/assets/images/thoxan-x.svg" alt="Thoxan">
+                <a href="/" class="logo logo-icon" title="<?= htmlspecialchars(\Core\Brand::name()) ?>">
+                    <img src="<?= htmlspecialchars(\Core\Brand::logoIcon()) ?>" alt="<?= htmlspecialchars(\Core\Brand::name()) ?>">
                 </a>
             </div>
 
