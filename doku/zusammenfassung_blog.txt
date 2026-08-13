@@ -1,0 +1,143 @@
+Themen und Ausgangslage
+In dieser KI-Sprechstunde bringen die Teilnehmenden der KI-Gemeinschaft ihre individuellen Fragen und Impulse mit. Zum Beispiel zeigt uns Thomas den aktuellsten Stand seines internen KI-Systems für Projekte, Briefings und zur Content-Erstellung; seine Fragen drehen sich um zentrale Aspekte der Wissens-Strukturierung, z.B.:
+
+Ist eine Information eine Regel, ein Wissensdatenbank-Eintrag oder ein Beispielartikel?
+In welchem Kontext greift welche Information? "Schreibe per Du" gilt nur für bestimmte Kunden und bestimmte Artikeltypen
+Die Angst, vier Wochen in eine falsche Struktur investiert zu haben, blockiert den Fortschritt
+Klassische Klassifikationssysteme stoßen an ihre Grenzen, weil sich Kontexte überlappen
+Und ab dann bekam die KI-Sprechstunde eine Eigendynamik und wir haben uns intensiv ein sogenanntes "Entity-Artefact"-System angeschaut ...
+
+Das Entitäten-Artefakt-Modell
+Das Kernkonzept der Session: Alles ist entweder eine Entität oder ein Artefakt.
+
+Entitäten (Elemente):
+
+Kleinste Bausteine des Systems
+Jedes Wort, jeder Token ist eine Entität
+Schema-frei: Tragen ausschließlich ihren Eigenwert (Eigenvalue)
+Gespeichert in einer einzigen Tabelle mit ID und Wert
+Im produktiven System ca. 1,5 Millionen Einträge (350.000 Deutsch, 300.000 Englisch, plus Programmiersprachen)
+"Alles auf der Welt ist ein Element. Und jedes Element trägt im Prinzip nur seinen Eigenwert, seine Eigenvalue in sich."
+
+Artefakte:
+
+Verbinden Entitäten zu Bedeutung, Kontext und Schema
+Selbstbeschreibend: Jedes Artefakt definiert, was es IST (Regel, Dokumentation, Vertrag, Aufgabe)
+Gespeichert in einer einzigen Tabelle mit ID und Inhalt (Entitäts-IDs in Sequenz)
+Alles wird zum Artefakt: Aufgaben, Dokumentation, Regeln, E-Mails, Logs, Crawl-Ergebnisse, Code-Dateien
+"Ein Artefakt ist nichts anderes als eine bedeutungsgebende Sinngebung für Elemente."
+
+Die Zwei-Tabellen-Architektur:
+
+Konkretes Beispiel zur Verdeutlichung (Eberhards Rückfrage):
+
+Entitäten-Tabelle: 1=Eberhard, 2=hat, 3=einen, 4=Kaffee
+Artefakt-Tabelle: ID=1, Content="1~2~3~4"
+"Dann bist du in der Lage, hochkomplexe Systeme mit zwei Tabellen zu erstellen. Eine Tabelle sind nur Entitäten drin. Eine Tabelle sind nur Artefakte drin."
+
+Daraus ergibt sich ein komplett selbstbeschreibendes, selbstdokumentierendes und selbstaktualisierendes System. Jede Code-Datei hat ein Artefakt. Jede Prozessbeschreibung ist ein Artefakt. Alle werden miteinander verbunden.
+
+Schemaloses System
+Feste Datenstrukturen werden in der KI-Ära zum Problem. In dem Moment, in dem eine Struktur angelegt wird, ist sie bereits veraltet.
+
+"In der Sekunde, in der du eine Struktur anlegst, wirst du mit der Struktur unzufrieden sein. Weil sich selbst die grundlegenden Dinge kontinuierlich ändern."
+
+"Überall, wo man hergeht und sagt, in der KI-Ära, wir arbeiten mit einer festen Struktur, die wird in Blitzeseile vom Veränderungs-Tsunami einfach überholt."
+
+Warum schemaloses Design:
+
+Klassische Tabellen mit festen Spalten erzwingen Kompromisse: Entweder fehlt etwas oder etwas ist falsch
+Kontextabhängigkeiten lassen sich nicht in starre Spaltenstrukturen pressen
+Artefakte definieren ihren eigenen Kontext durch Selbstbeschreibung
+Neue Informationstypen können jederzeit hinzugefügt werden, ohne Schema-Migrationen
+Das System adaptiert sich an veränderte Anforderungen, statt dass Anforderungen an das System angepasst werden müssen
+Medizinische Metapher für strukturelle Drift: Wenn ein System driftet, weil seine Struktur nicht mehr zur Realität passt, entsteht eine Art "System-Psychose": Das System bildet eine andere Realität ab als die tatsächliche.
+
+Selbststeuerndes System
+Das System dokumentiert und steuert sich selbst über Claude Code Hooks und ein Intent-System.
+
+Der Hook-Mechanismus:
+
+Vor jeder Dateiänderung liest Claude Code das zugehörige Artefakt der Datei
+Das Artefakt enthält: Was bin ich, was kann ich, welche Funktionen habe ich, mit welchen anderen Artefakten bin ich verbunden
+Nach der Änderung wird das Artefakt automatisch aktualisiert
+Impact-Analyse vor jeder Änderung: Welche anderen Dateien und Artefakte sind betroffen
+"Hey Cloud-Code, wann immer du eine Datei verändern möchtest, lies zuerst das Artefakt für die Datei, weil da steht drin: wer bin ich, was kann ich, was sind meine Funktionen, mit welchen anderen Artefakten bin ich verbunden."
+
+Das Intent-System:
+
+Vor jeder Dateioperation muss eine Absichtserklärung (Intent) abgegeben werden
+Das System validiert den Intent und gibt ein Token zurück
+Erst mit gültigem Token kann die Änderung durchgeführt werden
+Jede Operation ist automatisch dokumentiert und nachvollziehbar
+Ergebnis:
+
+Vollständige Nachvollziehbarkeit aller Änderungen
+Automatische Dokumentation ohne manuellen Aufwand
+Impact-Analyse verhindert unbeabsichtigte Seiteneffekte
+Das System wird durch Benutzung besser, nicht schlechter
+Skalierung und Praxisbeispiele
+Skalierungstest auf Hetzner-Server:
+
+10 Milliarden Artefakte plus 10 Millionen Entitäten angelegt und getestet
+Für diese Größenordnung wurde der Entity/Artefakt-Engine von Python nach C portiert
+Ergebnis: Das System mit 10 Milliarden Artefakten und C-Unterbau war performanter als die kleine lokale Python-Variante
+Technologie-Stack für Skalierung:
+
+MariaDB für strukturierte Speicherung (Entitäten und Artefakte)
+Redis für Caching
+Qdrant für semantische Ähnlichkeitssuche / Vektorsuche
+Graph-Datenbank für taxonomische, ontologische und semantische Abfragen
+C statt Python für die Engine bei hohen Datenmengen
+Joachims Praxisbeispiel: Crawl-Daten-Analyse
+
+Crawl-Daten aus 200.000 bis 300.000 Seiten (CMS-Erkennung, Consent-Management-Plattformen)
+Pragmatischer Ansatz: Daten teilweise in separaten Tabellen für gezielte Abfragen
+Empfehlung: Abfragen über Entitäten steuern, um den Scan-Bereich einzugrenzen
+Graph-Datenbanken für komplexe relationale Abfragen zwischen Crawl-Ergebnissen
+Sandras Praxisbeispiel: Shopify-Motivreihen
+
+Artefakte vom Typ "Motivreihe" mit JSON-Metadaten statt fester Tabellenspalten
+Bei Veröffentlichung wird automatisch eine Shopify-Kollektion erstellt
+Metadaten (Shopify-ID, Kollektionsname, Status) direkt im Artefakt gespeichert
+Flexibel erweiterbar ohne Schema-Änderungen
+Julias Parallele zur objektorientierten Programmierung:
+
+Entitäten verhalten sich wie Klassen (Typdefinition)
+Artefakte verhalten sich wie Instanzen (konkrete Ausprägung)
+Eine Analogie, die den Einstieg für Entwickler erleichtert
+Ausblick und nächste Schritte
+Ermutigung zum pragmatischen Start:
+
+"Fangt erst mal an. Am Anfang macht man eine Tabelle, da sind die Tasks drin und eine Tabelle, da sind die Templates drin. Und dann wird man ein bisschen mutiger und sagt: Ab jetzt ist alles, was ich definiere, ein Artefakt."
+
+Die Strukturierung passiert erst mal ad hoc, so wie Wissen auch in der realen Welt entsteht. Ordnung und Systematik wachsen mit dem System.
+
+Vorschau auf die Donnerstags-Session (technisches Deep-Dive):
+
+Wie ein Dokument in die MariaDB kommt
+Wie es von dort in die Vektordatenbank gelangt
+Wie es wieder abgerufen wird (Retrieval)
+Wie E-Mails, Dokumente und andere Informationen in ein Wissenssystem fließen
+Anwendungen: Chat, Content-Produktion, automatisierte E-Mail-Beantwortung
+"Wie kriegen wir überhaupt jetzt irgendein verdammtes Dokument in die MariaDB? Und wie kriegen wir es von dort aus in die Vektordatenbank? Und wie kriegen wir es wieder raus?"
+
+"Das machen wir dann so richtig mit der Hand am Arm, von Null auf, in alle Details rein."
+
+Kernerkenntnisse
+Zwei-Tabellen-Architektur: Hochkomplexe Systeme lassen sich mit nur zwei Tabellen abbilden: Entitäten (Eigenwert) und Artefakte (Bedeutungsgebung). Keine weiteren Tabellen nötig.
+Schema-Freiheit: Feste Strukturen werden in der KI-Ära zum Hindernis. Artefakte sind selbstbeschreibend und definieren ihren eigenen Kontext.
+Selbstdokumentation: Durch Hooks und Intent-System dokumentiert sich das System bei jeder Änderung automatisch. Kein manueller Dokumentationsaufwand.
+Impact-Analyse: Vor jeder Änderung wird geprüft, welche anderen Artefakte und Dateien betroffen sind. Seiteneffekte werden sichtbar, bevor sie eintreten.
+Skalierbarkeit: 10 Milliarden Artefakte auf einem einzelnen Hetzner-Server getestet. Für Hochlast C-Unterbau statt Python.
+Pragmatischer Start: Mit einer Task-Tabelle und einer Template-Tabelle beginnen. Erst später auf das volle Entitäten-Artefakt-Modell umsteigen.
+Kontextabhängige Regeln: "Schreibe per Du" ist keine globale Regel, sondern abhängig von Kunde, Artikeltyp und Kanal. Artefakte können diesen Kontext abbilden.
+Kein UI-Framework nötig: Vollständige Benutzeroberflächen lassen sich mit Claude Code in reinem HTML/CSS/JavaScript erstellen.
+Technologie-Stack für Produktion: MariaDB (Struktur), Redis (Cache), Qdrant (Vektoren), Graph-DB (Relationen), optional C für Performance.
+Alles ist ein Artefakt: Aufgaben, Regeln, Dokumentation, E-Mails, Crawl-Ergebnisse, Code-Dateien. Einheitliches Modell für alles.
+Nächste Schritte
+Task-Tabelle anlegen: Eine einfache Tabelle für Aufgaben als Einstieg in das Artefakt-Denken.
+Erste Artefakte definieren: Regeln, Autorenprofile und Prozessbeschreibungen als Artefakte formulieren. Jedes Artefakt beschreibt sich selbst.
+Dokumentation automatisieren: Hooks einrichten, die bei jeder Dateiänderung das zugehörige Artefakt aktualisieren.
+Donnerstags-Session besuchen: Technisches Deep-Dive: Dokumente in MariaDB laden, in Vektordatenbank embedden, wieder abrufen. Von Null auf, Schritt für Schritt.
+Pragmatisch starten: Nicht auf die perfekte Struktur warten, sondern anfangen. Die Strukturierung wächst mit dem System.

@@ -1,0 +1,836 @@
+/* ============================================================================
+   LAM-System — Stilebene gemaess docs/design-reference/lam-styleguide/
+   Aktive Quellen: lam-ui-styleguide.md, tailwind.config.js, css/app.css,
+   layouts/LamLayout.vue. Bei Konflikten gewinnt Originalcode.
+
+   Klassen-Konvention: alle LAM-spezifischen Regeln mit Prefix `lam-`.
+   Tailwind-Klassen aus dem Original wurden 1:1 als CSS uebersetzt, mit
+   120%-Skalierung wie `html { font-size: 120% }` im Original — hier auf
+   `.lam-app` begrenzt, damit der KI-Tool-Rest unveraendert bleibt.
+   ============================================================================ */
+
+/* --- Frutiger Webfont ---
+   Bewusst KEIN @font-face mehr hier: die Schrift 'Frutiger LT Std' wird zentral in
+   thx-tokens.css definiert (echte Brand-Schnitte 45 Light / 65 Bold / 95 UltraBlack,
+   inkl. Metrik-Overrides). lam.css wird in main.php NACH thx-tokens geladen — ein
+   Duplikat hier hatte die zentrale Definition ueberschrieben und den alten „Roman"-
+   Schnitt erzwungen (Fix 24.06.2026). Single source of truth: thx-tokens.css. */
+
+/* --- Design-Tokens (Thoxan-Palette + Slate/Emerald/Amber/Rose/Indigo) --- */
+.lam-app {
+    --thoxan-50: #e6f0f8;
+    --thoxan-100: #cce1f1;
+    --thoxan-200: #99c3e3;
+    --thoxan-300: #66a5d5;
+    --thoxan-400: #3387c7;
+    --thoxan-500: #006fb9;
+    --thoxan-600: #005da8;
+    --thoxan-700: #004a86;
+    --thoxan-800: #003864;
+    --thoxan-900: #002542;
+    --thoxan-950: #001329;
+
+    --slate-50:  #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+
+    --emerald-50:  #ecfdf5;
+    --emerald-100: #d1fae5;
+    --emerald-200: #a7f3d0;
+    --emerald-500: #10b981;
+    --emerald-600: #059669;
+    --emerald-700: #047857;
+    --emerald-800: #065f46;
+
+    --amber-50:  #fffbeb;
+    --amber-100: #fef3c7;
+    --amber-200: #fde68a;
+    --amber-300: #fcd34d;
+    --amber-500: #f59e0b;
+    --amber-600: #d97706;
+    --amber-700: #b45309;
+    --amber-800: #92400e;
+
+    --rose-50:  #fff1f2;
+    --rose-100: #ffe4e6;
+    --rose-200: #fecdd3;
+    --rose-500: #f43f5e;
+    --rose-600: #e11d48;
+    --rose-700: #be123c;
+    --rose-800: #9f1239;
+
+    --indigo-50:  #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+
+    --red-50: #fef2f2;
+    --red-200: #fecaca;
+    --red-800: #991b1b;
+
+    /* Typografische Skalierung: alle Werte sind Tailwind-Default * 1.2,
+       weil der Original-LAM `html { font-size: 120% }` setzt.
+       Wir begrenzen die Skalierung auf .lam-app, damit der KI-Tool-Rest
+       (Sidebar, Auth-Layout) unveraendert bleibt. */
+    --fs-xs:   14.4px;   /* Tailwind text-xs * 1.2 */
+    --fs-sm:   16.8px;   /* Tailwind text-sm * 1.2 */
+    --fs-base: 19.2px;   /* Tailwind text-base * 1.2 */
+    --fs-lg:   21.6px;   /* Tailwind text-lg * 1.2 */
+    --fs-xl:   24px;     /* Tailwind text-xl * 1.2 */
+    --fs-2xl:  28.8px;   /* Tailwind text-2xl * 1.2 */
+
+    font-family: 'Frutiger LT Std', 'Frutiger', system-ui, sans-serif;
+    font-size: var(--fs-sm);
+    color: var(--slate-800);
+    background: var(--slate-50);
+    line-height: 1.45;
+}
+
+.lam-app *,
+.lam-app *::before,
+.lam-app *::after {
+    box-sizing: border-box;
+}
+
+.lam-app a {
+    color: inherit;
+    text-decoration: none;
+}
+.lam-app button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* --- Layout-Wrapper --- */
+.lam-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.lam-container {
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+@media (min-width: 640px) { .lam-container { padding: 0 24px; } }
+@media (min-width: 1024px) { .lam-container { padding: 0 32px; } }
+
+/* ============================================================================
+   Admin-Top-Bar (dunkelblau, h-11)
+   ============================================================================ */
+.lam-admin-bar {
+    background: var(--thoxan-700);
+    color: #fff;
+}
+.lam-admin-bar-inner {
+    display: flex;
+    height: 44px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    font-size: var(--fs-sm);
+}
+.lam-admin-link {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--thoxan-50);
+    transition: background 0.1s;
+}
+.lam-admin-link:hover { background: var(--thoxan-600); }
+.lam-admin-link.is-active {
+    background: #fff;
+    color: var(--thoxan-700);
+}
+.lam-admin-divider {
+    margin: 0 8px;
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background: var(--thoxan-500);
+}
+.lam-admin-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.lam-admin-user-kuerzel {
+    background: var(--thoxan-600);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+}
+.lam-admin-user-name {
+    color: var(--thoxan-50);
+}
+
+/* ============================================================================
+   Haupt-Navigation (weiss, h-20, Logo + Modul-Tabs)
+   ============================================================================ */
+.lam-main-nav {
+    border-bottom: 1px solid var(--slate-200);
+    background: #fff;
+}
+.lam-main-nav-inner {
+    display: flex;
+    height: 80px;
+    align-items: center;
+    justify-content: space-between;
+}
+.lam-logo {
+    display: flex;
+    align-items: center;
+}
+.lam-logo img {
+    height: 48px;
+    width: auto;
+    display: block;
+}
+.lam-modul-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.lam-modul-tab {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--slate-700);
+    transition: background 0.1s, color 0.1s;
+}
+.lam-modul-tab:hover {
+    background: var(--thoxan-50);
+    color: var(--thoxan-700);
+}
+.lam-modul-tab.is-active {
+    background: var(--thoxan-600);
+    color: #fff;
+}
+.lam-modul-tab.is-disabled {
+    color: var(--slate-400);
+    cursor: not-allowed;
+}
+
+/* ============================================================================
+   Page-Header (weiss, py-5, H1 + Action-Buttons)
+   ============================================================================ */
+.lam-page-header {
+    border-bottom: 1px solid var(--slate-200);
+    background: #fff;
+}
+.lam-page-header-inner {
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.lam-page-title {
+    margin: 0;
+    font-size: var(--fs-2xl);
+    font-weight: 600;
+    color: var(--slate-800);
+    line-height: 1.2;
+}
+.lam-page-subtitle {
+    margin-top: 4px;
+    font-size: var(--fs-sm);
+    color: var(--slate-500);
+}
+.lam-page-subtitle .lam-sub-neu { color: var(--emerald-700); }
+.lam-page-subtitle .lam-sub-warn { color: var(--amber-700); }
+.lam-page-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ============================================================================
+   Main-Bereich
+   ============================================================================ */
+.lam-main {
+    flex: 1;
+    padding: 24px 0;
+}
+
+/* ============================================================================
+   Footer
+   ============================================================================ */
+.lam-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--slate-200);
+    background: #fff;
+}
+.lam-footer-inner {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: var(--fs-xs);
+    color: var(--slate-500);
+}
+@media (min-width: 640px) {
+    .lam-footer-inner { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+.lam-footer-brand { display: flex; align-items: center; gap: 12px; }
+.lam-footer-brand-mark { font-weight: 700; color: var(--thoxan-700); }
+.lam-footer-brand-claim { color: var(--slate-400); }
+.lam-footer-tagline {
+    font-style: italic;
+    color: var(--thoxan-600);
+}
+
+/* ============================================================================
+   Buttons
+   ============================================================================ */
+.lam-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    border: 1px solid transparent;
+    line-height: 1;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+    white-space: nowrap;
+    text-decoration: none;
+}
+.lam-btn:disabled,
+.lam-btn.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.lam-btn-primary {
+    background: var(--thoxan-600);
+    color: #fff;
+    font-weight: 700;
+}
+.lam-btn-primary:hover:not(:disabled) { background: var(--thoxan-700); }
+.lam-btn-primary:disabled { background: var(--slate-400); opacity: 1; }
+
+.lam-btn-secondary {
+    background: #fff;
+    color: var(--slate-700);
+    border-color: var(--slate-300);
+}
+.lam-btn-secondary:hover:not(:disabled) { background: var(--slate-50); }
+
+.lam-btn-accent {
+    background: #fff;
+    color: var(--thoxan-700);
+    border-color: var(--thoxan-300);
+}
+.lam-btn-accent:hover:not(:disabled) { background: var(--thoxan-50); }
+
+.lam-btn-danger {
+    background: var(--rose-600);
+    color: #fff;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+.lam-btn-danger:hover:not(:disabled) { background: var(--rose-700); }
+
+.lam-btn-success {
+    background: var(--emerald-600);
+    color: #fff;
+    padding: 6px 12px;
+    font-weight: 700;
+}
+.lam-btn-success:hover:not(:disabled) { background: var(--emerald-700); }
+
+.lam-btn-small {
+    background: #fff;
+    color: var(--slate-700);
+    border-color: var(--slate-300);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: var(--fs-xs);
+}
+.lam-btn-small:hover:not(:disabled) { background: var(--slate-50); }
+
+/* ============================================================================
+   Filter-Card
+   ============================================================================ */
+.lam-filter-card {
+    border-radius: 8px;
+    border: 1px solid var(--slate-200);
+    background: #fff;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+.lam-filter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.lam-filter-head h2 {
+    margin: 0;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate-500);
+}
+.lam-filter-toggle {
+    background: none;
+    border: none;
+    font-size: var(--fs-sm);
+    color: var(--thoxan-700);
+}
+.lam-filter-toggle:hover { text-decoration: underline; }
+
+.lam-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+}
+.lam-filter-col-3 { grid-column: span 3 / span 3; }
+.lam-filter-col-4 { grid-column: span 4 / span 4; }
+.lam-filter-col-6 { grid-column: span 6 / span 6; }
+.lam-filter-col-12 { grid-column: span 12 / span 12; }
+@media (max-width: 900px) {
+    .lam-filter-col-3, .lam-filter-col-4, .lam-filter-col-6 { grid-column: span 12 / span 12; }
+}
+
+.lam-filter-label {
+    display: block;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--slate-600);
+    margin-bottom: 4px;
+}
+.lam-filter-hint {
+    font-size: 12px;
+    color: var(--slate-400);
+    margin-left: 6px;
+    font-weight: 400;
+}
+
+.lam-filter-input,
+.lam-filter-select {
+    width: 100%;
+    border: 1px solid var(--slate-300);
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: var(--fs-sm);
+    color: var(--slate-800);
+    line-height: 1.3;
+}
+.lam-filter-input::placeholder { color: var(--slate-400); }
+.lam-filter-input:focus,
+.lam-filter-select:focus {
+    outline: none;
+    border-color: var(--thoxan-400);
+    box-shadow: 0 0 0 1px var(--thoxan-300);
+}
+.lam-filter-range {
+    display: flex;
+    gap: 6px;
+}
+.lam-filter-range .lam-filter-input { flex: 1; }
+
+/* --- Filter-Chips --- */
+.lam-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.lam-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: var(--fs-xs);
+    background: var(--slate-100);
+    color: var(--slate-600);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s, box-shadow 0.1s;
+}
+.lam-chip:hover { background: var(--slate-200); }
+.lam-chip.is-active {
+    background: var(--thoxan-600);
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Kunden-Chip Variante: leichter Thoxan-Ring im Inaktiv-Zustand */
+.lam-chip-kunde {
+    background: var(--thoxan-50);
+    color: var(--thoxan-700);
+    box-shadow: inset 0 0 0 1px var(--thoxan-200);
+    font-weight: 500;
+}
+.lam-chip-kunde:hover { background: var(--thoxan-100); }
+.lam-chip-kunde.is-active {
+    background: var(--thoxan-600);
+    color: #fff;
+    box-shadow: none;
+}
+
+/* Linkart-Chip (Linkquellen) — Indigo statt Thoxan */
+.lam-chip-linkart-indigo.is-active {
+    background: var(--indigo-600);
+    color: #fff;
+}
+
+/* "ohne X"-Chip — Amber */
+.lam-chip-ohne {
+    background: var(--amber-50);
+    color: var(--amber-800);
+    box-shadow: inset 0 0 0 1px var(--amber-200);
+}
+.lam-chip-ohne:hover { background: var(--amber-100); }
+.lam-chip-ohne.is-active {
+    background: var(--amber-500);
+    color: #fff;
+    box-shadow: none;
+}
+
+/* Reset-Chip "alle" */
+.lam-chip-reset {
+    border: 1px dashed var(--slate-300);
+    background: transparent;
+    color: var(--slate-500);
+}
+.lam-chip-reset:hover {
+    background: var(--slate-50);
+}
+
+/* Verifikations-Chips Linkquellen (pro Status individuelle Farbe) */
+.lam-chip-status-neu       { background: var(--amber-50);    color: var(--amber-800);   box-shadow: inset 0 0 0 1px var(--amber-200); }
+.lam-chip-status-neu.is-active { background: var(--amber-500); color: #fff; box-shadow: none; }
+.lam-chip-status-in_arbeit { background: var(--thoxan-50);   color: var(--thoxan-700);  box-shadow: inset 0 0 0 1px var(--thoxan-200); }
+.lam-chip-status-in_arbeit.is-active { background: var(--thoxan-600); color: #fff; box-shadow: none; }
+.lam-chip-status-verifiziert,
+.lam-chip-status-geprueft  { background: var(--emerald-50); color: var(--emerald-800); box-shadow: inset 0 0 0 1px var(--emerald-200); }
+.lam-chip-status-verifiziert.is-active,
+.lam-chip-status-geprueft.is-active { background: var(--emerald-600); color: #fff; box-shadow: none; }
+.lam-chip-status-veraltet  { background: #fff7ed;          color: #9a3412;            box-shadow: inset 0 0 0 1px #fed7aa; }
+.lam-chip-status-veraltet.is-active { background: #ea580c; color: #fff; box-shadow: none; }
+.lam-chip-status-verworfen,
+.lam-chip-status-geloescht { background: var(--rose-50);    color: var(--rose-800);    box-shadow: inset 0 0 0 1px var(--rose-200); }
+.lam-chip-status-verworfen.is-active,
+.lam-chip-status-geloescht.is-active { background: var(--rose-600); color: #fff; box-shadow: none; }
+
+/* ============================================================================
+   Tabellen
+   ============================================================================ */
+.lam-table-card {
+    border-radius: 8px;
+    border: 1px solid var(--slate-200);
+    background: #fff;
+    overflow: hidden;
+}
+.lam-table-wrap {
+    overflow-x: auto;
+}
+.lam-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--fs-sm);
+}
+.lam-table thead {
+    background: var(--slate-50);
+}
+.lam-table thead th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: var(--slate-500);
+    border-bottom: 1px solid var(--slate-200);
+    white-space: nowrap;
+}
+.lam-table thead th.sortable { cursor: pointer; user-select: none; }
+.lam-table thead th.sortable:hover { background: var(--slate-100); }
+.lam-table thead th.right { text-align: right; }
+.lam-table thead th.center { text-align: center; }
+.lam-table thead th .sort-icon { color: var(--slate-400); margin-left: 4px; }
+.lam-table thead th.sorted .sort-icon { color: var(--thoxan-600); }
+
+.lam-table tbody tr {
+    border-top: 1px solid var(--slate-100);
+}
+.lam-table tbody tr:first-child { border-top: none; }
+.lam-table tbody tr:hover {
+    background: var(--slate-50);
+}
+.lam-table tbody tr.is-selected {
+    background: rgba(230, 240, 248, 0.4); /* thoxan-50/40 */
+}
+
+.lam-table td {
+    padding: 8px 12px;
+    vertical-align: top;
+    color: var(--slate-800);
+}
+.lam-table td.right { text-align: right; font-variant-numeric: tabular-nums; }
+.lam-table td.center { text-align: center; }
+.lam-table td.checkbox-col { padding: 8px; text-align: center; width: 1%; }
+.lam-table th.checkbox-col { padding: 8px; text-align: center; width: 1%; }
+
+/* Senkrechte Trenner ab zweiter Spalte (slate-100) */
+.lam-table tr > *:not(:first-child) {
+    border-left: 1px solid var(--slate-100);
+}
+
+.lam-table .url-cell a {
+    color: var(--thoxan-700);
+    word-break: break-all;
+}
+.lam-table .url-cell a:hover { text-decoration: underline; }
+.lam-table .muted { color: var(--slate-400); font-size: var(--fs-xs); }
+.lam-table .empty { color: var(--slate-300); }
+
+/* Inline-Edit-Knopf in Empfehlungs-/Status-Zellen (Klartext, kein Badge) */
+.lam-inline-edit {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: var(--fs-sm);
+    color: inherit;
+    white-space: nowrap;
+}
+.lam-inline-edit:hover { background: var(--thoxan-50); }
+
+/* --- Checkboxen --- */
+.lam-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--slate-300);
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+.lam-checkbox:checked {
+    background: var(--thoxan-700);
+    border-color: var(--thoxan-700);
+}
+.lam-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 5px; height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.lam-checkbox:focus { outline: 2px solid var(--thoxan-300); outline-offset: 1px; }
+
+/* --- Echte Badges (sparsam) --- */
+.lam-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 1px 8px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+}
+.lam-badge-neu { background: var(--emerald-100); color: var(--emerald-800); }
+.lam-badge-counter { background: var(--amber-100); color: var(--amber-800); }
+.lam-badge-tag { background: var(--slate-200); color: var(--slate-700); padding: 2px 8px; font-weight: 400; }
+
+/* --- Erreichbarkeits-Punkt --- */
+.lam-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--slate-200);
+    vertical-align: middle;
+}
+.lam-dot.ok { background: var(--emerald-500); }
+.lam-dot.warn { background: var(--amber-500); }
+.lam-dot.error { background: var(--rose-500); }
+
+/* --- Pagination-Footer --- */
+.lam-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-top: 1px solid var(--slate-200);
+    background: var(--slate-50);
+    padding: 8px 12px;
+    font-size: var(--fs-sm);
+    color: var(--slate-600);
+}
+.lam-pagination strong { font-weight: 500; color: var(--slate-900); }
+.lam-pagination-actions { display: flex; align-items: center; gap: 12px; }
+
+/* --- Pagination v2: nummerierte Seiten + Per-Page-Select (wiederverwendbar) --- */
+.thx-pagination {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    border-top: 1px solid var(--slate-200);
+    background: var(--slate-50);
+    padding: 10px 14px;
+    font-size: var(--d-fs-sm); color: var(--slate-600);
+}
+.thx-pagination strong { font-weight: 600; color: var(--slate-900); }
+.thx-pagination-info { white-space: nowrap; }
+.thx-pagination-controls { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.thx-pagination-perpage { display: inline-flex; align-items: center; gap: 8px; font-size: var(--d-fs-xs); color: var(--slate-500); white-space: nowrap; }
+.thx-pagination-perpage .thx-select { min-width: 70px; padding-top: 4px; padding-bottom: 4px; }
+.thx-pagination-pages { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.thx-pagination-pages .thx-btn-small { min-width: 32px; padding: 2px 8px; }
+.thx-pagination-ellipsis { padding: 0 6px; color: var(--slate-400); }
+
+/* ============================================================================
+   Flash-Messages
+   ============================================================================ */
+.lam-flash {
+    margin-bottom: 16px;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: var(--fs-sm);
+    border: 1px solid transparent;
+}
+.lam-flash-erfolg {
+    background: var(--emerald-50);
+    color: var(--emerald-800);
+    border-color: var(--emerald-200);
+}
+.lam-flash-fehler {
+    background: var(--red-50);
+    color: var(--red-800);
+    border-color: var(--red-200);
+}
+
+/* ============================================================================
+   Dashboard-Kacheln (KI-Tool-spezifisch, im LAM-Stil)
+   ============================================================================ */
+.lam-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+}
+.lam-kpi {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    padding: 16px 18px;
+}
+.lam-kpi-label {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate-500);
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+.lam-kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--slate-800);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+.lam-kpi-sub {
+    font-size: var(--fs-xs);
+    color: var(--slate-400);
+    margin-top: 4px;
+}
+.lam-kpi-value.is-accent { color: var(--thoxan-600); }
+.lam-kpi-value.is-warn { color: var(--rose-600); }
+.lam-kpi-value.is-ok { color: var(--emerald-600); }
+
+.lam-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+@media (max-width: 1100px) { .lam-grid-2 { grid-template-columns: 1fr; } }
+
+.lam-card {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    padding: 20px;
+}
+.lam-card h3 {
+    margin: 0 0 14px 0;
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--slate-800);
+}
+
+/* ============================================================================
+   Loading-Spinner / Empty-State
+   ============================================================================ */
+.lam-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--slate-200);
+    border-top-color: var(--thoxan-600);
+    border-radius: 50%;
+    animation: lamSpin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+@keyframes lamSpin { to { transform: rotate(360deg); } }
+.lam-loading, .lam-empty {
+    padding: 40px;
+    text-align: center;
+    color: var(--slate-400);
+    font-size: var(--fs-sm);
+}
+
+/* ============================================================================
+   Kunden-Auswahl-Liste (Linkprofil-Spezifisch — Chips)
+   ============================================================================ */
+.lam-kunden-stats {
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: var(--fs-xs);
+    color: var(--slate-500);
+}
+.lam-kunden-stats strong { color: var(--slate-800); font-weight: 600; }
+.lam-kunden-stats .disavow strong { color: var(--rose-600); }
+.lam-kunden-stats .unsicher strong { color: var(--amber-700); }
+.lam-kunden-stats .neu strong { color: var(--emerald-600); }

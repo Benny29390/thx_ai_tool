@@ -1,0 +1,2343 @@
+/* ============================================================================
+   Thoxan-Komponenten-Klassen — global, wachsen organisch.
+
+   Konvention:
+     - .thx-*  = global, wiederverwendbar
+     - .lam-*  = uebergangsweise (LAM-spezifisch), wird schrittweise zu .thx-* migriert
+   ============================================================================ */
+
+/* Globale Buttons ----------------------------------------------------------- */
+.thx-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: var(--d-control-radius);
+    /* Symmetrisches Padding — Frutiger-Metric ist global via @font-face korrigiert. */
+    padding: 2px var(--d-control-pad-x);
+    height: var(--d-control-h);
+    font-size: var(--d-control-fs);
+    font-weight: 500;
+    line-height: 1;
+    border: 1px solid transparent;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.1s, border-color 0.1s, color 0.1s, opacity 0.1s;
+}
+.thx-btn:focus-visible {
+    outline: 2px solid var(--thoxan-400);
+    outline-offset: 2px;
+}
+.thx-btn:disabled,
+.thx-btn.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.thx-btn-primary {
+    background: var(--thoxan-600);
+    color: #fff;
+    font-weight: 700;
+}
+.thx-btn-primary:hover:not(:disabled):not(.is-disabled) { background: var(--thoxan-700); }
+.thx-btn-primary:disabled { background: var(--slate-400); opacity: 1; }
+
+.thx-btn-secondary {
+    background: #fff;
+    color: var(--slate-700);
+    border-color: var(--slate-300);
+}
+.thx-btn-secondary:hover:not(:disabled):not(.is-disabled) {
+    background: var(--slate-50);
+    border-color: var(--slate-400);
+}
+
+.thx-btn-accent {
+    background: #fff;
+    color: var(--thoxan-700);
+    border-color: var(--thoxan-300);
+    font-weight: 600;
+}
+.thx-btn-accent:hover:not(:disabled):not(.is-disabled) {
+    background: var(--thoxan-50);
+    border-color: var(--thoxan-500);
+}
+
+.thx-btn-danger {
+    background: #fff;
+    color: var(--rose-700);
+    border-color: var(--rose-300);
+    font-weight: 600;
+}
+.thx-btn-danger:hover:not(:disabled):not(.is-disabled) {
+    background: var(--rose-50);
+    border-color: var(--rose-500);
+}
+.thx-btn-danger.is-solid,
+.thx-btn-danger-solid {
+    background: var(--rose-600);
+    color: #fff;
+    border-color: var(--rose-600);
+}
+.thx-btn-danger.is-solid:hover:not(:disabled),
+.thx-btn-danger-solid:hover:not(:disabled) { background: var(--rose-700); border-color: var(--rose-700); }
+
+.thx-btn-success {
+    background: var(--emerald-600);
+    color: #fff;
+    border-color: var(--emerald-600);
+    font-weight: 700;
+}
+.thx-btn-success:hover:not(:disabled):not(.is-disabled) { background: var(--emerald-700); border-color: var(--emerald-700); }
+
+.thx-btn-small { padding: 4px 10px; font-size: var(--d-fs-xs); }
+.thx-btn-large { padding: 10px 20px; font-size: var(--d-fs-base); }
+.thx-btn-block { width: 100%; }
+
+/* Icons innerhalb von Buttons: konsequent ueber Flex zentriert, ohne
+   Inline-Style-Konflikte (Legacy `style="vertical-align:middle"`). */
+.thx-btn .material-symbols-rounded {
+    vertical-align: baseline !important;
+    line-height: 1 !important;
+    flex-shrink: 0;
+}
+
+/* Globale Form-Elemente -----------------------------------------------------
+   Keine fixe `height` — stattdessen vertikales Padding. So bestimmt der Browser
+   die Box-Höhe so, dass Frutiger-Ascender/Descender garantiert nicht clipping. */
+.thx-input,
+.thx-textarea,
+.thx-select {
+    box-sizing: border-box;
+    border: 1px solid var(--slate-300);
+    border-radius: var(--d-control-radius);
+    background: #fff;
+    padding: 6px var(--d-control-pad-x);
+    font-family: inherit;
+    font-size: var(--d-control-fs);
+    color: var(--slate-800);
+    line-height: 1.4;
+}
+
+/* Select: native chevron weg, eigener via background-svg. Sonst sind die
+   Open-Dropdowns hässlich (kann CSS aber nicht stylen). */
+.thx-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* min-width gross genug fuer typische Werte (Kundennamen, Kategorien etc.).
+       Bei laengeren Inhalten waechst der Select auf seine natuerliche Breite. */
+    min-width: 200px;
+    /* Hoehere Rechts-Padding fuer Chevron */
+    padding-right: calc(var(--d-control-pad-x) + 22px);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="%2364748b"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+}
+.thx-select:hover:not(:disabled) {
+    border-color: var(--slate-400);
+}
+.thx-select::-ms-expand { display: none; }
+/* Options: zumindest auf modernen Browsern lesbar (begrenzte Stylebarkeit) */
+.thx-select option {
+    font-family: inherit;
+    color: var(--slate-800);
+    background: #fff;
+    padding: 4px 8px;
+}
+
+/* Inputs/Textarea/Select fuellen ihren Container nur in Form-Field-Wrapper
+   (wie z.B. im Drawer). Auf .thx-page-actions oder Inline-Filter sollen sie
+   ihre intrinsische Breite haben — siehe .thx-form-field input/select Block
+   weiter unten. */
+.thx-textarea { resize: vertical; min-height: 80px; height: auto; padding-top: 0.5em; padding-bottom: 0.5em; }
+.thx-input:focus,
+.thx-textarea:focus,
+.thx-select:focus {
+    outline: none;
+    border-color: var(--thoxan-400);
+    box-shadow: 0 0 0 1px var(--thoxan-300);
+}
+
+/* ============================================================================
+   Globale Top-Bar (Thoxan-Blau, fix oben, ueber Sidebar und Inhalt)
+   ============================================================================ */
+.thx-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    background: var(--thoxan-700);
+    color: #fff;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-3);
+    font-size: var(--d-fs-sm);
+}
+.thx-topbar-toggle {
+    background: transparent;
+    border: none;
+    color: var(--thoxan-50);
+    padding: 6px;
+    margin-right: var(--space-2);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background var(--t-fast);
+}
+.thx-topbar-toggle:hover { background: var(--thoxan-600); color: #fff; }
+.thx-topbar-toggle .material-symbols-rounded { font-size: 24px; }
+.thx-topbar-spacer { flex: 1; }
+.thx-topbar-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.thx-topbar-link {
+    color: var(--thoxan-50);
+    text-decoration: none;
+    padding: 6px 12px;
+    line-height: 1;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: var(--d-fs-sm);
+    transition: background var(--t-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.thx-topbar-link:hover {
+    background: var(--thoxan-600);
+    color: #fff;
+}
+.thx-topbar-link.is-active {
+    background: #fff;
+    color: var(--thoxan-700);
+}
+.thx-topbar-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--thoxan-500);
+    margin: 0 8px;
+}
+.thx-topbar-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--thoxan-50);
+    text-decoration: none;
+    padding: 4px 8px;
+    line-height: 1;
+    border-radius: var(--radius-sm);
+    transition: background var(--t-fast);
+}
+.thx-topbar-user:hover { background: var(--thoxan-600); color: #fff; }
+.thx-topbar-initials {
+    background: var(--thoxan-600);
+    color: #fff;
+    padding: 2px 8px;
+    line-height: 1;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--d-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.025em;
+}
+.thx-topbar-username {
+    font-size: var(--d-fs-sm);
+    font-weight: 500;
+}
+
+/* Schrift-Skalierung (Barrierefreiheit) */
+.thx-fontsize {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    background: var(--thoxan-700);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+}
+.thx-fontsize-btn {
+    background: transparent;
+    border: none;
+    color: var(--thoxan-50);
+    width: 26px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: inherit;
+    line-height: 1;
+    transition: background 0.1s, color 0.1s;
+}
+.thx-fontsize-btn:hover { background: var(--thoxan-600); color: #fff; }
+.thx-fontsize-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+}
+.thx-fontsize-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 24px;
+    padding: 0 6px;
+    margin-left: 2px;
+    background: var(--thoxan-600);
+    color: #fff;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--d-fs-xs);
+    font-weight: 700;
+    line-height: 1;
+}
+.thx-fontsize-indicator.is-default {
+    background: var(--thoxan-800);
+    opacity: 0.6;
+}
+.thx-topbar-role-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    line-height: 1;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.thx-topbar-role-badge.role-admin   { background: rgba(239, 68, 68, 0.18); color: #fecaca; }
+.thx-topbar-role-badge.role-manager { background: rgba(59, 130, 246, 0.25); color: #dbeafe; }
+.thx-topbar-role-badge.role-user    { background: rgba(34, 197, 94, 0.22);  color: #d1fae5; }
+.thx-topbar-role-badge.role-guest   { background: rgba(148, 163, 184, 0.3); color: #f1f5f9; }
+
+/* 2FA-Pflicht-Banner direkt unter der Topbar */
+.thx-2fa-warning-banner {
+    position: fixed;
+    top: 44px;
+    left: 0; right: 0;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--rose-600, #e11d48);
+    color: #fff;
+    font-size: var(--d-fs-sm);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.thx-2fa-warning-banner .thx-2fa-warning-cta {
+    background: #fff;
+    color: var(--rose-700, #be123c);
+    padding: 4px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: var(--d-fs-xs);
+    transition: background 0.1s;
+}
+.thx-2fa-warning-banner .thx-2fa-warning-cta:hover {
+    background: var(--rose-50, #fff1f2);
+}
+/* Layout-Verschiebung wenn Banner sichtbar (rough: +44px) */
+body:has(.thx-2fa-warning-banner) .sidebar { top: 88px; }
+body:has(.thx-2fa-warning-banner) .main-content { padding-top: calc(var(--d-gutter) + 88px); }
+
+/* Simulations-Banner in der Topbar */
+.thx-topbar-sim-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--amber-500, #f59e0b);
+    color: #1f2937;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: var(--d-fs-sm);
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: background 0.1s;
+}
+.thx-topbar-sim-banner:hover { background: var(--amber-400, #fbbf24); }
+.thx-topbar-sim-banner strong { font-weight: 700; }
+
+/* Sidebar und Hauptbereich starten unter der Top-Bar */
+body:has(.thx-topbar) .sidebar { top: 44px; }
+body:has(.thx-topbar) .main-content { padding-top: calc(var(--d-gutter) + var(--topbar-h)); }
+/* Fallback fuer Browser ohne :has() — Klasse vom JS gesetzt */
+.has-thx-topbar .sidebar { top: 44px; }
+.has-thx-topbar .main-content { padding-top: calc(var(--d-gutter) + var(--topbar-h)); }
+
+/* ============================================================================
+   Modal / Dialog
+   ============================================================================ */
+.thx-modal-backdrop {
+    /* Garantiert viewport-zentriert, auch wenn ein Vorfahre ein Containing-Block
+       fuer position:fixed geworden ist (z.B. wegen transform/filter/contain).
+       100vw/100vh sind viewport-units und immer auf das Browser-Fenster bezogen. */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+/* Sichtbarkeits-Toggle ueber Markup-Patterns:
+   - Alpine (LAM): x-show setzt style="display:none" inline (default sichtbar via CSS)
+   - JS classList (Chat / Admin): Markup hat style="display:none;" inline,
+     beim Oeffnen wird .active gesetzt + style.display = 'flex' via JS,
+     ODER die folgende Regel macht .active sichtbar trotz inline-style */
+.thx-modal-backdrop.active,
+.thx-modal-backdrop.is-active,
+.thx-modal-backdrop.is-open,
+.thx-modal-backdrop.show { display: flex !important; }
+
+/* Alias-Klasse: zentriert ueber das gesamte Viewport, kein Backdrop-Color.
+   !important nur fuer Position/Size — display BLEIBT regulaer, damit Alpine's
+   x-show (welches inline display:none/'' setzt) weiterhin steuern kann. */
+.thx-lightbox {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    box-sizing: border-box !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    padding: 16px;
+}
+.thx-modal {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+.thx-modal-header {
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--slate-200);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+.thx-modal-title {
+    margin: 0;
+    font-size: var(--d-fs-xl);
+    font-weight: 600;
+    color: var(--slate-800);
+}
+.thx-modal-close {
+    background: transparent;
+    border: none;
+    color: var(--slate-500);
+    cursor: pointer;
+    padding: var(--space-1);
+    font-size: var(--d-fs-xl);
+    line-height: 1;
+    border-radius: var(--radius-sm);
+}
+.thx-modal-close:hover { background: var(--slate-100); color: var(--slate-800); }
+.thx-modal-body {
+    padding: var(--space-5);
+    overflow-y: auto;
+    flex: 1;
+}
+.thx-modal-section { margin-bottom: var(--space-5); }
+.thx-modal-section h3 {
+    margin: 0 0 var(--space-2) 0;
+    font-size: var(--d-fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate-500);
+}
+.thx-modal-footer {
+    padding: var(--space-3) var(--space-5);
+    border-top: 1px solid var(--slate-200);
+    background: var(--slate-50);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+/* Kosten-/Vorschau-Liste in Modalen (Sistrix-Pre-Confirm, Fortschrittsmodal). */
+.thx-dl-cost {
+    margin: 0;
+    padding: var(--space-3);
+    background: var(--slate-50);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-md, 6px);
+    font-size: var(--d-fs-sm);
+}
+.thx-dl-cost > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+}
+.thx-dl-cost > div.is-divider {
+    border-top: 1px solid var(--slate-300);
+    margin-top: 4px;
+    padding-top: 8px;
+}
+.thx-dl-cost dt {
+    color: var(--slate-500);
+    margin: 0;
+}
+.thx-dl-cost dd {
+    margin: 0;
+    color: var(--slate-800);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Pseudo-Link: Tabellenzeile klickbar machen */
+.thx-row-clickable { cursor: pointer; }
+
+/* ============================================================================
+   Typografie-Patterns — verbindliche Klassen.
+   Statt eigener font-size-Inline-Styles bitte diese Klassen nutzen.
+   ============================================================================ */
+
+/* Section-Header / Tab-Label / Stat-Label — kleine UPPERCASE-Labels */
+.thx-caps-label {
+    font-size: var(--d-fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate-500);
+    line-height: 1.3;
+}
+
+/* Meta-Text — kleine, gedämpfte Inline-Info (Datum, Counts, Hilfstexte) */
+.thx-meta {
+    font-size: var(--d-fs-xs);
+    color: var(--slate-500);
+    line-height: 1.3;
+}
+
+/* Code-Inline — IDs, Token-Werte, kurze Pfade */
+.thx-mono {
+    font-family: var(--font-mono);
+    font-size: 0.92em;          /* relativ zur Umgebung */
+    background: var(--slate-100);
+    color: var(--slate-700);
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+/* Numerische Tabellen-Zellen — gleichbreite Ziffern */
+.thx-num {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   Icon-Button — kompakter Button nur fuer ein Material-Symbol.
+   Hoehe = Control-Hoehe, Breite = quadratisch.
+   ============================================================================ */
+.thx-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--d-control-h);
+    height: var(--d-control-h);
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--slate-600);
+    border-radius: var(--d-control-radius);
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+}
+.thx-icon-btn:hover { background: var(--slate-100); color: var(--slate-900); }
+.thx-icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.thx-icon-btn .material-symbols-rounded { font-size: calc(var(--d-control-h) * 0.7); }
+.thx-icon-btn-sm {
+    width: calc(var(--d-control-h) * 0.85);
+    height: calc(var(--d-control-h) * 0.85);
+}
+.thx-icon-btn-sm .material-symbols-rounded { font-size: calc(var(--d-control-h) * 0.6); }
+
+/* ============================================================================
+   Card-Container, Row-Item, Section — reagieren live auf Density-Tokens
+   ============================================================================ */
+
+.thx-card {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--d-card-radius);
+    padding: var(--d-card-pad);
+    box-shadow: var(--shadow-sm);
+}
+.thx-card-flush { padding: 0; overflow: hidden; }
+.thx-card-title {
+    margin: 0 0 var(--d-card-gap) 0;
+    font-size: var(--d-fs-base);
+    font-weight: 700;
+    color: var(--slate-900);
+}
+.thx-card-sub {
+    margin: -4px 0 var(--d-card-gap) 0;
+    font-size: var(--d-fs-xs);
+    color: var(--slate-500);
+}
+
+/* Row: Listen-Item mit konsistentem Padding (Density-gesteuert).
+   Default: horizontal. Variante .thx-row-stack fuer vertikale Layouts. */
+.thx-row {
+    display: flex;
+    align-items: center;
+    gap: var(--d-row-gap);
+    padding: var(--d-row-pad-y) var(--d-row-pad-x);
+    border-bottom: 1px solid var(--slate-100);
+    transition: background 0.1s;
+}
+.thx-row:last-child { border-bottom: none; }
+.thx-row-clickable:hover { background: var(--slate-50); }
+.thx-row.is-active { background: var(--thoxan-50); }
+.thx-row-stack {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Section: Major-Block-Abstand. Nutzt --d-section-gap als Margin-Bottom. */
+.thx-section { margin-bottom: var(--d-section-gap); }
+.thx-section:last-child { margin-bottom: 0; }
+
+/* Stat-Card: kompakte Zahl + Label (z.B. fuer Dashboards) */
+.thx-stat-card {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--d-card-radius);
+    padding: var(--d-card-pad);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.thx-stat-label {
+    font-size: var(--d-fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--slate-500);
+}
+.thx-stat-value {
+    font-size: var(--d-fs-2xl);
+    font-weight: 700;
+    color: var(--slate-900);
+    line-height: 1.1;
+}
+
+/* ============================================================================
+   Inline-Edit-Pattern fuer Tabellen
+   Verwendung:
+     <td>
+       <button class="thx-inline-edit" @click="oeffneEdit(zeile, 'feld')" x-show="!istOffen(zeile, 'feld')">Wert</button>
+       <div class="thx-inline-edit-frame" x-show="istOffen(zeile, 'feld')">
+         <input class="thx-inline-edit-input" x-model="editWert" @keydown.enter="speichern()" @keydown.escape="abbrechen()">
+         <div class="thx-inline-edit-actions">
+           <button class="thx-btn thx-btn-primary thx-btn-small" @click="speichern()">Speichern</button>
+           <button class="thx-btn thx-btn-secondary thx-btn-small" @click="abbrechen()">Abbrechen</button>
+         </div>
+       </div>
+     </td>
+   ============================================================================ */
+.thx-inline-edit {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 3px 6px;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: background var(--t-fast), border-color var(--t-fast);
+}
+.thx-inline-edit:hover {
+    background: var(--thoxan-50);
+    border-color: var(--thoxan-200);
+}
+.thx-inline-edit.is-empty {
+    color: var(--slate-400);
+    font-style: italic;
+}
+
+/* Lese-Modus-Wert: plain text, frei selektierbar, kein Hover-Highlight */
+.crm-readonly-wert {
+    display: block;
+    width: 100%;
+    padding: 3px 6px;
+    color: inherit;
+    font: inherit;
+    user-select: text;
+    cursor: text;
+}
+.crm-readonly-wert.is-empty {
+    color: var(--slate-400);
+    font-style: italic;
+}
+
+/* Edit-Mode-Toggle in der Top-Action-Bar */
+.crm-editmode-toggle.is-active {
+    background: var(--amber-100) !important;
+    color: var(--amber-800) !important;
+    border-color: var(--amber-300) !important;
+}
+.crm-editmode-toggle.is-active:hover {
+    background: var(--amber-200) !important;
+}
+
+/* Embed-Modus-Banner: zeigt Foto + Status-Pills + Quick-Aktionen horizontal,
+   wenn die linke Funktions-Sidebar wegen Schmalheit ausgeblendet ist (Iframe-Drawer
+   im Standalone-Modus, z.B. direkt aufgerufenes /crm/kontakte/X?embed=1).
+   Im echten iframe-Drawer (Parent-Frame vorhanden) wird er versteckt — der
+   Drawer-Header zeigt diese Infos bereits. */
+.crm-embed-profile-banner { display: none; }
+body.thx-embed .crm-embed-profile-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    margin-bottom: 14px;
+}
+body.thx-embed.in-iframe-drawer .crm-embed-profile-banner { display: none; }
+/* Im Iframe-Drawer ist der Edit-Toggle im Drawer-Header — den hier verstecken (sonst doppelt) */
+body.in-iframe-drawer .crm-editmode-toggle { display: none !important; }
+.crm-embed-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+.crm-embed-avatar {
+    display: block;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--thoxan-100);
+}
+.crm-embed-avatar-fallback {
+    background: var(--thoxan-100); color: var(--thoxan-700);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; font-weight: 600;
+}
+.crm-embed-avatar-cam {
+    position: absolute; bottom: -2px; right: -2px;
+    background: var(--thoxan-600); color: #fff;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff;
+    opacity: 0;
+    transition: opacity 0.12s;
+}
+.crm-embed-avatar-wrap:hover .crm-embed-avatar-cam { opacity: 1; }
+.crm-embed-avatar-cam .material-symbols-rounded { font-size: 11px !important; }
+.crm-embed-profile-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+.crm-embed-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    background: var(--slate-50);
+    border: 1px solid var(--slate-200);
+    color: var(--slate-600);
+    text-decoration: none;
+    transition: background 0.1s, color 0.1s;
+}
+.crm-embed-action:hover {
+    background: var(--thoxan-50);
+    color: var(--thoxan-700);
+    border-color: var(--thoxan-300);
+}
+.crm-embed-action .material-symbols-rounded { font-size: 18px; }
+
+/* Innen-Padding fuer Cards + Sidebar auf CRM-Detail-Seiten + Drawer:
+   global ist --d-card-pad nur 0.5rem; auf den Detail-Seiten wirkt das zu eng,
+   weil die Inhalte naeher am Rand der Karte kleben. 18px = Standard-Gutter. */
+.crm-detail-grid3 .thx-card,
+.crm-drawer-body .thx-card {
+    padding: 18px;
+}
+.crm-detail-grid3 .thx-shell-side .thx-shell-side-content,
+.crm-drawer-body .thx-shell-side .thx-shell-side-content {
+    padding: 18px;
+}
+.crm-detail-grid3 .crm-detail-toc-list,
+.crm-drawer-body .crm-detail-toc-list {
+    padding: 8px 12px 12px;
+}
+/* Card-Titel im Detail haben weniger margin-bottom als die globale --d-card-gap */
+.crm-detail-grid3 .crm-section-titel,
+.crm-drawer-body .crm-section-titel {
+    margin-bottom: 12px;
+}
+
+/* Firma-Logo-Wrap im Sidebar-Profil — Hover-Edit-Button + Mini-Menue
+   (analog Customer-Steckbrief cs-logo-*) */
+.firma-logo-wrap {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+.firma-logo-img {
+    object-fit: contain;
+    background: #fff;
+    padding: 8px;
+    border: 1px solid var(--slate-200) !important;
+    cursor: pointer;
+}
+.firma-logo-edit-btn {
+    position: absolute;
+    bottom: 6px; right: 6px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--slate-200);
+    color: var(--slate-700);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity 0.12s, transform 0.12s, background 0.1s;
+    z-index: 2;
+    padding: 0;
+}
+.firma-logo-edit-btn .material-symbols-rounded { font-size: 16px; }
+.firma-logo-wrap:hover .firma-logo-edit-btn,
+.firma-logo-wrap:focus-within .firma-logo-edit-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+.firma-logo-edit-btn:hover { background: #fff; color: var(--thoxan-700); border-color: var(--thoxan-300); }
+.firma-logo-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    padding: 4px;
+    z-index: 100;
+    display: none;
+}
+.firma-logo-menu.is-open { display: block; }
+.firma-logo-menu-item {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%;
+    padding: 8px 10px;
+    border: 0; background: transparent;
+    text-align: left;
+    font: inherit;
+    color: var(--slate-700);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.firma-logo-menu-item:hover:not(:disabled) { background: var(--slate-50); color: var(--slate-900); }
+.firma-logo-menu-item:disabled { opacity: 0.4; cursor: not-allowed; }
+.firma-logo-menu-item .material-symbols-rounded { font-size: 18px; color: var(--slate-500); }
+.firma-logo-menu-item.is-danger { color: var(--rose-700); }
+.firma-logo-menu-item.is-danger .material-symbols-rounded { color: var(--rose-500); }
+.firma-logo-menu-item.is-danger:hover:not(:disabled) { background: var(--rose-50); color: var(--rose-800); }
+.firma-logo-wrap.is-uploading::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.65);
+    border-radius: 50%;
+    z-index: 3;
+}
+.firma-logo-wrap.is-uploading::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 28px; height: 28px;
+    margin: -14px;
+    border: 3px solid var(--thoxan-600);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: firma-logo-spin 0.7s linear infinite;
+    z-index: 4;
+}
+@keyframes firma-logo-spin { to { transform: rotate(360deg); } }
+.thx-inline-edit-frame {
+    padding: var(--space-2);
+    background: var(--thoxan-50);
+    border: 1px solid var(--thoxan-300);
+    border-radius: var(--radius-sm);
+}
+.thx-inline-edit-input,
+.thx-inline-edit-select {
+    width: 100%;
+    border: 1px solid var(--slate-300);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: var(--d-fs-sm);
+    color: var(--slate-800);
+}
+.thx-inline-edit-input:focus,
+.thx-inline-edit-select:focus {
+    outline: none;
+    border-color: var(--thoxan-500);
+    box-shadow: 0 0 0 1px var(--thoxan-300);
+}
+.thx-inline-edit-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: var(--space-2);
+}
+.thx-inline-edit-actions .thx-btn-small,
+.thx-inline-edit-actions .lam-btn-small {
+    padding: 4px 10px;
+    font-size: var(--d-fs-xs);
+}
+
+/* Kleiner Bearbeiten-Stift neben Wert (optionales Affordance-Icon) */
+.thx-inline-edit-pen {
+    color: var(--slate-400);
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: var(--d-fs-xs);
+    border: none;
+    background: transparent;
+}
+.thx-inline-edit-pen:hover { color: var(--thoxan-700); }
+
+/* ============================================================================
+   Bulk-Auswahl-Pattern fuer Tabellen
+   - Checkbox-Spalte (erste Spalte)
+   - Sticky Toolbar oben, wenn was ausgewaehlt ist
+   ============================================================================ */
+.thx-table thead th.thx-bulk-col,
+.thx-table tbody td.thx-bulk-col,
+.lam-table thead th.thx-bulk-col,
+.lam-table tbody td.thx-bulk-col {
+    width: 36px;
+    padding: 8px;
+    text-align: center;
+}
+.thx-bulk-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--slate-400);
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+}
+.thx-bulk-checkbox:hover { border-color: var(--thoxan-500); }
+.thx-bulk-checkbox:checked {
+    background: var(--thoxan-700);
+    border-color: var(--thoxan-700);
+}
+.thx-bulk-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.thx-bulk-checkbox:focus {
+    outline: 2px solid var(--thoxan-300);
+    outline-offset: 1px;
+}
+
+/* Ausgewaehlte Zeile dezent markieren */
+.thx-table tbody tr.is-bulk-selected,
+.lam-table tbody tr.is-bulk-selected {
+    background: rgba(204, 225, 241, 0.4); /* thoxan-100 leicht transparent */
+}
+
+/* Bulk-Toolbar — sticky oben unter dem Page-Header, wenn aktiv */
+.thx-bulk-toolbar {
+    background: var(--thoxan-50);
+    border: 1px solid var(--thoxan-300);
+    border-radius: var(--radius-lg);
+    padding: 10px 14px;
+    margin-bottom: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--d-fs-sm);
+}
+.thx-bulk-count {
+    font-weight: 700;
+    color: var(--thoxan-900);
+    padding: 4px 10px;
+    background: #fff;
+    border-radius: var(--radius-sm);
+}
+.thx-bulk-toolbar .thx-divider,
+.thx-bulk-toolbar .lam-divider {
+    width: 1px;
+    height: 22px;
+    background: var(--thoxan-300);
+}
+.thx-bulk-clear {
+    margin-left: auto;
+    color: var(--slate-600);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: var(--d-fs-xs);
+}
+.thx-bulk-clear:hover { color: var(--slate-900); }
+
+/* ============================================================================
+   Rechtsklick-Kontextmenue
+   Verwendung:
+     - x-data Komponente verwaltet { offen, x, y, ziel }
+     - @contextmenu.prevent auf der Tabellenzeile setzt ziel/x/y und offen=true
+     - Globaler Click-Listener schliesst das Menue
+   ============================================================================ */
+.thx-contextmenu {
+    position: fixed;
+    z-index: 400;
+    min-width: 200px;
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 4px 0;
+    font-size: var(--d-fs-sm);
+}
+/* Sichtbarkeits-Toggle: Markup hat style="display:none;" initial,
+   .active ueberschreibt das per !important (chat-JS-Pattern).
+   Alpine-x-show entfernt inline style → CSS-Default display: block aus dem
+   browser-builtin Stylesheet wirkt. */
+.thx-contextmenu.active,
+.thx-contextmenu.is-active,
+.thx-contextmenu.is-open { display: block !important; }
+.thx-contextmenu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    color: var(--slate-800);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--d-fs-sm);
+}
+.thx-contextmenu-item:hover { background: var(--thoxan-50); color: var(--thoxan-700); }
+.thx-contextmenu-item.is-danger { color: var(--rose-700); }
+.thx-contextmenu-item.is-danger:hover { background: var(--rose-50); color: var(--rose-800); }
+.thx-contextmenu-item.is-disabled { color: var(--slate-300); cursor: not-allowed; }
+.thx-contextmenu-divider {
+    height: 1px;
+    background: var(--slate-200);
+    margin: 4px 0;
+}
+.thx-contextmenu-label {
+    padding: 6px 14px 2px 14px;
+    font-size: var(--d-fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate-400);
+    font-weight: 600;
+}
+
+/* ============================================================================
+   Side-Drawer (rechts) fuer Anlege-/Bearbeiten-Formulare
+   ============================================================================ */
+.thx-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 350;
+    display: flex;
+    justify-content: flex-end;
+}
+.thx-drawer {
+    background: #fff;
+    width: 100%;
+    max-width: 560px;
+    height: 100%;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+}
+.thx-drawer-header {
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--slate-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.thx-drawer-title {
+    margin: 0;
+    font-size: var(--d-fs-xl);
+    font-weight: 600;
+    color: var(--slate-800);
+}
+.thx-drawer-body {
+    padding: var(--space-5);
+    overflow-y: auto;
+    flex: 1;
+}
+.thx-drawer-footer {
+    padding: var(--space-3) var(--space-5);
+    border-top: 1px solid var(--slate-200);
+    background: var(--slate-50);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+/* Form-Felder im Drawer */
+.thx-form-field { margin-bottom: var(--space-4); }
+.thx-form-field label {
+    display: block;
+    font-size: var(--d-fs-xs);
+    font-weight: 500;
+    color: var(--slate-600);
+    margin-bottom: var(--space-1);
+}
+.thx-form-field input,
+.thx-form-field select,
+.thx-form-field textarea {
+    width: 100%;
+    border: 1px solid var(--slate-300);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: var(--d-fs-sm);
+    color: var(--slate-800);
+}
+.thx-form-field input:focus,
+.thx-form-field select:focus,
+.thx-form-field textarea:focus {
+    outline: none;
+    border-color: var(--thoxan-400);
+    box-shadow: 0 0 0 1px var(--thoxan-300);
+}
+.thx-form-field .thx-error {
+    margin-top: var(--space-1);
+    color: var(--rose-700);
+    font-size: var(--d-fs-xs);
+}
+.thx-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+/* ============================================================================
+   Page-Header (innerhalb des Content-Bereichs)
+   ============================================================================ */
+.thx-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--d-page-header-mb);
+    padding: var(--d-page-h-pad-y) 0;
+}
+.thx-page-title {
+    margin: 0;
+    font-size: var(--d-page-title-fs);
+    font-weight: 700;
+    color: var(--slate-900);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+.thx-page-subtitle {
+    margin-top: 2px;
+    font-size: var(--d-page-sub-fs);
+    color: var(--slate-500);
+    line-height: 1.4;
+}
+.thx-page-actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ============================================================================
+   Tab-Leiste (horizontal, fuer Modul-Navigation im Content-Bereich)
+   ============================================================================ */
+.thx-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    border-bottom: 1px solid var(--slate-200);
+    margin-bottom: var(--space-5);
+}
+.thx-tab {
+    display: inline-block;
+    padding: 10px 16px;
+    font-size: var(--d-fs-sm);
+    font-weight: 500;
+    color: var(--slate-600);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color var(--t-fast), border-color var(--t-fast);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    font-family: inherit;
+}
+.thx-tab:hover:not(.is-disabled) {
+    color: var(--thoxan-700);
+    border-bottom-color: var(--thoxan-300);
+}
+.thx-tab.is-active {
+    color: var(--thoxan-700);
+    border-bottom-color: var(--thoxan-600);
+    font-weight: 700;
+}
+.thx-tab.is-disabled {
+    color: var(--slate-300);
+    cursor: not-allowed;
+}
+
+/* ============================================================================
+   Konsolidierung: ALLE Buttons sehen ueberall identisch aus.
+
+   .btn (style.css) und .lam-btn (lam.css) werden hier auf das gleiche Visual
+   wie .thx-btn gezogen. So entstehen nirgends mehr Unterschiede zwischen
+   Modul-Buttons, Legacy-Buttons und THX-Buttons — egal wo das Markup steht.
+
+   Diese Block muss ZULETZT geladen werden, damit er die alten Definitionen
+   in style.css / lam.css ueberschreibt. Reihenfolge ist in main.php festgelegt.
+   ============================================================================ */
+
+.btn,
+.lam-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: var(--d-control-radius);
+    padding: 2px var(--d-control-pad-x);
+    height: var(--d-control-h);
+    font-size: var(--d-control-fs);
+    font-weight: 500;
+    line-height: 1;
+    border: 1px solid transparent;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.1s, border-color 0.1s, color 0.1s, opacity 0.1s;
+}
+.btn:focus-visible,
+.lam-btn:focus-visible {
+    outline: 2px solid var(--thoxan-400);
+    outline-offset: 2px;
+}
+.btn:disabled,
+.btn.is-disabled,
+.lam-btn:disabled,
+.lam-btn.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.btn-primary,
+.lam-btn-primary {
+    background: var(--thoxan-600);
+    color: #fff;
+    font-weight: 700;
+}
+.btn-primary:hover:not(:disabled):not(.is-disabled),
+.lam-btn-primary:hover:not(:disabled):not(.is-disabled) {
+    background: var(--thoxan-700);
+}
+.btn-primary:disabled,
+.lam-btn-primary:disabled {
+    background: var(--slate-400);
+    opacity: 1;
+}
+
+.btn-secondary,
+.lam-btn-secondary {
+    background: #fff;
+    color: var(--slate-700);
+    border-color: var(--slate-300);
+}
+.btn-secondary:hover:not(:disabled):not(.is-disabled),
+.lam-btn-secondary:hover:not(:disabled):not(.is-disabled) {
+    background: var(--slate-50);
+    border-color: var(--slate-400);
+    color: var(--slate-900);
+}
+
+.btn-danger,
+.lam-btn-danger {
+    background: #fff;
+    color: var(--rose-700);
+    border-color: var(--rose-300);
+    font-weight: 600;
+}
+.btn-danger:hover:not(:disabled):not(.is-disabled),
+.lam-btn-danger:hover:not(:disabled):not(.is-disabled) {
+    background: var(--rose-50);
+    border-color: var(--rose-500);
+}
+
+.lam-btn-accent {
+    background: #fff;
+    color: var(--thoxan-700);
+    border-color: var(--thoxan-300);
+    font-weight: 600;
+}
+.lam-btn-accent:hover:not(:disabled):not(.is-disabled) {
+    background: var(--thoxan-50);
+    border-color: var(--thoxan-500);
+}
+
+.lam-btn-success {
+    background: var(--emerald-600);
+    color: #fff;
+    border-color: var(--emerald-600);
+    font-weight: 700;
+}
+.lam-btn-success:hover:not(:disabled):not(.is-disabled) {
+    background: var(--emerald-700);
+    border-color: var(--emerald-700);
+}
+
+.btn-small,
+.lam-btn-small,
+.btn-tiny {
+    padding: 2px 8px;
+    font-size: var(--d-fs-xs);
+    height: calc(var(--d-control-h) - 4px);
+}
+.btn-large,
+.lam-btn-large {
+    padding: 6px 18px;
+    font-size: var(--d-fs-base);
+    height: calc(var(--d-control-h) + 6px);
+}
+
+/* btn-outline: dezenter Stil fuer sekundaere Aktionen in Tabellen-Zeilen */
+.btn-outline {
+    background: #fff;
+    color: var(--slate-700);
+    border-color: var(--slate-300);
+}
+.btn-outline:hover:not(:disabled) {
+    background: var(--slate-50);
+    border-color: var(--slate-400);
+    color: var(--slate-900);
+}
+
+/* btn-icon: nur Icon, quadratisch */
+.btn-icon {
+    width: var(--d-control-h);
+    height: var(--d-control-h);
+    padding: 0;
+}
+.btn-icon .material-symbols-rounded {
+    font-size: calc(var(--d-control-h) * 0.7);
+}
+
+/* Icons in ALLEN Buttons-Klassen einheitlich */
+.btn .material-symbols-rounded,
+.lam-btn .material-symbols-rounded {
+    vertical-align: baseline !important;
+    line-height: 1 !important;
+    flex-shrink: 0;
+}
+
+/* ============================================================================
+   Konsolidierung: ALLE Tabellen sehen ueberall identisch aus.
+
+   .thx-table ist die Single Source. .lam-table und .data-table werden hier
+   identisch gestylt — egal in welchem Modul das Markup steht.
+   ============================================================================ */
+
+.thx-table-card,
+.lam-table-card {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    background: #fff;
+    overflow: hidden;
+}
+.thx-table-wrap,
+.lam-table-wrap {
+    overflow-x: auto;
+}
+.thx-table,
+.lam-table,
+.data-table,
+.pp-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--d-fs-sm);
+}
+.thx-table thead,
+.lam-table thead,
+.data-table thead,
+.pp-table thead {
+    background: var(--slate-50);
+}
+.thx-table thead th,
+.lam-table thead th,
+.data-table thead th,
+.pp-table thead th {
+    text-align: left;
+    padding: var(--d-tbl-pad-y) var(--d-tbl-pad-x);
+    font-size: var(--d-fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: var(--slate-500);
+    border-bottom: 1px solid var(--slate-200);
+    white-space: nowrap;
+    line-height: 1.2;
+}
+.thx-table thead th.sortable,
+.lam-table thead th.sortable,
+.data-table thead th.sortable { cursor: pointer; user-select: none; }
+.thx-table thead th.sortable:hover,
+.lam-table thead th.sortable:hover,
+.data-table thead th.sortable:hover { background: var(--slate-100); }
+.thx-table thead th.right,
+.lam-table thead th.right,
+.data-table thead th.right { text-align: right; }
+.thx-table thead th.center,
+.lam-table thead th.center,
+.data-table thead th.center { text-align: center; }
+.thx-table thead th .sort-icon,
+.lam-table thead th .sort-icon,
+.data-table thead th .sort-icon { color: var(--slate-400); margin-left: 4px; }
+.thx-table thead th.sorted .sort-icon,
+.lam-table thead th.sorted .sort-icon,
+.data-table thead th.sorted .sort-icon { color: var(--thoxan-600); }
+
+.thx-table tbody tr,
+.lam-table tbody tr,
+.data-table tbody tr,
+.pp-table tbody tr {
+    border-top: 1px solid var(--slate-100);
+}
+.thx-table tbody tr:first-child,
+.lam-table tbody tr:first-child,
+.data-table tbody tr:first-child { border-top: none; }
+.thx-table tbody tr:hover,
+.lam-table tbody tr:hover,
+.data-table tbody tr:hover,
+.pp-table tbody tr:hover {
+    background: var(--slate-50);
+}
+.thx-table tbody tr.is-selected,
+.lam-table tbody tr.is-selected,
+.data-table tbody tr.is-selected {
+    background: var(--thoxan-50);
+}
+
+.thx-table td,
+.lam-table td,
+.data-table td,
+.pp-table td {
+    padding: var(--d-tbl-pad-y) var(--d-tbl-pad-x);
+    vertical-align: top;
+    color: var(--slate-800);
+    line-height: 1.5;
+}
+.thx-table td.right,
+.lam-table td.right,
+.data-table td.right { text-align: right; font-variant-numeric: tabular-nums; }
+.thx-table td.center,
+.lam-table td.center,
+.data-table td.center { text-align: center; }
+
+/* Senkrechte Zell-Trenner ab zweiter Spalte — dezent aber sichtbar */
+.thx-table tr > *:not(:first-child),
+.lam-table tr > *:not(:first-child),
+.data-table tr > *:not(:first-child),
+.pp-table tr > *:not(:first-child) {
+    border-left: 1px solid var(--slate-200);
+}
+
+.thx-table .url-cell a,
+.lam-table .url-cell a,
+.data-table .url-cell a {
+    color: var(--thoxan-700);
+    word-break: break-all;
+}
+.thx-table .url-cell a:hover,
+.lam-table .url-cell a:hover,
+.data-table .url-cell a:hover { text-decoration: underline; }
+.thx-table .muted,
+.lam-table .muted,
+.data-table .muted { color: var(--slate-400); font-size: var(--d-fs-xs); }
+.thx-table .empty,
+.lam-table .empty,
+.data-table .empty { color: var(--slate-300); }
+
+/* ============================================================================
+   Konsolidierung — Custom-Klassen aus Chat / Projektplanner / KI-Kompass
+
+   Alle Custom-Button/Chip-Klassen, die in einzelnen Views eigenstaendig
+   definiert wurden, werden hier auf die Standard-Visuals gezogen.
+   ============================================================================ */
+
+/* === Chips / Filter-Pills — eine Optik fuer alle === */
+.thx-chip,
+.lam-chip,
+.pp-filter-chip,
+.pp-fb-chip,
+.cw-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 3px 10px;
+    height: calc(var(--d-control-h) - 6px);
+    background: var(--slate-100);
+    color: var(--slate-700);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-full);
+    font-size: var(--d-fs-xs);
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+    font-family: inherit;
+}
+.thx-chip:hover,
+.lam-chip:hover,
+.pp-filter-chip:hover,
+.pp-fb-chip:hover,
+.cw-filter-btn:hover {
+    background: var(--slate-200);
+    color: var(--slate-900);
+}
+.thx-chip.is-active,
+.lam-chip.is-active,
+.pp-filter-chip.is-active,
+.pp-fb-chip.is-active,
+.cw-filter-btn.active {
+    background: var(--thoxan-600);
+    color: #fff;
+    border-color: var(--thoxan-600);
+}
+
+/* === Icon-Only-Buttons — quadratisch, nur Icon === */
+.thx-icon-btn,
+.cw-btn-icon,
+.chat-toolbar-btn,
+.chat-input-btn,
+.chat-copy-btn,
+.chat-sidebar-collapse-btn,
+.pp-filter-icon-btn,
+.pp-mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--d-control-h);
+    height: var(--d-control-h);
+    padding: 0;
+    background: transparent;
+    color: var(--slate-600);
+    border: 1px solid transparent;
+    border-radius: var(--d-control-radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.1s, color 0.1s, border-color 0.1s;
+    font-family: inherit;
+}
+.thx-icon-btn:hover,
+.cw-btn-icon:hover,
+.chat-toolbar-btn:hover,
+.chat-input-btn:hover,
+.chat-copy-btn:hover,
+.chat-sidebar-collapse-btn:hover,
+.pp-filter-icon-btn:hover,
+.pp-mobile-menu-btn:hover {
+    background: var(--slate-100);
+    color: var(--slate-900);
+}
+.cw-btn-icon.danger:hover {
+    background: var(--rose-50);
+    color: var(--rose-700);
+}
+.thx-icon-btn .material-symbols-rounded,
+.cw-btn-icon .material-symbols-rounded,
+.chat-toolbar-btn .material-symbols-rounded,
+.chat-input-btn .material-symbols-rounded,
+.chat-copy-btn .material-symbols-rounded,
+.chat-sidebar-collapse-btn .material-symbols-rounded,
+.pp-filter-icon-btn .material-symbols-rounded,
+.pp-mobile-menu-btn .material-symbols-rounded {
+    font-size: calc(var(--d-control-h) * 0.65);
+    line-height: 1;
+}
+
+/* === Primary-Action-Buttons aus Chat/KI-Kompass — wie .thx-btn-primary === */
+.cw-new-btn,
+.btn-knowledge-transfer,
+.dual-compare-btn,
+.stream-stall-btn.primary,
+.btn-sm.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 2px var(--d-control-pad-x);
+    height: var(--d-control-h);
+    background: var(--thoxan-600);
+    color: #fff;
+    border: 1px solid var(--thoxan-600);
+    border-radius: var(--d-control-radius);
+    font-family: inherit;
+    font-size: var(--d-control-fs);
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.1s, border-color 0.1s;
+}
+.cw-new-btn:hover,
+.btn-knowledge-transfer:hover,
+.dual-compare-btn:hover,
+.stream-stall-btn.primary:hover,
+.btn-sm.btn-primary:hover {
+    background: var(--thoxan-700);
+    border-color: var(--thoxan-700);
+}
+
+/* === Secondary-Action-Buttons (Chat-Komponenten ohne primary) — wie .thx-btn-secondary === */
+.stream-stall-btn,
+.btn-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 2px var(--d-control-pad-x);
+    height: var(--d-control-h);
+    background: #fff;
+    color: var(--slate-700);
+    border: 1px solid var(--slate-300);
+    border-radius: var(--d-control-radius);
+    font-family: inherit;
+    font-size: var(--d-control-fs);
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+.stream-stall-btn:hover,
+.btn-sm:hover {
+    background: var(--slate-50);
+    border-color: var(--slate-400);
+    color: var(--slate-900);
+}
+
+/* === Spezial-Send-Button (Pfeil im Chat-Composer) — quadratisch primary === */
+.chat-send-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--d-control-h);
+    height: var(--d-control-h);
+    padding: 0;
+    background: var(--thoxan-600);
+    color: #fff;
+    border: 1px solid var(--thoxan-600);
+    border-radius: var(--d-control-radius);
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+}
+.chat-send-btn:hover {
+    background: var(--thoxan-700);
+    border-color: var(--thoxan-700);
+}
+.chat-send-btn .material-symbols-rounded {
+    font-size: calc(var(--d-control-h) * 0.65);
+}
+
+/* === Pre-fertige Tab-Klassen (System-Log, Steckbrief etc.) — wie .thx-tab === */
+.sm-tab,
+.sb-tab,
+.gl-tab,
+.kb-tab,
+.cs-tab {
+    display: inline-block;
+    padding: 10px 16px;
+    font-size: var(--d-fs-sm);
+    font-weight: 500;
+    color: var(--slate-600);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color var(--t-fast), border-color var(--t-fast);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    font-family: inherit;
+}
+.sm-tab:hover,
+.sb-tab:hover,
+.gl-tab:hover,
+.kb-tab:hover,
+.cs-tab:hover {
+    color: var(--thoxan-700);
+    border-bottom-color: var(--thoxan-300);
+}
+.sm-tab.active,
+.sm-tab.is-active,
+.sb-tab.active,
+.sb-tab.is-active,
+.gl-tab.active,
+.gl-tab.is-active,
+.kb-tab.active,
+.kb-tab.is-active,
+.cs-tab.active,
+.cs-tab.is-active {
+    color: var(--thoxan-700);
+    border-bottom-color: var(--thoxan-600);
+    font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   .thx-shell — Liste-mit-Filter-Sidebar-Layout
+   Wird in CRM (Kontakte, Firmen, Tags, Listen, Segmente) genutzt.
+   Linke Sidebar im Chat/Wissen-Style (slate-50, 320px),
+   rechts Tabelle/Content in Karten-Wrapper.
+   ═══════════════════════════════════════════════════════════════ */
+
+.thx-shell {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 14px;
+    align-items: start;
+}
+@media (max-width: 900px) {
+    .thx-shell { grid-template-columns: 1fr; }
+}
+
+/* Sidebar — Stil 1:1 wie der Kunden-Master-Sidebar (.cm-sb-*) */
+.thx-shell-side {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--d-card-radius, 8px);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    max-height: calc(100vh - 100px);
+    position: sticky; top: 60px;
+}
+.thx-shell-side-header {
+    display: flex; align-items: center; gap: 8px; justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--slate-200);
+    background: #fff;
+    flex-shrink: 0;
+}
+.thx-shell-side-title { flex: 1; font-size: var(--d-fs-base, 0.875rem); font-weight: 700; color: var(--slate-800); }
+.thx-shell-side-action {
+    background: none; border: 0; padding: 2px 6px; border-radius: 3px;
+    font: inherit; font-size: 0.7rem; color: var(--thoxan-600); cursor: pointer;
+}
+.thx-shell-side-action:hover { background: var(--thoxan-50); }
+
+.thx-shell-side-search {
+    padding: 12px 14px; position: relative;
+    border-bottom: 1px solid var(--slate-200);
+    background: #fff;
+    flex-shrink: 0;
+}
+.thx-shell-search-icon {
+    position: absolute; left: 24px; top: 50%; transform: translateY(-50%);
+    font-size: 18px !important; color: var(--slate-400); pointer-events: none;
+}
+.thx-shell-search-input {
+    width: 100%; padding: 9px 12px 9px 36px;
+    border: 1px solid var(--slate-300);
+    border-radius: 8px;
+    background: var(--slate-50);
+    font-size: var(--d-fs-sm, 0.8rem); outline: none;
+    color: var(--slate-800); font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.15s;
+}
+.thx-shell-search-input::placeholder { color: var(--slate-400); }
+.thx-shell-search-input:focus {
+    border-color: var(--thoxan-600);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 76, 155, 0.1);
+}
+
+.thx-shell-side-content {
+    padding: 14px 12px;
+    overflow-y: auto; flex: 1;
+    background: var(--slate-50);
+    scrollbar-width: thin;
+    scrollbar-color: var(--slate-300) transparent;
+}
+.thx-shell-side-content::-webkit-scrollbar { width: 5px; }
+.thx-shell-side-content::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 3px; }
+.thx-shell-side-content::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
+
+.thx-shell-group { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--slate-100); }
+.thx-shell-group:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.thx-shell-group-label {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.62rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--slate-400);
+    margin-bottom: 6px;
+}
+.thx-shell-group-label .material-symbols-rounded {
+    font-size: 14px !important;
+    color: var(--slate-400);
+    font-variation-settings: 'wght' 400;
+}
+.thx-shell-row { display: flex; gap: 4px; align-items: center; }
+
+.thx-shell-select {
+    width: 100%; padding: 7px 10px;
+    border: 1px solid var(--slate-300);
+    border-radius: 6px; background: #fff;
+    font-size: var(--d-fs-sm, 0.8rem); outline: none;
+    color: var(--slate-800); font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.15s;
+}
+.thx-shell-select:focus {
+    border-color: var(--thoxan-600);
+    box-shadow: 0 0 0 3px rgba(0, 76, 155, 0.1);
+}
+
+.thx-shell-btn {
+    background: #fff; border: 1px solid var(--slate-200);
+    padding: 4px 10px; border-radius: 5px;
+    font: inherit; font-size: 0.74rem; color: var(--slate-700);
+    cursor: pointer; transition: all 0.12s;
+}
+.thx-shell-btn:hover { background: var(--thoxan-50); border-color: var(--thoxan-300); color: var(--thoxan-700); }
+.thx-shell-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.thx-shell-btn-danger:hover { background: var(--rose-50); border-color: var(--rose-300); color: var(--rose-700); }
+.thx-shell-btn-primary {
+    background: var(--thoxan-600); border-color: var(--thoxan-600); color: #fff;
+}
+.thx-shell-btn-primary:hover { background: var(--thoxan-700); border-color: var(--thoxan-700); color: #fff; }
+
+.thx-shell-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.thx-shell-chips-scroll { max-height: 220px; overflow-y: auto; padding-right: 2px; }
+.thx-shell-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px;
+    background: #fff; border: 1px solid var(--slate-200);
+    border-radius: 999px;
+    font: inherit; font-size: 0.7rem; line-height: 1.45;
+    color: var(--slate-700); cursor: pointer;
+    transition: all 0.12s;
+    white-space: nowrap;
+}
+.thx-shell-chip:hover { border-color: var(--thoxan-400); background: var(--thoxan-50); color: var(--thoxan-700); }
+.thx-shell-chip.is-active {
+    background: var(--thoxan-600);
+    border-color: var(--thoxan-600);
+    color: #fff;
+}
+.thx-shell-chip.is-active .thx-shell-chip-count { color: rgba(255,255,255,0.75); }
+.thx-shell-chip.is-negated {
+    background: var(--rose-50); border-color: var(--rose-300); color: var(--rose-700);
+    text-decoration: line-through;
+}
+.thx-shell-chip-count { color: var(--slate-400); font-size: 0.66rem; font-variant-numeric: tabular-nums; }
+
+/* Main-Bereich */
+.thx-shell-main { min-width: 0; }
+.thx-shell-toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 14px; margin-bottom: 10px;
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--d-card-radius, 8px);
+    gap: 14px; flex-wrap: wrap;
+}
+
+/* Popup für Spalten-Konfig, Bulk-Aktionen u.ä. */
+.thx-shell-popup {
+    position: absolute; top: 100%; margin-top: 4px;
+    background: #fff; border: 1px solid var(--slate-300);
+    border-radius: 6px; box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    padding: 8px; z-index: 200; min-width: 200px;
+}
+.thx-shell-popup-title { font-size: 0.72rem; font-weight: 600; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 6px 6px; }
+.thx-shell-popup-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 6px; border-radius: 4px; cursor: pointer;
+    font-size: 0.82rem;
+}
+.thx-shell-popup-item:hover { background: var(--thoxan-50); }
+.thx-shell-popup-item input { margin: 0; }
+
+/* Shell-Tabelle: in Karte verpackt, kompakte Sortier-Header */
+.thx-shell-table-wrap {
+    background: #fff; border: 1px solid var(--slate-200);
+    border-radius: var(--d-card-radius, 8px); overflow-x: auto;
+}
+.thx-shell-table { font-size: 0.78rem; min-width: 100%; }
+.thx-shell-table th {
+    padding: 10px 14px; background: var(--slate-50);
+    border-bottom: 1px solid var(--slate-200);
+    color: var(--slate-500); font-weight: 600; font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+    text-align: left;
+}
+.thx-shell-table th.sortable { cursor: pointer; user-select: none; }
+.thx-shell-table th.sortable:hover { background: var(--thoxan-50); color: var(--thoxan-700); }
+.thx-shell-table th.is-sorted-asc, .thx-shell-table th.is-sorted-desc {
+    color: var(--thoxan-700); background: var(--thoxan-50);
+}
+.thx-shell-table th.center { text-align: center; }
+.thx-shell-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--slate-100);
+    vertical-align: middle;
+    line-height: 1.45;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+.thx-shell-table td a { word-break: break-word; }
+.thx-shell-table td.center { text-align: center; }
+.thx-shell-table tbody tr:hover { background: var(--thoxan-50); }
+.thx-shell-table tbody tr.is-bulk-selected { background: var(--thoxan-100) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   CRM-Detail-Klassen (.crm-detail-*, .crm-sidebar-*, .crm-section-*,
+   .crm-fields, .crm-bigbadge-*, .crm-timeline-*)
+   Werden sowohl im Detail-View als auch im Drawer der Kontakt-Liste
+   verwendet. Änderungen hier wirken in beiden gleich.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Detail-Root nutzt natürlichen window-Scroll. Kein eigener Scroll-Container,
+   damit scrollTop=0 exakt funktioniert. overflow-x:clip statt hidden auf
+   .main-content damit position:sticky der Sidebars greift. */
+.crm-detail-root { padding-bottom: 40px; }
+
+body.crm-detail-page .main-content {
+    overflow-x: clip;  /* statt hidden — sticky-kompatibel */
+    overflow-y: visible;
+    /* Default-padding-top der .main-content bleibt (gutter + topbar-h) */
+}
+.crm-detail-root::-webkit-scrollbar { width: 8px; }
+.crm-detail-root::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 4px; }
+.crm-detail-root::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
+
+/* 2-Spalten (Profile-Sidebar + Main) — z.B. im Drawer */
+.crm-detail-grid { display: grid; grid-template-columns: 240px 1fr; gap: 14px; align-items: start; }
+@media (max-width: 900px) { .crm-detail-grid { grid-template-columns: 1fr; } }
+
+/* 3-Spalten (Funktions-Sidebar links + TOC mittig + Cards rechts) */
+.crm-detail-grid3 {
+    display: grid;
+    grid-template-columns: 360px 220px 1fr;
+    gap: 14px;
+    align-items: start;
+}
+.crm-detail-grid3.is-toc-collapsed { grid-template-columns: 360px 52px 1fr; }
+
+/* Rechte Cards-Spalte:
+   - min-height = viewport-höhe → sticky-Sidebars haben immer Platz
+   - padding-bottom wird per JS gesetzt (= viewport - letzte-card-höhe - topbar - gutter),
+     damit auch die LETZTE Card exakt bis oben scrollen kann ohne Über-Scroll */
+.crm-detail-grid3 > main {
+    min-height: calc(100vh - var(--topbar-h, 44px) - 80px);
+}
+@media (max-width: 1200px) {
+    .crm-detail-grid3 { grid-template-columns: 220px 1fr; }
+    .crm-detail-grid3.is-toc-collapsed { grid-template-columns: 52px 1fr; }
+    .crm-detail-grid3 > .crm-detail-side-funcs { display: none; }
+}
+@media (max-width: 900px) {
+    .crm-detail-grid3, .crm-detail-grid3.is-toc-collapsed { grid-template-columns: 1fr; }
+    .crm-detail-toc { display: none; }
+}
+
+/* Profil-Block in der LINKEN Sidebar (oben) */
+.crm-side-profil {
+    text-align: center;
+    padding: 18px 14px 16px;
+    border-bottom: 1px solid var(--slate-200);
+    background: #fff;
+}
+.crm-side-profil-avatar-wrap { position: relative; display: inline-block; cursor: pointer; }
+.crm-side-profil-avatar {
+    width: 160px; height: 160px; border-radius: 50%;
+    object-fit: cover; display: block; margin: 0 auto;
+    border: 3px solid var(--thoxan-100);
+}
+.crm-side-profil-avatar-fallback {
+    background: var(--thoxan-100); color: var(--thoxan-700);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 3rem; font-weight: 600;
+}
+.crm-side-profil-cam {
+    position: absolute; bottom: -2px; right: -2px;
+    background: var(--thoxan-600); color: #fff;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff;
+}
+.crm-side-profil-cam .material-symbols-rounded { font-size: 13px !important; }
+.crm-side-profil-name { font-size: 0.95rem; font-weight: 700; color: var(--slate-900); margin-top: 12px; line-height: 1.25; }
+.crm-side-profil-firma {
+    display: block; font-size: 0.78rem; color: var(--slate-500);
+    margin-top: 3px; text-decoration: none;
+}
+.crm-side-profil-firma:hover { color: var(--thoxan-600); }
+.crm-side-profil-meta {
+    display: flex; gap: 6px; justify-content: center; margin-top: 12px; flex-wrap: wrap;
+}
+.crm-side-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 999px;
+    font-size: 0.66rem; font-weight: 600;
+    border: 1px solid;
+}
+.crm-side-pill-doi  { background: var(--emerald-50); color: var(--emerald-700); border-color: var(--emerald-200); }
+.crm-side-pill-soi  { background: var(--thoxan-50);  color: var(--thoxan-700);  border-color: var(--thoxan-200); }
+.crm-side-pill-pend { background: var(--amber-50);   color: var(--amber-800);   border-color: var(--amber-200); }
+.crm-side-pill-aus  { background: var(--rose-50);    color: var(--rose-700);    border-color: var(--rose-200); }
+.crm-side-pill-score {
+    background: var(--slate-50); color: var(--slate-700); border-color: var(--slate-200);
+    font-variant-numeric: tabular-nums;
+}
+
+/* TOC (Inhaltsverzeichnis) — sticky, scrollt mit */
+.crm-detail-toc {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--d-card-radius, 8px);
+    position: sticky;
+    top: calc(var(--topbar-h, 44px) + 18px);
+    align-self: start;
+    max-height: calc(100vh - var(--topbar-h, 44px) - 36px);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+/* Im Embed-Modus (iframe-Drawer) muss TOC-Stickytop EXAKT auf scroll-margin-top
+   der Sektionen passen, damit beide Kacheln bündig oben stehen. */
+/* Im Embed-Modus (Iframe-Drawer): main-content soll NICHT selbst scrollen,
+   sondern window scrollt. Damit verhält sich Sticky-TOC + scroll-margin-top
+   exakt wie auf der Detail-Seite (die scrollt auch via window).
+   --topbar-h ist im embed bereits 0, daher gibt calc(0+18) = 18px Abstand. */
+body.thx-embed.crm-detail-page .main-content {
+    overflow: visible !important;
+    height: auto !important;
+    padding: 18px !important;
+}
+
+/* Linke Funktions-Sidebar in der Detail-Page auch sticky */
+.crm-detail-grid3 > .crm-detail-side-funcs {
+    position: sticky;
+    top: calc(var(--topbar-h, 44px) + 18px);
+    align-self: start;
+    max-height: calc(100vh - var(--topbar-h, 44px) - 36px);
+}
+
+/* Anchor-Offset: Cards müssen unter die fixe Topbar + Gutter scrollen */
+.crm-detail-grid3 [id^="sec-"],
+.crm-detail-grid3 [id^="mail-"],
+.crm-detail-grid3 [id^="zeit-"] {
+    scroll-margin-top: calc(var(--topbar-h, 44px) + 18px);
+}
+.crm-detail-topbar {
+    scroll-margin-top: calc(var(--topbar-h, 44px) + 18px);
+}
+
+/* Tab-Container: vertikaler Card-Stack mit 18px Gap.
+   Wichtig: !important damit Alpine.js x-show den display nicht überschreibt. */
+.crm-detail-tab-stack {
+    display: flex !important;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 600px;
+}
+.crm-detail-tab-stack[style*="display: none"] { display: none !important; }
+
+/* Detail-Topbar mit Tabs in der Mitte: 3-Spalten-Header (Name+Pillen | Tabs | Actions) */
+.crm-detail-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    scroll-margin-top: 0;
+}
+.crm-detail-topbar-left { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; flex: 1; min-width: 0; }
+.crm-detail-topbar-tabs { margin: 0 !important; padding: 0; border: 0 !important; background: transparent !important; flex-shrink: 0; }
+.crm-detail-topbar-tabs .thx-tab { padding-top: 6px; padding-bottom: 6px; }
+.crm-detail-topbar-right { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; flex-shrink: 0; }
+@media (max-width: 1000px) {
+    .crm-detail-topbar { flex-wrap: wrap; }
+    .crm-detail-topbar-tabs { order: 3; width: 100%; }
+}
+
+/* Mail-Tab: Stat-Kacheln pro Kampagne */
+.crm-mail-stat {
+    text-align: center; padding: 10px 8px;
+    background: var(--slate-50); border-radius: 6px;
+    border: 1px solid var(--slate-100);
+}
+.crm-mail-stat-n { font-size: 1.4rem; font-weight: 700; color: var(--slate-900); font-variant-numeric: tabular-nums; line-height: 1; }
+.crm-mail-stat-l { font-size: 0.7rem; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
+.crm-mail-stat-good { background: var(--emerald-50); border-color: var(--emerald-200); }
+.crm-mail-stat-good .crm-mail-stat-n { color: var(--emerald-700); }
+.crm-mail-stat-bad { background: var(--rose-50); border-color: var(--rose-200); }
+.crm-mail-stat-bad .crm-mail-stat-n { color: var(--rose-700); }
+.crm-detail-toc-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 10px 8px 14px;
+    border-bottom: 1px solid var(--slate-200);
+    flex-shrink: 0;
+}
+.crm-detail-toc-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate-500); }
+.crm-detail-toc-list { padding: 6px; overflow-y: auto; flex: 1; scrollbar-width: thin; }
+.crm-toc-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 10px; border-radius: 5px;
+    color: var(--slate-700); text-decoration: none;
+    font-size: 0.78rem; line-height: 1.3;
+    transition: all 0.12s;
+    cursor: pointer;
+    /* Button-Reset (da wir <button> verwenden) */
+    background: none; border: 0; width: 100%; text-align: left;
+    font-family: inherit;
+}
+.crm-toc-item:hover { background: var(--thoxan-50); color: var(--thoxan-700); }
+.crm-toc-item.is-active {
+    background: var(--thoxan-100); color: var(--thoxan-800);
+    font-weight: 600;
+}
+.crm-toc-item .material-symbols-rounded {
+    font-size: 16px !important; flex-shrink: 0;
+    color: var(--slate-400);
+}
+.crm-toc-item.is-active .material-symbols-rounded { color: var(--thoxan-700); }
+
+/* Collapsed-Variante: kurze horizontale Striche statt Icons (Chat-Style collapsed-bar) */
+.crm-detail-toc.is-collapsed .crm-detail-toc-title,
+.crm-detail-toc.is-collapsed .crm-toc-item-label,
+.crm-detail-toc.is-collapsed .crm-toc-item .material-symbols-rounded { display: none; }
+.crm-detail-toc.is-collapsed .crm-detail-toc-header {
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 4px;
+    align-items: center;
+}
+.crm-detail-toc.is-collapsed .crm-detail-toc-list { padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+/* Top-Button (vertical_align_top): kleines Plus-Hover-Highlight */
+.crm-toc-top { color: var(--slate-500); }
+.crm-toc-top:hover { color: var(--thoxan-600); background: var(--thoxan-50); }
+.crm-detail-toc.is-collapsed .crm-toc-item {
+    justify-content: center; padding: 0;
+    width: 24px; height: 3px;
+    border-radius: 2px;
+    background: var(--slate-300);
+    transition: background 0.15s, width 0.15s;
+}
+.crm-detail-toc.is-collapsed .crm-toc-item:hover {
+    background: var(--thoxan-400);
+    width: 30px;
+}
+.crm-detail-toc.is-collapsed .crm-toc-item.is-active {
+    background: var(--thoxan-600);
+    width: 30px;
+    height: 4px;
+}
+
+/* Firma-Kontakte-Liste in der linken Sidebar */
+.crm-firma-kontakt {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 8px; border-radius: 5px;
+    text-decoration: none; color: inherit;
+    font-size: 0.78rem;
+    transition: background 0.12s;
+}
+.crm-firma-kontakt:hover { background: var(--thoxan-50); }
+.crm-firma-kontakt-avatar {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--slate-200); color: var(--slate-600);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.62rem; font-weight: 600;
+    flex-shrink: 0;
+}
+.crm-firma-kontakt-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.crm-firma-kontakt-name { font-weight: 500; color: var(--slate-800); }
+.crm-firma-kontakt-funktion { font-size: 0.7rem; color: var(--slate-500); }
+
+/* Stats-Zeile in der linken Sidebar */
+.crm-stat-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.78rem; }
+.crm-stat-row dt { color: var(--slate-600); margin: 0; }
+.crm-stat-row dd { color: var(--slate-900); font-weight: 600; margin: 0; font-variant-numeric: tabular-nums; }
+
+/* Wissensdatenbank-Sync-Status — bewusst dezent, Hintergrundprozess */
+.crm-sync-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--slate-500);
+    padding: 0;
+}
+.crm-sync-pill .material-symbols-rounded { font-size: 13px; }
+.crm-sync-pill.is-ok .material-symbols-rounded { color: var(--emerald-500); }
+.crm-sync-pill.is-queued .material-symbols-rounded { color: var(--amber-500); }
+.crm-sync-pill.is-missing .material-symbols-rounded { color: var(--slate-400); }
+.crm-sync-since {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--slate-400);
+}
+.crm-sync-pill .crm-sync-link {
+    color: var(--slate-400);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+.crm-sync-pill .crm-sync-link:hover { color: var(--thoxan-600); }
+.crm-sync-pill .crm-sync-link .material-symbols-rounded { font-size: 12px; }
+.crm-sync-meta {
+    font-size: 0.7rem;
+    color: var(--slate-400);
+    padding-top: 2px;
+    line-height: 1.4;
+}
+.crm-sync-meta strong { color: var(--slate-600); font-weight: 500; }
+.crm-sync-spin {
+    animation: crm-sync-spin 1.4s linear infinite;
+}
+@keyframes crm-sync-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Externe-Systeme-Button im "nicht verknüpft" Zustand */
+.thx-shell-btn.is-disabled {
+    color: var(--slate-400) !important;
+    cursor: not-allowed !important;
+    opacity: 0.55;
+    background: var(--slate-50) !important;
+}
+.thx-shell-btn.is-disabled:hover {
+    background: var(--slate-50) !important;
+    color: var(--slate-400) !important;
+}
+
+.crm-sidebar { display: flex; flex-direction: column; gap: 10px; }
+.crm-sidebar-card { padding: 14px; text-align: center; }
+.crm-sidebar-cardtitel { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--slate-400); }
+
+.crm-avatar-wrap { position: relative; display: inline-block; cursor: pointer; }
+.crm-avatar-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--thoxan-100); display: block; }
+.crm-avatar-fallback { width: 130px; height: 130px; border-radius: 50%; background: var(--thoxan-100); color: var(--thoxan-700); display: inline-flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 600; border: 3px solid var(--thoxan-100); }
+.crm-avatar-badge { position: absolute; bottom: 6px; right: 6px; background: var(--thoxan-600); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border: 2px solid #fff; }
+.crm-sidebar-name { font-weight: 600; font-size: 1.05rem; color: var(--slate-900); margin-top: 10px; }
+.crm-sidebar-firma { display: block; color: var(--slate-500); font-size: 0.85rem; margin-top: 2px; text-decoration: none; }
+.crm-sidebar-firma:hover { color: var(--thoxan-600); }
+
+.crm-bigbadge { padding: 14px 12px; border-radius: 6px; text-align: center; }
+.crm-bigbadge-doi  { background: var(--emerald-50); color: var(--emerald-700); border: 1px solid var(--emerald-200); }
+.crm-bigbadge-soi  { background: var(--thoxan-50);  color: var(--thoxan-700);  border: 1px solid var(--thoxan-200); }
+.crm-bigbadge-pend { background: var(--amber-50);   color: var(--amber-800);   border: 1px solid var(--amber-200); }
+.crm-bigbadge-aus  { background: var(--rose-50);    color: var(--rose-700);    border: 1px solid var(--rose-200); }
+.crm-bigbadge-hb   { background: var(--rose-50);    color: var(--rose-700);    border: 1px solid var(--rose-200); }
+.crm-bigbadge-leer { background: var(--slate-100);  color: var(--slate-500);   border: 1px solid var(--slate-200); }
+.crm-bigbadge-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.75; }
+.crm-bigbadge-wert  { font-size: 1.05rem; font-weight: 600; margin-top: 3px; }
+
+.crm-scorebar { height: 6px; background: var(--slate-100); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+.crm-scorebar-fill { height: 100%; background: linear-gradient(to right, var(--amber-400), var(--emerald-500)); }
+
+.crm-sidebar-meta { font-size: 0.7rem; color: var(--slate-400); padding: 6px 4px; line-height: 1.6; text-align: center; }
+
+.crm-section-titel { font-size: 0.85rem; font-weight: 600; color: var(--slate-900); margin: 0 0 10px 0; padding-bottom: 6px; border-bottom: 1px solid var(--slate-100); text-transform: uppercase; letter-spacing: 0.04em; color: var(--slate-600); }
+.crm-section-count { color: var(--slate-400); font-weight: 400; font-size: 0.78rem; margin-left: 4px; text-transform: none; letter-spacing: 0; }
+
+.crm-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 28px; margin: 0; }
+@media (max-width: 700px) { .crm-fields { grid-template-columns: 1fr; } }
+.crm-field { display: grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid var(--slate-50); min-height: 30px; }
+.crm-field-wide { grid-column: 1 / -1; }
+.crm-field-label { color: var(--slate-500); font-size: 0.82rem; margin: 0; font-weight: 400; }
+.crm-field-wert { margin: 0; color: var(--slate-900); font-weight: 500; font-size: 0.85rem; min-width: 0; word-wrap: break-word; }
+.crm-field-wert a { color: var(--thoxan-600); text-decoration: none; }
+.crm-field-wert a:hover { text-decoration: underline; }
+
+.crm-tag-combobox { position: absolute; top: 100%; left: 0; margin-top: 4px; background: #fff; border: 1px solid var(--slate-300); border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.12); padding: 8px; width: 280px; z-index: 50; }
+
+.crm-timeline { padding: 4px; }
+.crm-timeline-datum { display: inline-block; padding: 3px 12px; background: var(--slate-100); color: var(--slate-700); font-weight: 500; font-size: 0.78rem; border-radius: 12px; margin: 14px 0 6px 0; }

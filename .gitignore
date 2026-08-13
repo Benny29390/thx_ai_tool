@@ -1,0 +1,56 @@
+# ============================================================================
+#  KI Text Tool — .gitignore
+#
+#  OBERSTE REGEL: KEIN DATENVERLUST.
+#  Alles hier Aufgelistete ist installations-/laufzeitspezifisch und darf beim
+#  Update (git reset --hard) NIEMALS angefasst werden. Wer eine Datei hier
+#  entfernt, riskiert, dass ein Update Kundendaten oder den encryption_key
+#  ueberschreibt. Im Zweifel: ignorieren, nicht versionieren.
+# ============================================================================
+
+# --- Installationsspezifische Konfiguration (NIE versionieren) ---
+# config.php enthaelt DB-Zugang UND den encryption_key. Geht er verloren,
+# sind ALLE verschluesselten Secrets (API-Keys, SMTP, OAuth-Token) unlesbar.
+/config/config.php
+/config/license.json
+
+# --- Laufzeitdaten (Kundeninhalte — unter allen Umstaenden erhalten) ---
+/storage/
+/uploads/
+/data/
+/backups/
+/database.sqlite
+
+# --- Abhaengigkeiten (werden per composer install neu erzeugt) ---
+/vendor/
+
+# --- Thoxan-interne Alt-/Datenblobs (gehoeren NICHT ins Produkt-Repo) ---
+# Legacy-Prototyp und grosse einmalige Datenexporte — keine Laufzeit-Abhaengigkeit
+# des Produkts. Bleiben lokal auf dem Server, werden nur nicht versioniert/ausgeliefert.
+/lams_modul_alt/
+/docs/zoho-export/
+/docs/wittekind-tools/
+/docs/lam-prototyp/
+
+# --- Wartungs-/Lauf-Marker (nur lokal, nicht ausrollen) ---
+/storage/MAINTENANCE
+/storage/UPDATE.lock
+
+# --- Betriebssystem / Editor ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# --- Logs (falls einzelne im Repo-Root landen) ---
+*.log
+
+# ----------------------------------------------------------------------------
+#  Bewusst NICHT ignoriert (gehoeren ins Repo, werden zentral ausgeliefert):
+#    config/constants.php, config/config.sample.php, config/config.template.php,
+#    config/modules.php, sql/, scripts/, cli/, core/, api/, services/, views/,
+#    assets/, models/, modules/, deploy/, install.php, index.php, .htaccess,
+#    composer.json, composer.lock
+# ----------------------------------------------------------------------------

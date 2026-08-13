@@ -1,0 +1,2 @@
+# CRM-Pflege-Scan: täglich um 03:00 alle Detektoren laufen lassen
+0  3    * * *   www-data /usr/bin/php /var/www/cli/crm-pflege-scan.php >> /var/log/crm-pflege-scan.log 2>&1

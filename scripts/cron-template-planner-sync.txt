@@ -1,0 +1,21 @@
+# KI-Tool: Tagesplan Auto-Sync
+#
+# So einrichten (einmalig, als root):
+#   sudo cp /var/www/scripts/cron-template-planner-sync.txt /etc/cron.d/ki-tool-planner-sync
+#   sudo chmod 644 /etc/cron.d/ki-tool-planner-sync
+#   sudo systemctl reload cron
+#
+# Was passiert alle 10 Min: pro User mit hinterlegtem Asana-PAT
+#   - Sync (zieht neue/geaenderte Tasks aus Asana)
+#   - Modifizierte Tasks bekommen ai_summary=NULL → KI re-analysiert mit aktuellen Kommentaren
+#   - KI-Analyse fuer alle Tasks ohne ai_summary (inkl. Asana-Stories)
+#   - Auto-Slot: Quick+ASAP → Heute, Significance>=9+Deadline<=1d → Heute, sonst mid/long_term per Deadline
+#   - Score neu berechnen
+#
+# Log: /var/log/ki-tool-planner-sync.log
+
+MAILTO=""
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+*/10 * * * * www-data /usr/bin/php /var/www/scripts/planner-auto-sync.php >> /var/log/ki-tool-planner-sync.log 2>&1

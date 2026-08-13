@@ -1,0 +1,4 @@
+# CRM-Knowledge-Sync-Worker
+# Arbeitet crm_sync_queue ab (Live-Sync von CRM-Kontakten + Firmen in die Wissensdatenbank)
+# Debounce 30s im Worker selbst — verhindert Spam bei Inline-Edit-Sessions
+*  *    * * *   www-data /usr/bin/php /var/www/cli/crm-knowledge-worker.php >> /var/log/crm-knowledge-worker.log 2>&1

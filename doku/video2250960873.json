@@ -1,0 +1,2510 @@
+[
+  {
+    "timestamp" : "00:00-00:13",
+    "text" : "So, dann heute erste Aufzeichnung von der KI-Sprechstunde und jeder deren Thema hat gerne"
+  },
+  {
+    "timestamp" : "00:13-00:18",
+    "text" : "mit. Was wir machen können, ist wir können am Anfang ganz kurz sammeln, wer hat alles ein Thema"
+  },
+  {
+    "timestamp" : "00:18-00:24",
+    "text" : "und dann gehen wir der Reihe nach durch und können auch ein bisschen priorisieren und ganz viel wird"
+  },
+  {
+    "timestamp" : "00:24-00:30",
+    "text" : "sich wahrscheinlich auch aus dem Gespräch ergeben. Kurz Frage in die Runde, Sascha Eberhardt, Sandra,"
+  },
+  {
+    "timestamp" : "00:30-00:40",
+    "text" : "Monika, habt ihr Themen für die Sprechstunde, Andreas und Christian? Ja, Julia? Genau, meine Frage wäre"
+  },
+  {
+    "timestamp" : "00:40-00:44",
+    "text" : "vielleicht sogar ähnlich zu Thomas' Frage. Ich habe bisher noch keine Dokumentation angefangen"
+  },
+  {
+    "timestamp" : "00:44-00:48",
+    "text" : "in meinem System. Ich habe gesehen, dass du viel Dokumentation hast. Ja, genau. Meine ich mich zu"
+  },
+  {
+    "timestamp" : "00:48-00:53",
+    "text" : "erinnern? Ja. Ich tue mich aber gerade schwer, das zu den Artefakten abzugrenzen, die ich schon"
+  },
+  {
+    "timestamp" : "00:53-01:00",
+    "text" : "angefangen habe. Also, wie organisiert man das so? Wie sehr muss ich die Task oder die Prompt Cloud"
+  },
+  {
+    "timestamp" : "01:00-01:08",
+    "text" : "Code rund um Tasks noch dokumentieren lassen? Und das zweite wäre dann, du hattest davon gesprochen,"
+  },
+  {
+    "text" : "dass dein System sich selbst programmiert, indem deine anderen Komponenten Bescheid sagen,",
+    "timestamp" : "01:08-01:13"
+  },
+  {
+    "text" : "wenn sie sich ändern. Das kann ja nicht mehr im Rahmen so einer normalen Cloud Code Session",
+    "timestamp" : "01:13-01:19"
+  },
+  {
+    "text" : "eigentlich laufen, oder? Also, irgendjemand muss ja dann auch sagen, im System jetzt Dateien ändern,",
+    "timestamp" : "01:19-01:23"
+  },
+  {
+    "timestamp" : "01:23-01:29",
+    "text" : "oder? Ich habe mir vorgestellt, wie das läuft, aber das wäre mal spannend zu wissen. Ja,"
+  },
+  {
+    "text" : "das ist eine super schöne Frage. Die nehmen wir auf jeden Fall mit rein. Da greifen wir nämlich",
+    "timestamp" : "01:29-01:33"
+  },
+  {
+    "text" : "auf das Cloud-Hook-System zu. Und das gucken wir uns gleich mal ein bisschen an, wie sieht",
+    "timestamp" : "01:33-01:39"
+  },
+  {
+    "text" : "so etwas in der Praxis aus. Thomas, dein Thema haben wir. Ich frage kurz Rum von den anderen,",
+    "timestamp" : "01:39-01:47"
+  },
+  {
+    "timestamp" : "01:47-01:51",
+    "text" : "gibt es auch noch Aspekte, die wir mit reinnehmen in unsere Diskussions-Session?"
+  },
+  {
+    "text" : "Ich würde tatsächlich auch noch mal auf das Thema Artefakte zurückkommen, weil ich momentan",
+    "timestamp" : "01:51-01:57"
+  },
+  {
+    "text" : "halt eben da natürlich mit dem System gerade dann arbeite und diese Singularität in den",
+    "timestamp" : "01:57-02:02"
+  },
+  {
+    "text" : "Artefakten so ein bisschen aufgeweicht habe. Und da ist die Frage, sollte ich das wieder",
+    "timestamp" : "02:02-02:07"
+  },
+  {
+    "text" : "aufteilen in ganz viele tausend Artefakte anstelle von zentralisierten Artefakten?",
+    "timestamp" : "02:07-02:13"
+  },
+  {
+    "text" : "Genau, dann machen wir eine Session mal kurz um die Artefakt-Logik. Ich wollte das eigentlich",
+    "timestamp" : "02:13-02:24"
+  },
+  {
+    "text" : "erst ein bisschen ausführlicher vorbereiten, dann als Modul, aber ich glaube, es lohnt sich,",
+    "timestamp" : "02:24-02:28"
+  },
+  {
+    "timestamp" : "02:28-02:36",
+    "text" : "dass wir da überall ein bisschen mal reinschnuppern an der Stelle. Sonst noch Punkte von euch anderen?"
+  },
+  {
+    "text" : "Ich muss mich kurz entschuldigen, ich habe eine kranke Frau neben mir im Zimmer liegen,",
+    "timestamp" : "02:36-02:44"
+  },
+  {
+    "text" : "im Bett mit hohem Fieber inzwischen und Brechtdurchfall. Deswegen komme ich jetzt später.",
+    "timestamp" : "02:44-02:52"
+  },
+  {
+    "text" : "Also ich glaube, ich frage jetzt mal nicht, weil ich hätte so viele Fragen als Einsteiger.",
+    "timestamp" : "02:52-02:58"
+  },
+  {
+    "timestamp" : "02:58-03:10",
+    "text" : "Vielleicht kommen wir ja dazu, wie eigentlich die Implementierung der Prozesse in die Datenbank"
+  },
+  {
+    "timestamp" : "03:10-03:15",
+    "text" : "und aus der Datenbank raus ausschaut. Das ist erst mal meine Welt, die kenne ich gut. Ich kann"
+  },
+  {
+    "timestamp" : "03:15-03:22",
+    "text" : "SQL lesen, aber gibt es ein Datenmodell? Wenn wir das ein bisschen anschauen könnten."
+  },
+  {
+    "timestamp" : "03:22-03:29",
+    "text" : "Okay, sehr schön. Das nehmen wir einfach mal so als losen Punkt mit drauf."
+  },
+  {
+    "text" : "Genau, danke schön. Ich glaube, Thomas, über dein Thema kommen wir ohnehin in ein anderem",
+    "timestamp" : "03:29-03:40"
+  },
+  {
+    "timestamp" : "03:40-03:46",
+    "text" : "Ding rein. Aber erzähl mal und beschreib mal und lass uns teilhaben an deinen Gedanken."
+  },
+  {
+    "text" : "Okay, sehr gut. Ich vertrete so ein bisschen ja den Benni jetzt in technischer Form. Wir haben",
+    "timestamp" : "03:46-03:50"
+  },
+  {
+    "text" : "uns ein bisschen den Klink in die Hand gegeben. Ich hätte ihn sonst technisch gerne dabei. Ich",
+    "timestamp" : "03:50-03:53"
+  },
+  {
+    "text" : "gucke so aus Prozesssicht drauf, wie kann ich unser System, was jetzt entstanden ist in den",
+    "timestamp" : "03:53-03:57"
+  },
+  {
+    "text" : "vergangenen Wochen und Monaten, entsprechend strukturieren und füttern. Ich würde es",
+    "timestamp" : "03:57-04:01"
+  },
+  {
+    "timestamp" : "04:01-04:06",
+    "text" : "vielleicht anhand des Systems mal ein bisschen zeigen, wie es aktuell aussieht und wo dann meine"
+  },
+  {
+    "text" : "Fragestellung im Rahmen der sinnvollen Organisation ist von Wissen, Regeln, Rahmenbedingungen mit den",
+    "timestamp" : "04:06-04:12"
+  },
+  {
+    "text" : "verschiedenen Stufen. Ich nehme euch mal so ein bisschen mit drauf auf das Thema. Wir haben jetzt",
+    "timestamp" : "04:12-04:21"
+  },
+  {
+    "text" : "schon ein paar Runden gedreht. Letzte Woche sah es noch völlig anders aus. Wir haben es entsprechend",
+    "timestamp" : "04:21-04:26"
+  },
+  {
+    "timestamp" : "04:26-04:31",
+    "text" : "erweitert und sind jetzt aber immer noch in so einem Testlauf, muss man sagen. Da gibt es halt"
+  },
+  {
+    "text" : "so verschiedene Ebenen. Zum einen eben verschiedene Projekte, die du anlegen kannst. Also zum Beispiel",
+    "timestamp" : "04:31-04:37"
+  },
+  {
+    "timestamp" : "04:37-04:42",
+    "text" : "schreibt mir ein Text über Holzmöbel beispielsweise. Dann hat man die Möglichkeit,"
+  },
+  {
+    "text" : "entsprechendes Briefing reinzugeben und sich eben entsprechende Texte generieren und exportieren zu",
+    "timestamp" : "04:42-04:47"
+  },
+  {
+    "text" : "lassen. Dann gibt es dieses Thema Aufträge, wo ich einen Auftrag erstmal anlege und im Rahmen",
+    "timestamp" : "04:47-04:54"
+  },
+  {
+    "timestamp" : "04:54-04:59",
+    "text" : "dieses Auftrags die Möglichkeit habe, halt ein Briefing zu erstellen mit KI gemeinsam. Das heißt,"
+  },
+  {
+    "timestamp" : "04:59-05:04",
+    "text" : "also ich werde in einem Chat durchgeführt mit entsprechenden Optionen, die dann wiederum in"
+  },
+  {
+    "text" : "einem Briefing münden, aus dem dann heraus dieser Artikel erstellt wird. Und das alles basiert eben",
+    "timestamp" : "05:04-05:10"
+  },
+  {
+    "text" : "auf entsprechenden Kontexten auf einer Wissensdatenbank, wo man Wissen hinzufügen kann,",
+    "timestamp" : "05:10-05:16"
+  },
+  {
+    "timestamp" : "05:16-05:21",
+    "text" : "auch vektorisieren kann. Bestimmten Regeln, die man definiert, zum Beispiel zum Schreibstil,"
+  },
+  {
+    "text" : "zur Formatierung, zum Inhalt, zur Tonalität. Wir haben Autorenprofile jetzt seit heute mit drin",
+    "timestamp" : "05:21-05:27"
+  },
+  {
+    "text" : "und es gibt natürlich verschiedene Kunden\/Projekte und auch verschiedene Benutzer,",
+    "timestamp" : "05:27-05:33"
+  },
+  {
+    "text" : "die das System jetzt bedienen. Und ich merke halt so, wir haben jetzt angefangen schon ein paar",
+    "timestamp" : "05:33-05:39"
+  },
+  {
+    "text" : "Sachen rein zu pflegen, dann haben wir sie wieder rausgelöscht, weil mir so schwergefallen ist zu",
+    "timestamp" : "05:39-05:42"
+  },
+  {
+    "text" : "entscheiden, ist das eine Regel, ist das ein Teil Wissensdatenbank, ist das ein Beispielartikel,",
+    "timestamp" : "05:42-05:46"
+  },
+  {
+    "timestamp" : "05:46-05:52",
+    "text" : "in welchem Kontext greift der Artikel, in welchem Kontext nicht. Möchte ich, dass das immer angewendet"
+  },
+  {
+    "text" : "wird, ist diese Regel, die wir jetzt definiert haben, also zum Beispiel \"Schreib per du\",",
+    "timestamp" : "05:52-05:56"
+  },
+  {
+    "timestamp" : "05:56-06:01",
+    "text" : "\"Schreib per sie\", die ist ja sehr kontextbezogen, je nachdem, um was für eine Art von Text sich"
+  },
+  {
+    "timestamp" : "06:01-06:08",
+    "text" : "handelt, aber auch in Bezug auf den Stil, aber auch in Bezug auf den Kunden. Für manche Kunden"
+  },
+  {
+    "text" : "schreiben wir \"per du\", aber wenn es ein Gastartikel ist, den wir extern veröffentlichen,",
+    "timestamp" : "06:08-06:11"
+  },
+  {
+    "text" : "eine Pressemeldung, dann ist es natürlich wiederum neutral oder per sie. Also du merkst so ein",
+    "timestamp" : "06:11-06:15"
+  },
+  {
+    "timestamp" : "06:15-06:22",
+    "text" : "bisschen, mir fehlt jetzt gerade die Orientierung, um sinnvoll dieses System mit Informationen zu"
+  },
+  {
+    "text" : "füttern, weil ich diese verschiedenen Ebenen noch nicht gut zusammenbekomme. Diese Komplexität in",
+    "timestamp" : "06:22-06:26"
+  },
+  {
+    "text" : "dem Zusammenhang, das brauche ich ein bisschen strukturiert sozusagen. Ich hoffe, das war",
+    "timestamp" : "06:26-06:32"
+  },
+  {
+    "timestamp" : "06:32-06:42",
+    "text" : "verständlich. Ja, sehr schön. Erstmal wirklich ganz großes Lob, was ihr da aufgebaut habt."
+  },
+  {
+    "text" : "Funktioniert das für euch schon? Also arbeitet ihr produktiv damit? Bislang noch nicht, weil wir halt",
+    "timestamp" : "06:42-06:49"
+  },
+  {
+    "text" : "jetzt füttern. Also wir haben die ersten Testartikel und da funktioniert das eine oder",
+    "timestamp" : "06:49-06:54"
+  },
+  {
+    "timestamp" : "06:54-06:58",
+    "text" : "andere, sage ich mal. Aber wir haben noch keinen Prozess, wo man sagt, hier, mach mir zehnmal das"
+  },
+  {
+    "text" : "gleiche. Also diese Routine, dafür fehlen eben jetzt genau diese Regularien und diese Kontexte.",
+    "timestamp" : "06:58-07:03"
+  },
+  {
+    "text" : "Und die würde ich jetzt gerne schaffen, aber ich merke halt, wenn ich jetzt anfange, mich",
+    "timestamp" : "07:03-07:07"
+  },
+  {
+    "timestamp" : "07:07-07:11",
+    "text" : "hinzusetzen und das zu füttern, auch KI-gestützt zu füttern, das kostet halt eine gewisse Zeit."
+  },
+  {
+    "timestamp" : "07:11-07:16",
+    "text" : "Und wenn ich da jetzt, glaube ich, von der Struktur her verkehrt rangehe, dann habe ich"
+  },
+  {
+    "text" : "vier Wochen umsonst ein System gefüttert vermutlich. Also oder fährt auch nicht. Deswegen",
+    "timestamp" : "07:16-07:21"
+  },
+  {
+    "timestamp" : "07:21-07:25",
+    "text" : "frage ich jetzt gerne mal frühzeitig, bevor man da zu viel Zeit jetzt reinhaut."
+  },
+  {
+    "timestamp" : "07:25-07:34",
+    "text" : "Okay. Aber abgesehen davon ging mir gerade das Herz auf, was ihr da schon alles aufgebaut habt."
+  },
+  {
+    "text" : "Schön, danke.",
+    "timestamp" : "07:34-07:34"
+  },
+  {
+    "timestamp" : "07:34-07:44",
+    "text" : "Hier ist Umsetzungsenergie, dahinter I like. Also das ist immer, mir geht da immer das Herz auf."
+  },
+  {
+    "text" : "Das gebe ich gerne an Benni usw. Die Credits gehen ja an meinen Kollegen dann.",
+    "timestamp" : "07:44-07:48"
+  },
+  {
+    "timestamp" : "07:48-07:53",
+    "text" : "Sascha fragt gerade noch. Sascha, stell ruhig die Frage, dann ist es auch im Video drin,"
+  },
+  {
+    "text" : "dass man es transkriptieren kann.",
+    "timestamp" : "07:53-07:56"
+  },
+  {
+    "timestamp" : "07:56-08:01",
+    "text" : "Sorry, ich bin gerade nebenbei auf dem Laufband, deswegen habe ich es nicht gemacht. Nur kurze"
+  },
+  {
+    "text" : "Frage, dieses schöne UI, die schöne Website drumherum. Julia, du hattest vorhin, glaube ich,",
+    "timestamp" : "08:01-08:06"
+  },
+  {
+    "text" : "auch so was. Wie habt ihr das gebaut? Also einfach das hart gecodet oder habt ihr irgendein Tool",
+    "timestamp" : "08:06-08:12"
+  },
+  {
+    "text" : "wiederum genutzt? Ist es eine KI, die es gebaut hat?",
+    "timestamp" : "08:12-08:14"
+  },
+  {
+    "text" : "Genau, das ist jetzt alles mit Cloud Code erstellt und Benni hat da einen sehr hohen",
+    "timestamp" : "08:14-08:19"
+  },
+  {
+    "text" : "Anspruch, was die Optik angeht. So möchte ich es mal sagen. Das heißt, also der digitale Knecht",
+    "timestamp" : "08:19-08:23"
+  },
+  {
+    "text" : "wurde entsprechend gefordert, um das auch in der Form zu bringen, mit der wir alle gerne arbeiten.",
+    "timestamp" : "08:23-08:29"
+  },
+  {
+    "timestamp" : "08:29-08:34",
+    "text" : "Aber von dem, was drunter liegt, wahrscheinlich kein extra Framework,"
+  },
+  {
+    "text" : "sondern plain HTML, CSS, JavaScript.",
+    "timestamp" : "08:34-08:37"
+  },
+  {
+    "timestamp" : "08:37-08:41",
+    "text" : "Wie gesagt, die technischen Fragen könnte dann Benni vielleicht nächstes Mal beantworten."
+  },
+  {
+    "timestamp" : "08:41-08:46",
+    "text" : "Genau. Trotzdem danke."
+  },
+  {
+    "text" : "Genau, das, was du beschreibst, das beschreiben viele. Und wir treffen zwei unterschiedliche",
+    "timestamp" : "08:46-08:55"
+  },
+  {
+    "text" : "Welten und Denkschulen aufeinander. Wir haben, haben wir, oder habe ich früher,",
+    "timestamp" : "08:55-09:02"
+  },
+  {
+    "timestamp" : "09:02-09:08",
+    "text" : "Anwendungsentwicklungen gelernt. Wenn man Physik studiert, darf man auch noch ein bisschen"
+  },
+  {
+    "text" : "Informatik mit studieren. Ich entwickle seit jetzt 35 Jahren und Anwendungsentwicklung,",
+    "timestamp" : "09:08-09:18"
+  },
+  {
+    "text" : "so wie wir es konventionell kennen, ist ja eine sehr deterministische und auch eine sehr",
+    "timestamp" : "09:18-09:24"
+  },
+  {
+    "timestamp" : "09:24-09:33",
+    "text" : "relativ statische Sache. Normalerweise geht man her als Kunde und Entwicklerin und Entwickler,"
+  },
+  {
+    "timestamp" : "09:33-09:39",
+    "text" : "man hat das Lastenheft und das Pflichtenheft, was man miteinander definiert. Dann geht man"
+  },
+  {
+    "text" : "in irgendwelchen, wie auch immer, gearteten Strukturen vor. Manche Wasser fallen vor sich",
+    "timestamp" : "09:39-09:46"
+  },
+  {
+    "text" : "hin, andere scrummen vor sich hin. Es wird mehr oder weniger agil und so weiter. Aber",
+    "timestamp" : "09:46-09:52"
+  },
+  {
+    "text" : "unterm Strich kommt dabei was raus, was in sich relativ geschlossen ist. Hier ist deine",
+    "timestamp" : "09:52-09:59"
+  },
+  {
+    "text" : "Anforderung, hier sind die Spezifikationen, hier sind die Quality-Categories, hier ist das,",
+    "timestamp" : "09:59-10:05"
+  },
+  {
+    "text" : "was wir liefern. Dann gibt es noch zwei, drei Iterationen und das sorgt dafür, dass Anforderungen",
+    "timestamp" : "10:05-10:13"
+  },
+  {
+    "text" : "und Umsetzung und Dokumentation und Abnahme, das sind relativ statische Blöcke in der Welt. Und",
+    "timestamp" : "10:13-10:21"
+  },
+  {
+    "text" : "so wurde es uns auch beigebracht und so ist es auch meistens noch in den Köpfen drin. Außer,",
+    "timestamp" : "10:21-10:25"
+  },
+  {
+    "timestamp" : "10:25-10:31",
+    "text" : "du bist Kunde. Wenn du Kunde bist, dann kommst du alle Minute und sagst, ich hätte da gerne noch"
+  },
+  {
+    "timestamp" : "10:31-10:39",
+    "text" : "und irgendwo am anderen Ende stirbt dann entweder ein Entwickler oder eine Entwicklerin und irgend"
+  },
+  {
+    "text" : "jemand und irgendein Vertriebler freut sich oder ein Geschäftsführer sagt, das können wir denen",
+    "timestamp" : "10:39-10:47"
+  },
+  {
+    "text" : "nicht extra berechnen. Jetzt gibt es diesen Shift. Im Prinzip kann jeder mehr oder weniger",
+    "timestamp" : "10:47-10:54"
+  },
+  {
+    "timestamp" : "10:54-11:01",
+    "text" : "mit einem Fingerschnipp sagen, oh wow, ich habe jetzt diese Anwendung da, gerade mit Joachim,"
+  },
+  {
+    "text" : "als wir das durchgespielt haben, was brauchen wir? Wir brauchen eine GUI, da kann man eine",
+    "timestamp" : "11:01-11:06"
+  },
+  {
+    "text" : "URL eingeben, die steuert den Prozess und er liefert uns direkt zurück die Auswertung und",
+    "timestamp" : "11:06-11:13"
+  },
+  {
+    "text" : "soll sie darstellen. Das war dann quasi von, ich bin der Kunde, ich möchte was Spezifisches haben,",
+    "timestamp" : "11:13-11:19"
+  },
+  {
+    "text" : "wir kriegen das Feedback, was soll geliefert werden, geproved und geben uns das zurück. Das",
+    "timestamp" : "11:19-11:31"
+  },
+  {
+    "text" : "war dann eine Sache von eher zwei oder drei Minuten und dann war die Frage, wie kriegen",
+    "timestamp" : "11:31-11:37"
+  },
+  {
+    "text" : "wir das dokumentiert? Dann habe ich gezeigt, wie machen wir ein sich selbst dokumentierendes System",
+    "timestamp" : "11:37-11:44"
+  },
+  {
+    "text" : "und dann sind wir an die nächste Aufgabe dran und haben festgestellt, jetzt wird es interessant für",
+    "timestamp" : "11:44-11:50"
+  },
+  {
+    "timestamp" : "11:50-11:57",
+    "text" : "Eberhard, warte mal, die nächste Aufgabe hat ein komplett anderes Schema, das ist eine ganz andere"
+  },
+  {
+    "timestamp" : "11:57-12:05",
+    "text" : "Domäne. Wir müssen in komplett anderen Tabellen und Datenbankenstrukturen denken und gleichzeitig"
+  },
+  {
+    "text" : "haben wir einen immensen Vorwärts-Push, der uns fast nicht die Möglichkeit gibt, es sei denn,",
+    "timestamp" : "12:05-12:12"
+  },
+  {
+    "text" : "wir sind hochgradig diszipliniert, die Dinge sehr, sehr akkurat und präzise erst mal zu beschreiben,",
+    "timestamp" : "12:12-12:19"
+  },
+  {
+    "text" : "so wie man es mit Lastenpflichtenheft eigentlich gewohnt ist. Das heißt, die Möglichkeit,",
+    "timestamp" : "12:19-12:26"
+  },
+  {
+    "text" : "relativ schnell zum Creator zu werden, die explodiert gerade in alle Richtungen und wir",
+    "timestamp" : "12:26-12:33"
+  },
+  {
+    "text" : "können die Menschen auch nicht mehr eindämmen. Menschen machen Menschen Dinge und jetzt können",
+    "timestamp" : "12:33-12:37"
+  },
+  {
+    "text" : "wir uns überlegen, wie können wir unsere Denkstrukturen verändern, um dem gerecht zu",
+    "timestamp" : "12:37-12:44"
+  },
+  {
+    "text" : "werden. Ich hatte vor vielen, vielen Jahren das Ebenenmodell entwickelt, wie versetzen wir uns",
+    "timestamp" : "12:44-12:53"
+  },
+  {
+    "text" : "in die Lage der Welt Ambiguität und Ambivalenz tolerant gegenüberzustehen und alles aus",
+    "timestamp" : "12:53-13:02"
+  },
+  {
+    "timestamp" : "13:02-13:10",
+    "text" : "unterschiedlichen Perspektiven zu betrachten. In einem ähnlichen Zeitraum ist was entstanden,"
+  },
+  {
+    "text" : "wo es mir darum ging, Dinge auf höchster Abstraktionsebene grundsätzlich verarbeiten",
+    "timestamp" : "13:10-13:16"
+  },
+  {
+    "text" : "zu können. Ich habe das damals das Elementemodell genannt, weil ich gesagt habe, alles auf der Welt",
+    "timestamp" : "13:16-13:23"
+  },
+  {
+    "text" : "ist ein Element und jedes Element trägt im Prinzip nur seinen eigenen Wert, seine eigene Value in sich",
+    "timestamp" : "13:23-13:33"
+  },
+  {
+    "text" : "und dann gibt das so eine Art wie ein Artefakt, das den Elementen, ihren Kontext, ihre Bedeutung",
+    "timestamp" : "13:33-13:42"
+  },
+  {
+    "timestamp" : "13:42-13:46",
+    "text" : "gibt. Das hört sich jetzt alles sehr, sehr abstrakt an und wahrscheinlich überhaupt gar"
+  },
+  {
+    "timestamp" : "13:46-13:53",
+    "text" : "nicht anwendbar, aber wir kommen da gleich dahin. Tun wir mal so, als gäbe es ein Element,"
+  },
+  {
+    "timestamp" : "13:53-14:02",
+    "text" : "das ist das Element mit der ID 1 und der Eigenwert ist Thomas. Thomas kann in jedem"
+  },
+  {
+    "text" : "Kontext irgendwas anderes bedeuten. Ich nehme ein zweites und Thomas ist komplett schemafrei.",
+    "timestamp" : "14:02-14:10"
+  },
+  {
+    "timestamp" : "14:10-14:18",
+    "text" : "Thomas trägt nur seinen eigenen Wert, das ist das Schema von Thomas und jetzt gehe ich nicht her,"
+  },
+  {
+    "timestamp" : "14:18-14:24",
+    "text" : "wie in der klassischen Programmierung und sage, jetzt baue ich Schema da, sondern ich gehe eine"
+  },
+  {
+    "text" : "Abstraktionsstufe höher und sage, alles ist ein Element oder eine Entität und alles kann auch",
+    "timestamp" : "14:24-14:32"
+  },
+  {
+    "text" : "in ein Artefakt eingebunden werden. Artefakt ist nichts anderes als eine bedeutungsgebende",
+    "timestamp" : "14:32-14:39"
+  },
+  {
+    "text" : "Sinngebung für Elemente. Also ich mache zum Beispiel Element 1 Thomas, Element 2 ist,",
+    "timestamp" : "14:39-14:48"
+  },
+  {
+    "timestamp" : "14:48-14:57",
+    "text" : "Element 3 ein, Element 4 Name. Das sind alles für sich einzelne Elemente, die im Raum rumschwirren,"
+  },
+  {
+    "timestamp" : "14:57-15:04",
+    "text" : "jeder komplett Kontext und Schema befreit und ich gehe jetzt mit einem Artefakt her und sage,"
+  },
+  {
+    "text" : "1, 2, 3, 4. Das Artefakt hat die ID Nummer 1. Wann immer ich Artefakt ID Nummer 1 aufrufe,",
+    "timestamp" : "15:04-15:11"
+  },
+  {
+    "text" : "dann habe ich da drin quasi Schema, Thomas ist ein Name und gleichzeitig auch Kontext",
+    "timestamp" : "15:11-15:20"
+  },
+  {
+    "text" : "und auch die Artefakte halten wir komplett schemafrei. Jedes Artefakt ist in der Lage,",
+    "timestamp" : "15:20-15:31"
+  },
+  {
+    "timestamp" : "15:31-15:43",
+    "text" : "sich selbst zu beschreiben. Also wenn ein Artefakt sagt, ich bin 7, dann ist 7 zum Beispiel die"
+  },
+  {
+    "text" : "Entität Regel. Ein Artefakt kann für sich selbst sagen, ich bin eine Regel. Basierend auf den",
+    "timestamp" : "15:43-15:51"
+  },
+  {
+    "text" : "Entitäten, die wir bereitstellen, das ist quasi der gesamte Sprachraum, dem wir einem System",
+    "timestamp" : "15:51-15:56"
+  },
+  {
+    "text" : "zugestehen oder freischreiben, kann dann ein Artefakt sagen, ich bin Regel. Ein anderes",
+    "timestamp" : "15:56-16:03"
+  },
+  {
+    "timestamp" : "16:03-16:09",
+    "text" : "Artefakt kann für sich sagen, ich bin eine Dokumentation und an dem Artefakt Regel,"
+  },
+  {
+    "timestamp" : "16:09-16:16",
+    "text" : "also an der Entität Regel, hängt ein Artefakt, der sagt, wenn du eine Regel bist, wenn du eine"
+  },
+  {
+    "text" : "Regel in einem bestimmten Scope bist, wenn du eine Regel im Scope Python bist oder HTML oder",
+    "timestamp" : "16:16-16:22"
+  },
+  {
+    "timestamp" : "16:22-16:31",
+    "text" : "Business Prozess, dann gilt für dich zum Beispiel folgendes Mindestschema. Wer hat dich erstellt,"
+  },
+  {
+    "text" : "wann wurdest du erstellt, welche Metainformationen trägst du in dir und was ist dein Inhalt, mit",
+    "timestamp" : "16:31-16:39"
+  },
+  {
+    "text" : "wem bist du verbunden. Das ist jetzt ganz kurz wahrscheinlich eine ordentliche Überdehnung der",
+    "timestamp" : "16:39-16:45"
+  },
+  {
+    "timestamp" : "16:45-16:50",
+    "text" : "Synapsen. Wir sagen, okay, warte mal, es gibt gar nichts da draußen, es gibt eigentlich nur zwei"
+  },
+  {
+    "text" : "Dinge, Entitäten und Artefakte. Jedes Token, jedes Wort ist eine Entität und ein Artefakt ist quasi",
+    "timestamp" : "16:50-17:01"
+  },
+  {
+    "text" : "die Verbindung von Entitäten, um denen Kontext und Schema und vielleicht sogar auch semantische",
+    "timestamp" : "17:01-17:08"
+  },
+  {
+    "timestamp" : "17:08-17:15",
+    "text" : "Bedeutung zu geben. Ich brauche ein Bild dazu, deshalb habe ich gesagt, ich bereite das alles"
+  },
+  {
+    "timestamp" : "17:15-17:24",
+    "text" : "gerade auf und vor, aber ich mache mal ein Beispiel, wie das in der Praxis aussieht. Joachim"
+  },
+  {
+    "timestamp" : "17:24-17:36",
+    "text" : "hat einen kleinen Vorsprung an der Stelle, dessen Gehirn haben wir schon komplett zerlegt am Freitag."
+  },
+  {
+    "text" : "Was ist denn ein Artefakt? Ein Artefakt enthält im Prinzip egal was, worüber wir gerade gestolpert",
+    "timestamp" : "17:36-17:52"
+  },
+  {
+    "timestamp" : "17:52-18:02",
+    "text" : "sind. Diese Aufzeichnung hier ist ein Artefakt, aber auch ein Satz, eine Information, die Thomas"
+  },
+  {
+    "timestamp" : "18:02-18:08",
+    "text" : "und ich austauschen, ist ein Artefakt. Jedes Produkt bei dir ist ein Artefakt. Zum Beispiel"
+  },
+  {
+    "timestamp" : "18:08-18:22",
+    "text" : "ein Task ist ein Artefakt, irgendwas, was da draußen gerade passiert. In dem Moment,"
+  },
+  {
+    "text" : "in dem wir die Welt komplett in Artefakte zerlegen, basierend auf Entitäten, sind wir in der Lage,",
+    "timestamp" : "18:22-18:30"
+  },
+  {
+    "timestamp" : "18:30-18:37",
+    "text" : "alles miteinander zu vernetzen. Wir müssen es nicht vernetzen, wir können es miteinander"
+  },
+  {
+    "timestamp" : "18:37-18:44",
+    "text" : "vernetzen und daraus entstehen gigantische Emergence-Effekte. Also ein Beispiel, das hier"
+  },
+  {
+    "timestamp" : "18:44-18:56",
+    "text" : "ist ein Task, eine Aufgabe. Was sollte gemacht werden? Es sollten bestimmte Dateien auf ihren"
+  },
+  {
+    "timestamp" : "18:56-19:07",
+    "text" : "Dry-Status untersucht werden. Das heißt, \"Don't repeat yourself\". Wie nicht redundant ist denn"
+  },
+  {
+    "text" : "der Code? Bitte analysiert das mal. Daraus ist jetzt ein Artefakt entstanden, aus diesem To-Do,",
+    "timestamp" : "19:07-19:15"
+  },
+  {
+    "text" : "aber gleichzeitig ist zum Beispiel auch ein schönes Artefakt, die Entität KI-Glove, das heißt",
+    "timestamp" : "19:15-19:30"
+  },
+  {
+    "text" : "nichts anderes als ein Handschuh für KI-Systeme, damit sie unsere Systeme zwar bedienen, aber nie",
+    "timestamp" : "19:30-19:36"
+  },
+  {
+    "text" : "berühren, haben wir hier ein Artefakt, das nichts anderes macht, als andere Artefakte zu vernetzen,",
+    "timestamp" : "19:36-19:45"
+  },
+  {
+    "text" : "die da dazugehören. Heißt, in Zukunft ist es für dich eigentlich egal, habe ich eine Dokumentation",
+    "timestamp" : "19:45-19:52"
+  },
+  {
+    "text" : "oder eine Regel oder einen Kundenkontakt oder alles ist ein Artefakt und das Artefakt steuert",
+    "timestamp" : "19:52-20:01"
+  },
+  {
+    "timestamp" : "20:01-20:07",
+    "text" : "sich selbst über seine Selbstbeschreibung. Ich bin eine Kontaktadresse, ich bin eine Dokumentation,"
+  },
+  {
+    "timestamp" : "20:07-20:17",
+    "text" : "ich bin ein Website-Inhalt. Du steuerst das letzten Endes über ihre Selbstbeschreibung"
+  },
+  {
+    "timestamp" : "20:17-20:24",
+    "text" : "und zum Beispiel über die Inhalte, weil die Inhalte bestehen aus Entitäten, die wir zuordnen"
+  },
+  {
+    "text" : "können und zum Beispiel aus dem Slug, dem Namen, wie wir ihn hier zum Beispiel sehen können. Das",
+    "timestamp" : "20:24-20:31"
+  },
+  {
+    "timestamp" : "20:31-20:38",
+    "text" : "kann eine Aneinanderreihung sein von Entitäten in der Datenbank, damit wir sie auch finden können"
+  },
+  {
+    "text" : "oder zuordnen können. Das erzeugt letzten Endes die Möglichkeit, sich ein komplett vernetztes",
+    "timestamp" : "20:38-20:47"
+  },
+  {
+    "text" : "System über alle Domänen zu erzeugen. Du kombinierst dann nachher Rechnungen mit Kunden,",
+    "timestamp" : "20:47-20:55"
+  },
+  {
+    "text" : "mit Prozessen, mit Dateien, mit Code und so weiter und so fort. Das gibt einem eine gigantische",
+    "timestamp" : "20:55-21:03"
+  },
+  {
+    "timestamp" : "21:03-21:11",
+    "text" : "Möglichkeit und gleichzeitig hinterlegen wir zum Beispiel über das Cloud Code Hook System. Hey"
+  },
+  {
+    "timestamp" : "21:11-21:20",
+    "text" : "Cloud Code, wann immer du eine Datei verändern möchtest, liest zuerst das Artefakt für die"
+  },
+  {
+    "timestamp" : "21:20-21:28",
+    "text" : "Datei, weil da steht drin, wer bin ich, was kann ich, was sind meine Funktionen, mit welchen anderen"
+  },
+  {
+    "text" : "Artefakten bin ich verbunden. Wenn Cloud Code also hergeht und sagt, ich möchte folgende Variable",
+    "timestamp" : "21:28-21:34"
+  },
+  {
+    "timestamp" : "21:34-21:41",
+    "text" : "in diesem Code verändern, holt es sich zuerst alle Informationen und hat eine Impact Analyse. Das"
+  },
+  {
+    "text" : "kann es momentan nämlich nicht out of the box. Es verändert irgendwas und wir sind Stunden mit",
+    "timestamp" : "21:41-21:46"
+  },
+  {
+    "text" : "Nacharbeit beschäftigt. Hat eine Impact Analyse und dann, hey Cloud Code, wenn du das gemacht hast,",
+    "timestamp" : "21:46-21:53"
+  },
+  {
+    "text" : "aktualisiere das Artefakt. Das ist ein automatischer Prozess übrigens. Aktualisiere",
+    "timestamp" : "21:53-22:03"
+  },
+  {
+    "timestamp" : "22:03-22:10",
+    "text" : "die Dokumentation, wenn erforderlich. Wie sollst du die Dokumentation aktualisieren? Steht im"
+  },
+  {
+    "timestamp" : "22:10-22:17",
+    "text" : "Artefakt für die Dokumentation für Code. Und so kriegst du jetzt ein sich selbst steuerndes,"
+  },
+  {
+    "timestamp" : "22:17-22:24",
+    "text" : "sich selbst dokumentierendes, sich selbst aktualisierendes System. Das braucht schwind,"
+  },
+  {
+    "text" : "paar Stündchen nachdenken und ein bisschen Mut und ab dann bist du in der Lage hochkomplexe",
+    "timestamp" : "22:24-22:33"
+  },
+  {
+    "timestamp" : "22:33-22:40",
+    "text" : "Systeme mit zwei Tabellen zu steuern. Eine Tabelle sind nur Entitäten drin, das sind"
+  },
+  {
+    "timestamp" : "22:40-22:46",
+    "text" : "alle Worte, die in dem ganzen Laden benutzt werden. Eine Tabelle sind nur Artefakte drin"
+  },
+  {
+    "text" : "und auch nur zwei Spalten, nämlich letzten Endes die ID und der Inhalt vom Artefakt. Auch hier",
+    "timestamp" : "22:46-22:54"
+  },
+  {
+    "timestamp" : "22:54-23:03",
+    "text" : "smallest building blocks of reality, zwei Tabellen mit einer sehr, sehr einfachen Logik. Die Dinge"
+  },
+  {
+    "text" : "sind über das, was sie enthalten, vernetzt. Jetzt sind wir in einem schemalosen Zustand und das ist",
+    "timestamp" : "23:03-23:10"
+  },
+  {
+    "text" : "nämlich das, wo wahrscheinlich deine Sehnsucht hingeht. Ich kann noch gar nicht erfassen,",
+    "timestamp" : "23:10-23:15"
+  },
+  {
+    "text" : "was ich alles erfassen muss. Jetzt sind es Regeln und Dokumentationen und Code und Rechnungen und",
+    "timestamp" : "23:15-23:24"
+  },
+  {
+    "timestamp" : "23:24-23:32",
+    "text" : "Verträge und wow, das ist so viel, ich kann es nicht erfassen. Also nehmen wir eine schemalose"
+  },
+  {
+    "text" : "Struktur, in der wir den Dingen die Möglichkeit geben, sich selbst zu beschreiben und sie dann",
+    "timestamp" : "23:32-23:39"
+  },
+  {
+    "timestamp" : "23:39-23:45",
+    "text" : "zu vernetzen und relativ mühelos auch zu korrigieren. Wenn ich eines Tages sage,"
+  },
+  {
+    "timestamp" : "23:45-23:52",
+    "text" : "ja hier habe ich Artefakte zum Thema Verträge, aber das eine sind Verträge, die gehören zu uns,"
+  },
+  {
+    "text" : "das andere sind Verträge, die gehören, also das sind unsere ausgehenden Verträge,",
+    "timestamp" : "23:52-23:57"
+  },
+  {
+    "text" : "das andere sind eingehende Verträge, dann geht man in der Analyse her und sagt,",
+    "timestamp" : "23:57-24:01"
+  },
+  {
+    "text" : "ah welche Entitäten sind nach intern, welche sind nach extern verbunden. Du kannst quasi,",
+    "timestamp" : "24:01-24:08"
+  },
+  {
+    "text" : "wie, wer war es? Moses? Ich bin nicht bibelfest an der Stelle. Sagt, wir teilen mal kurz das",
+    "timestamp" : "24:08-24:15"
+  },
+  {
+    "text" : "Meer an dieser Stelle, indem wir Entitäten verändern und Zuordnungen in Artefakten und",
+    "timestamp" : "24:15-24:21"
+  },
+  {
+    "text" : "teilen quasi die gesamte Businesslogik oder machen sie filterbar für eine bestimmte.",
+    "timestamp" : "24:21-24:26"
+  },
+  {
+    "text" : "Es ist ja in dem Sinne eigentlich eine Verschlagwortung, wenn man das so runterbrechen",
+    "timestamp" : "24:26-24:31"
+  },
+  {
+    "timestamp" : "24:31-24:38",
+    "text" : "möchte, also auf unendlich viele verschiedene Schlagwort-Ebenen. Also ich weise jetzt halt"
+  },
+  {
+    "text" : "keine festen Strukturen zu, sondern ich kann immer wieder neu definieren, je nach Anforderung,",
+    "timestamp" : "24:38-24:43"
+  },
+  {
+    "text" : "welche Entitäten oder Elemente wozu gehören sozusagen und in welcher Verbindung sie mit",
+    "timestamp" : "24:43-24:48"
+  },
+  {
+    "timestamp" : "24:48-24:53",
+    "text" : "anderen Sachen stehen. Gleichzeitig muss ich da aber auch in der Bedienung jetzt der KI für"
+  },
+  {
+    "text" : "einen Auftrag meinetwegen ja irgendeine Auswahl treffen. Das heißt, ich muss ja definieren,",
+    "timestamp" : "24:53-24:58"
+  },
+  {
+    "text" : "welches Autorenprofil gilt, für welchen Kunden ist das denn jetzt, was ist der Zweck. So und",
+    "timestamp" : "24:58-25:03"
+  },
+  {
+    "text" : "da muss ich das ja irgendwo finden. Das heißt, also ich kann ja nicht jedes Mal, wenn ich ein",
+    "timestamp" : "25:03-25:09"
+  },
+  {
+    "text" : "Briefing mache, entweder die KI mit 100 Millionen Token alles durchsuchen lassen, was jetzt gerade",
+    "timestamp" : "25:09-25:14"
+  },
+  {
+    "text" : "passen würde, noch kann ich das selber alles durchsuchen, sondern es muss ja zumindest eine",
+    "timestamp" : "25:14-25:18"
+  },
+  {
+    "text" : "rudimentäre Grobstruktur da sein, dass man sagt, es gibt so vom Größeren ins Kleinere,",
+    "timestamp" : "25:18-25:23"
+  },
+  {
+    "text" : "irgend so ein Abstraktionsgrad, wo man erstmal die typischen Regeln verwendet und dann noch",
+    "timestamp" : "25:23-25:28"
+  },
+  {
+    "text" : "irgendwie weiter differenziert oder so. Das heißt, irgendwie eine Grundstruktur an Projekten,",
+    "timestamp" : "25:28-25:34"
+  },
+  {
+    "text" : "Sammlungen, Kategorien, Schlagworten, wie auch immer, die muss ich ja zumindest organisieren,",
+    "timestamp" : "25:34-25:40"
+  },
+  {
+    "timestamp" : "25:40-25:44",
+    "text" : "in Bezug auf mein Geschäftsmodell oder mein Unternehmen oder den Anwendungsfall. Oder"
+  },
+  {
+    "timestamp" : "25:44-25:52",
+    "text" : "habe ich das missverstanden? In der Sekunde, in der du eine Struktur anlegst, wirst du mit"
+  },
+  {
+    "timestamp" : "25:52-25:57",
+    "text" : "der Struktur unzufrieden sein. Warum? Weil sich selbst die grundlegenden Dinge kontinuierlich"
+  },
+  {
+    "text" : "ändern. Wenn bei mir Cloud startet, dann gibt es tatsächlich nur ein Artefakt, das geladen wird.",
+    "timestamp" : "25:57-26:06"
+  },
+  {
+    "timestamp" : "26:06-26:14",
+    "text" : "Das heißt, lade das KI-Glove-Artefakt fertig. Und in dem Artefakt steht im Prinzip nur drin,"
+  },
+  {
+    "text" : "je nach Aufgabe lädst du dir die erforderlichen Artefakte. Also es wird nicht alles gelesen,",
+    "timestamp" : "26:14-26:22"
+  },
+  {
+    "timestamp" : "26:22-26:29",
+    "text" : "sondern wir ermächtigen die KI immer ganz exakt spezifisch zu lesen."
+  },
+  {
+    "text" : "Genau, aber wo kommt diese Einteilung her? Also wer definiert die? Wer legt die fest?",
+    "timestamp" : "26:29-26:35"
+  },
+  {
+    "timestamp" : "26:35-26:43",
+    "text" : "Du legst die fest. Ich bin hier jetzt leider im anderen System."
+  },
+  {
+    "timestamp" : "26:43-26:58",
+    "text" : "Hier bin ich zum Beispiel im KI-Glove-Core-Artefakt und hier ist im Prinzip nur der Namespace für alle"
+  },
+  {
+    "timestamp" : "26:58-27:04",
+    "text" : "Core-Komponenten, nämlich für das Entity-System und für das Artefakt-System. Mehr haben wir nicht."
+  },
+  {
+    "text" : "Und dann gucken wir uns von dort aus an, zum Beispiel, wenn ich im falschen System bin.",
+    "timestamp" : "27:04-27:23"
+  },
+  {
+    "timestamp" : "27:23-27:38",
+    "text" : "Wenn die KI irgendwas machen soll, schreibe eine Datei, ändere irgendwas und so weiter und so fort."
+  },
+  {
+    "text" : "Das KI-System kommt bei mir nie wieder direkt mit dem System in Kontakt,",
+    "timestamp" : "27:38-27:44"
+  },
+  {
+    "timestamp" : "27:44-27:47",
+    "text" : "sonst immer eine Abstraktionsschicht dazwischen. Aber hier steht zum Beispiel,"
+  },
+  {
+    "timestamp" : "27:47-27:55",
+    "text" : "wenn du ein Token verarbeiten möchtest, dann benutze dieses System."
+  },
+  {
+    "timestamp" : "27:55-28:01",
+    "text" : "Also du machst einen einzigen Startpunkt, das ist der \"Root of Everything\" und von dort aus"
+  },
+  {
+    "timestamp" : "28:01-28:09",
+    "text" : "wird einfach spezifisch, je nachdem was die Aufgabe ist, dann weiter über Artefakte alles"
+  },
+  {
+    "text" : "gesteuert. Sobald sich in deinem Unternehmen irgendwas verändert, du gehst nur noch ins",
+    "timestamp" : "28:09-28:13"
+  },
+  {
+    "text" : "Artefakt und veränderst dort die Steuerung. Nie wieder programmatisch und nie wieder in",
+    "timestamp" : "28:13-28:18"
+  },
+  {
+    "text" : "irgendwelchen Prozessen, sondern tatsächlich ganz gezielt innerhalb dieser Artefakte.",
+    "timestamp" : "28:18-28:24"
+  },
+  {
+    "timestamp" : "28:24-28:28",
+    "text" : "Das heißt, Verschlagwörterung greift da ein bisschen zu kurz. Es ist tatsächlich"
+  },
+  {
+    "text" : "eine systemische Steuerung zwischen Entitäten und letzten Endes der Artefakt-Logik.",
+    "timestamp" : "28:28-28:35"
+  },
+  {
+    "text" : "Vielleicht letzte Frage, also weil das ja ein technischer Vorgang der dann da passiert,",
+    "timestamp" : "28:35-28:40"
+  },
+  {
+    "timestamp" : "28:40-28:43",
+    "text" : "also dann wäre Benni wahrscheinlich der bessere Ansprechpartner. Aber wenn jetzt,"
+  },
+  {
+    "timestamp" : "28:43-28:48",
+    "text" : "ich sag mal, meine Redakteurin sich hier anmeldet und für ihren Blogartikel quasi"
+  },
+  {
+    "text" : "Wissen hinzufügt, ein Beispielartikel oder eine URL, wo der Artikel erscheint oder einen",
+    "timestamp" : "28:48-28:53"
+  },
+  {
+    "text" : "Kontext gibt meinetwegen, dann lädt die ja einfach was hoch und füttert das System.",
+    "timestamp" : "28:53-28:58"
+  },
+  {
+    "timestamp" : "28:58-29:02",
+    "text" : "Das wird dann in Chunks zerlegt, wird vektorisiert, dann kommt das in die Datenbank,"
+  },
+  {
+    "text" : "alles wunderbar. Aber ich sag mal, sie muss ja auch einen Kontext geben. Das heißt,",
+    "timestamp" : "29:02-29:06"
+  },
+  {
+    "timestamp" : "29:06-29:11",
+    "text" : "also sie muss ja definieren, ist das nur ein Beispiel von der Tonalität, ist das ein Beispiel"
+  },
+  {
+    "text" : "für den Aufbau, soll das genau die Länge haben, soll das also genau die Struktur haben,",
+    "timestamp" : "29:11-29:15"
+  },
+  {
+    "timestamp" : "29:15-29:18",
+    "text" : "von den Absätzen her, wie auch immer. Das heißt, es muss ja anwenderfreundlich sein."
+  },
+  {
+    "timestamp" : "29:18-29:21",
+    "text" : "Also das, was im Hintergrund jetzt passiert, was du beschreibst, das ist aber mal eher"
+  },
+  {
+    "timestamp" : "29:21-29:27",
+    "text" : "Bennis Prämisse. Meine Frage ist ja eher, wie bereiten wir jetzt unser Briefing vor,"
+  },
+  {
+    "timestamp" : "29:27-29:32",
+    "text" : "also womit wir die KI füttern? Wie bereitet ihr euer Briefing vor?"
+  },
+  {
+    "text" : "Ihr legt einfach ein Artefakt an dafür. Also wie soll geschrieben werden und was ist der Scope?",
+    "timestamp" : "29:32-29:41"
+  },
+  {
+    "timestamp" : "29:41-29:49",
+    "text" : "Also zum Beispiel kann der Scope sein, Webseite, Beispiele. Für diesen Scope definiert ihr"
+  },
+  {
+    "text" : "letzten Endes ein Artefakt, schreibe im Stil von Person, Person, Schreibstil, hat einen eigenen",
+    "timestamp" : "29:49-29:58"
+  },
+  {
+    "text" : "Artefakt und zwar ist es nur anwendbar, wenn du in diesem Bereich von der URL-Struktur bist",
+    "timestamp" : "29:58-30:05"
+  },
+  {
+    "text" : "oder von der Dateistruktur oder von der Datenbankstruktur. Scope und Person sind eigene Artefakte",
+    "timestamp" : "30:05-30:14"
+  },
+  {
+    "timestamp" : "30:14-30:22",
+    "text" : "und können miteinander jeweils wirklich systemisch entsprechend ausgesteuert und angepasst werden."
+  },
+  {
+    "text" : "Aber dann ist die Vorgehensweise mit einem Kontext, Autoren, Profilen und Kundenprojekten,",
+    "timestamp" : "30:22-30:27"
+  },
+  {
+    "text" : "ja also das ist ja genau das. Das definiert ja genau diesen Rahmen, oder?",
+    "timestamp" : "30:27-30:32"
+  },
+  {
+    "text" : "Genau, du zerlegst die nur SRP, also Single Responsible Principle, die Dinge in ihre kleinste",
+    "timestamp" : "30:32-30:42"
+  },
+  {
+    "timestamp" : "30:42-30:49",
+    "text" : "Einheit, um sie steuerbar zu machen. Und später zum Beispiel auch Prozesse. Du hast ein Artefakt,"
+  },
+  {
+    "timestamp" : "30:49-30:54",
+    "text" : "das einen Prozess beschreibt. Da sind nur quasi die einzelnen Prozesspunkte drin,"
+  },
+  {
+    "text" : "die verlinken jeweils auf den einzelnen Prozessschritt. Und an den Prozessschritten",
+    "timestamp" : "30:54-30:59"
+  },
+  {
+    "timestamp" : "30:59-31:03",
+    "text" : "hängen zum Beispiel die Artefakte für die Dateien, die zu dem Prozess gehören."
+  },
+  {
+    "timestamp" : "31:03-31:08",
+    "text" : "Auf die Art und Weise kann man hergehend sagen, ich möchte den Business-Prozess verändern."
+  },
+  {
+    "timestamp" : "31:08-31:15",
+    "text" : "Visualisierst du dir direkt quasi die Impact-Analyse, was bedeutet es an welchen Dateien,"
+  },
+  {
+    "text" : "an welchen Datenbanken ändert sich was, an welchen Datenstrukturen ändert sich was,",
+    "timestamp" : "31:15-31:21"
+  },
+  {
+    "timestamp" : "31:21-31:28",
+    "text" : "an welchen zum Beispiel Services auf dem Server muss was verändert werden. Genau,"
+  },
+  {
+    "timestamp" : "31:28-31:36",
+    "text" : "also es wird ein sehr, sehr mächtiges Modell, weil du koppelst jedes Artefakt quasi mit Dateien,"
+  },
+  {
+    "text" : "mit Code, mit Serverdiensten, mit internen Prozessen. Zum Beispiel der Anmeldeprozess",
+    "timestamp" : "31:36-31:45"
+  },
+  {
+    "timestamp" : "31:45-31:51",
+    "text" : "bei mir für die KI-Gemeinschaft ist nichts anderes als quasi eine riesige Wolke aus Artefakten,"
+  },
+  {
+    "text" : "wo ich aber trotzdem in der Übersicht direkt hergehen kann und sagen kann,",
+    "timestamp" : "31:51-31:56"
+  },
+  {
+    "timestamp" : "31:56-32:01",
+    "text" : "was passiert wann wie wo. Und dann sehe ich genau, diese Dateien spielen damit,"
+  },
+  {
+    "text" : "diese Datenbankfelder werden von A nach B transformiert und so weiter. Also es ist ein",
+    "timestamp" : "32:01-32:06"
+  },
+  {
+    "text" : "einmaliges sich drauf einlassen quasi auf dieses Abstraktionslevel. Und Joachim hatte es am Freitag,",
+    "timestamp" : "32:06-32:14"
+  },
+  {
+    "text" : "es dauert kurz und dann schlägt einem die Birne weg, weil man feststellt, wow,",
+    "timestamp" : "32:14-32:18"
+  },
+  {
+    "timestamp" : "32:18-32:24",
+    "text" : "wir können den ganzen Bums quasi auf der Basis von zwei Tabellen steuern und der Logik da rein."
+  },
+  {
+    "text" : "Ich gebe das mal so weiter und wenn die Birne weggeflogen ist, melden wir uns wieder. Erstmal",
+    "timestamp" : "32:24-32:29"
+  },
+  {
+    "timestamp" : "32:29-32:36",
+    "text" : "vielen Dank. Ich habe eh gerade innerlich beschlossen, das ist ja was Elementares und"
+  },
+  {
+    "text" : "das wird jedem von uns helfen, diesen Irrsinn, der da ja auch ausbricht, zwangsläufig,",
+    "timestamp" : "32:36-32:41"
+  },
+  {
+    "text" : "den in eine systemische Steuerung zu bringen. Und ich mache dazu einfach mal eine separate Session,",
+    "timestamp" : "32:41-32:48"
+  },
+  {
+    "timestamp" : "32:48-32:54",
+    "text" : "wo wir auch direkt bei mir mal in die Systeme in Einblick bekommen, wie können wir damit"
+  },
+  {
+    "timestamp" : "32:54-33:03",
+    "text" : "eigentlich hochgradig komplexe Unternehmen steuern. Julia, du hattest dich gemeldet,"
+  },
+  {
+    "timestamp" : "33:03-33:08",
+    "text" : "ein Gedanke und Eberhard glaubt dann auch. Genau, ich muss einmal fragen,"
+  },
+  {
+    "text" : "wegen objektorientierter Programmierung. So habe ich das vor fast 15 Jahren gelernt,",
+    "timestamp" : "33:08-33:12"
+  },
+  {
+    "text" : "studieren, wenn man sagt, wir haben hier irgendwie Entitäten und die instanziieren",
+    "timestamp" : "33:12-33:16"
+  },
+  {
+    "timestamp" : "33:16-33:21",
+    "text" : "wir durch Artefakte. Deswegen habe ich mal im System jetzt beigebracht, es gibt Entitäten,"
+  },
+  {
+    "text" : "also ein Glashar, das beschreibt, welche Gegenstände oder welche Konzepte, was existiert",
+    "timestamp" : "33:21-33:26"
+  },
+  {
+    "text" : "so in der Welt und die beschreiben das erstmal nur. Die einzelnen Gegenstände sind dann Artefakte,",
+    "timestamp" : "33:26-33:31"
+  },
+  {
+    "timestamp" : "33:31-33:36",
+    "text" : "aber jedes Artefakt muss irgendwie auch eine Entität sein. Ein Artefakt wird automatisch"
+  },
+  {
+    "timestamp" : "33:36-33:49",
+    "text" : "zur Entität über seinen eigenen Namen genommen. Warum reicht da nicht eine Tabelle?"
+  },
+  {
+    "text" : "Da kommen wir jetzt rüber zu Eberhard. Wenn wir ein System aufbauen, deutsch und englisch",
+    "timestamp" : "33:49-34:01"
+  },
+  {
+    "timestamp" : "34:01-34:09",
+    "text" : "sprachig und einer Codebasis, dann landen wir je nach Sprache, also deutsch ungefähr 350.000"
+  },
+  {
+    "timestamp" : "34:09-34:13",
+    "text" : "Worte, englisch auch noch mal ungefähr 300.000 unterschiedliche Begriffe plus,"
+  },
+  {
+    "text" : "was die jeweiligen Programmiersprachen mit sich geben, ungefähr bei 1,5 Millionen Einträge für",
+    "timestamp" : "34:13-34:19"
+  },
+  {
+    "text" : "Entitäten. Entitäten müssen steuerbar sein, entweder Blacklist, nicht zugewiesen,",
+    "timestamp" : "34:19-34:26"
+  },
+  {
+    "timestamp" : "34:26-34:33",
+    "text" : "Whitelist und\/oder Secure. Das muss gehashed werden. Secure deshalb, weil wir später KI-Systemen gar"
+  },
+  {
+    "text" : "keinen Zugang mehr zu Entitäten geben, sondern nur noch zu Hashes. Wir können also externe KI-Systeme",
+    "timestamp" : "34:33-34:39"
+  },
+  {
+    "text" : "direkt auf unseren Teams eine Information zulassen. Sie kommen nie damit in Berührung.",
+    "timestamp" : "34:39-34:43"
+  },
+  {
+    "text" : "So, das sorgt dafür, wir brauchen eine extrem rasend schnelle Tabelle nur für Entitäten mit",
+    "timestamp" : "34:43-34:52"
+  },
+  {
+    "text" : "ihrer Reverse-Zuordnung. Artefakt-Tabellen sind komplex, dahingehend, weil sie im Prinzip alle",
+    "timestamp" : "34:52-35:02"
+  },
+  {
+    "timestamp" : "35:02-35:08",
+    "text" : "Entitäten als Fremdkeys zum Beispiel bei sich aufnehmen können, wenn man das so machen möchte,"
+  },
+  {
+    "text" : "oder über die Anwendungslogik. Allein, ja, man könnte es in einer Tabelle abbilden. Gleichzeitig",
+    "timestamp" : "35:08-35:18"
+  },
+  {
+    "text" : "möchte ich davon abraten. Es ist eh schon, Menschen kriegen eh schon eine Schnappatmung,",
+    "timestamp" : "35:18-35:23"
+  },
+  {
+    "text" : "wenn sie sagen, warte mal, wir haben hier in einer Tabelle, die relativ gut geschützt sein muss,",
+    "timestamp" : "35:23-35:29"
+  },
+  {
+    "text" : "sämtliche Informationen drin, also Kundendaten, Credentials, Verträge und so weiter. Da sterben",
+    "timestamp" : "35:29-35:38"
+  },
+  {
+    "timestamp" : "35:38-35:46",
+    "text" : "manche schon. Deshalb ist das Thema Entity-Status-2-Verschlüssel so extrem wichtig. Aber die"
+  },
+  {
+    "text" : "Artefakt-Tabelle, weil das kaliert, brauchen wir eine eigene Struktur, die wir anders nachher",
+    "timestamp" : "35:46-35:56"
+  },
+  {
+    "timestamp" : "35:56-36:01",
+    "text" : "optimieren hinsichtlich Schreib- und Leseverhalten, als wenn wir alles in einer Tabelle haben. Also,"
+  },
+  {
+    "text" : "das geht. Und es wäre die ultimative Ideologie, aber rein für den Pragmatismus im Alltag,",
+    "timestamp" : "36:01-36:11"
+  },
+  {
+    "text" : "möchte ich es nicht empfehlen. Du hast da sicher noch mal einen anderen Blick drauf,",
+    "timestamp" : "36:11-36:18"
+  },
+  {
+    "timestamp" : "36:18-36:24",
+    "text" : "eine Tabelle mit zwei Millionen Einträgen oder vielleicht eine Artefakt-Tabelle mit zehn Millionen"
+  },
+  {
+    "timestamp" : "36:24-36:32",
+    "text" : "Einträgen, das macht ja niemanden tot. Aber gleichzeitig wäre es hier ungut, diese zwei"
+  },
+  {
+    "timestamp" : "36:32-36:38",
+    "text" : "Datenstrukturen überhaupt miteinander zu mischen. Oder sagen wir so, es würde eine hohe Abstraktion"
+  },
+  {
+    "text" : "erfordern. Oder ich habe die Frage blöd gestellt, das kann auch sein.",
+    "timestamp" : "36:38-36:50"
+  },
+  {
+    "text" : "Also ich komme klar mit Entität. Bei Artefakt hapert es noch ein bisschen. Ich habe das jetzt",
+    "timestamp" : "36:50-37:03"
+  },
+  {
+    "text" : "so verstanden, Thomas, was du gerade gesagt hast, ist eine Entität. Aber ein kompletter Vertrag mit",
+    "timestamp" : "37:03-37:09"
+  },
+  {
+    "timestamp" : "37:09-37:13",
+    "text" : "20 Seiten PDF kann auch eine Entität sein, stimmt das?"
+  },
+  {
+    "timestamp" : "37:13-37:20",
+    "text" : "Genau. Der Vertrag selbst ist ein Artefakt, aber das Artefakt ist per Design ja eine Entität."
+  },
+  {
+    "text" : "Genau. Also ich fange jetzt nicht an, die einzelnen Wörter dieses Vertrages aufzudröseln,",
+    "timestamp" : "37:20-37:27"
+  },
+  {
+    "timestamp" : "37:27-37:35",
+    "text" : "welches Artefakt es ist. Also Thomas hat einen Tascentenrecorder bestellt. Also ich lasse den"
+  },
+  {
+    "text" : "Vertrag als einen Datensatz in der Entitäten-Tabelle. Oder schlüssig, ich lasse es nach",
+    "timestamp" : "37:35-37:47"
+  },
+  {
+    "timestamp" : "37:47-37:55",
+    "text" : "sämtlichen einzelnen Wörtern auf und habe dann eine Artefakt-Tabelle mit 360.000 Entitäts-IDs,"
+  },
+  {
+    "timestamp" : "37:55-38:01",
+    "text" : "weil die alle in diesem Vertrag vorkommen. Dann habe ich die Frage, wo steht die Reihenfolge?"
+  },
+  {
+    "timestamp" : "38:01-38:09",
+    "text" : "Oder gibt es gar keine? Was machen wir 300.000 Wörter, die keine Reihenfolge haben, wenn ich"
+  },
+  {
+    "text" : "den Vertrag wieder lesen will? Doch, die Reihenfolge steht im",
+    "timestamp" : "38:09-38:14"
+  },
+  {
+    "text" : "Vertrag. Im Kontent des Vertrags stehen die IDs der Entitäten in der Reihenfolge.",
+    "timestamp" : "38:14-38:20"
+  },
+  {
+    "timestamp" : "38:20-38:31",
+    "text" : ">> DOREEN SIEGFRIED: Okay. Also ich habe in der Spalte der Artefakte alle Zahlen hintereinander,"
+  },
+  {
+    "text" : "nicht in Datensätzen, sondern quasi zu einer Entität.",
+    "timestamp" : "38:31-38:35"
+  },
+  {
+    "text" : ">> JÖRG PETERS: Genau. Du würdest ja den Vertrag einfach als Textdokument speichern.",
+    "timestamp" : "38:35-38:41"
+  },
+  {
+    "text" : "Und dann gibt es zwei Herangehensweisen. Die eine ist, du speichert oder frei. Wir speichern den",
+    "timestamp" : "38:41-38:47"
+  },
+  {
+    "text" : "Vertrag als Text. Nächste Stufe ist, wir speichern den Vertrag zwar als Text, aber wir ersetzen",
+    "timestamp" : "38:47-38:56"
+  },
+  {
+    "text" : "jedes Wort durch die ID der Entität. Die andere Variante ist, wir ersetzen jedes Wort durch den",
+    "timestamp" : "38:56-39:08"
+  },
+  {
+    "text" : "Fremdschlüssel der Identität. Also haben das als eine Tabelle mit Reihenfolge der Begriffe und dem",
+    "timestamp" : "39:08-39:18"
+  },
+  {
+    "timestamp" : "39:18-39:25",
+    "text" : "jeweilig zugeordneten Fremdschlüssel. Es sind unterschiedliche Stufen, je nach Performance."
+  },
+  {
+    "timestamp" : "39:25-39:32",
+    "text" : "Aber was bekommen wir dadurch? In der Sekunde, in der wir dann zum Beispiel in der Graf-Datenbank"
+  },
+  {
+    "timestamp" : "39:32-39:40",
+    "text" : "sagen, bei dem Kunden hat sich die Adresse verändert, haben wir sofort eine Impact-Analyse,"
+  },
+  {
+    "text" : "oder bei uns hat sich was verändert, haben wir sofort eine Impact-Analyse, worauf nicht",
+    "timestamp" : "39:40-39:51"
+  },
+  {
+    "text" : "richtet sich das aus. Worauf, was verändert sich alles, wenn wir das ... Das ist systeminherent,",
+    "timestamp" : "39:51-40:00"
+  },
+  {
+    "text" : "weil wir wollen in Zukunft, dass die KI hergeht und sagt, wir möchten eine Variable in eine",
+    "timestamp" : "40:00-40:07"
+  },
+  {
+    "text" : "Codedatei verändern, in einer Python-Datei zum Beispiel. Wir möchten die verändern,",
+    "timestamp" : "40:07-40:13"
+  },
+  {
+    "text" : "auf welche Dokumente wird sich das jetzt sofort auswirken. Und zwar nicht basierend auf einer",
+    "timestamp" : "40:13-40:21"
+  },
+  {
+    "timestamp" : "40:21-40:28",
+    "text" : "Ast-Analyse, sondern tatsächlich basierend auf einer Datenbank-Analyse. Das macht uns komplett"
+  },
+  {
+    "timestamp" : "40:28-40:39",
+    "text" : "technologieagnostisch und erlaubt uns 100 Prozent Präzision. Es erfordert allerdings Mut,"
+  },
+  {
+    "text" : "mal kurz so umzudenken. Aber den Effekt, den hatte Joachim zum Beispiel, als wir da waren,",
+    "timestamp" : "40:39-40:45"
+  },
+  {
+    "text" : "wir haben gesagt, alles ist ein Artefakt. Die Regeln, die dein System jetzt gleich Code schreibt,",
+    "timestamp" : "40:45-40:53"
+  },
+  {
+    "text" : "steht in einem Artefakt. Dry, Yagni, KIS, SRP und so weiter. Was das bedeutet, steht in einzelnen",
+    "timestamp" : "40:53-41:03"
+  },
+  {
+    "timestamp" : "41:03-41:09",
+    "text" : "Artefakten. Liebe KI, mach mir einen neuen Controller, damit ich in der Website eine"
+  },
+  {
+    "text" : "Auswertung anzeigen kann. KI geht her, liest als erstes die Artefakte für Programmiersprache,",
+    "timestamp" : "41:09-41:17"
+  },
+  {
+    "text" : "Spezifikationen, ah, es sollen Controller werden, Code-Paradigmen, Template-Regeln,",
+    "timestamp" : "41:17-41:25"
+  },
+  {
+    "timestamp" : "41:25-41:31",
+    "text" : "holt sich diese Informationen und produziert genau dieses eine Code-Stück, das wir gerne"
+  },
+  {
+    "text" : "haben möchten. Kein Rumgerate mehr und absolut spezifikationstreue. Das sind quasi die Auswirkungen,",
+    "timestamp" : "41:31-41:42"
+  },
+  {
+    "timestamp" : "41:42-41:48",
+    "text" : "die man hat, wenn man quasi in Entitäten und in Artefakten denkt. Und als das geschrieben war"
+  },
+  {
+    "text" : "und Code fertig ist, gibt es entweder über den Hook oder über den Automatismus einen Impuls ans",
+    "timestamp" : "41:48-41:58"
+  },
+  {
+    "timestamp" : "41:58-42:06",
+    "text" : "Artefakt. Ich wurde verändert. Ich, Datei wurde verändert. Mein Artefakt muss sich aktualisieren."
+  },
+  {
+    "text" : "Die KI wird aufgefordert, die Änderung in der Entität, im Artefakt zu aktualisieren. Und durch",
+    "timestamp" : "42:06-42:14"
+  },
+  {
+    "text" : "die Aktualisierung, wenn das verändert wird, werden ja alle Entitäten, die verändert werden,",
+    "timestamp" : "42:14-42:20"
+  },
+  {
+    "text" : "benachrichtigt. Das heißt, dieses Artefakt benachrichtigt sein gesamtes zugehöriges",
+    "timestamp" : "42:20-42:29"
+  },
+  {
+    "timestamp" : "42:29-42:36",
+    "text" : "Umfeld und regt überall an, hallo, hier muss was aktualisiert werden, weil ich wurde aktualisiert."
+  },
+  {
+    "text" : "Wir kriegen also auf einen Schlag ein komplett sich selbst beschreibendes und selbst dokumentierendes",
+    "timestamp" : "42:36-42:43"
+  },
+  {
+    "timestamp" : "42:43-42:55",
+    "text" : "und selbst aktualisierendes System. Joachim weiß, wie sich das anfühlt,"
+  },
+  {
+    "timestamp" : "42:55-43:00",
+    "text" : "das jetzt kurz zu verarbeiten. Ach Joachim, du hast es verstanden. Du kannst es nachvollziehen."
+  },
+  {
+    "timestamp" : "43:00-43:13",
+    "text" : "Ich arbeite noch daran. Ich habe es gerade schon, nachdem Thomas das so schön reingebracht hat,"
+  },
+  {
+    "text" : "ich arbeite das mal aus, dass wir das in Bildern sehen können und live und in der Praxis sehen",
+    "timestamp" : "43:13-43:20"
+  },
+  {
+    "text" : "können, was das eigentlich bedeutet und welche krasse Auswirkungen das hat, wie wir in Zukunft",
+    "timestamp" : "43:20-43:26"
+  },
+  {
+    "timestamp" : "43:26-43:33",
+    "text" : "Anwendungen entwickeln und die trotz einer irren Veränderungsgeschwindigkeit immer den Überblick"
+  },
+  {
+    "timestamp" : "43:33-43:39",
+    "text" : "behalten und vor allem auch die Schlankheit in den Systemen beibehalten, weil wir überall"
+  },
+  {
+    "timestamp" : "43:39-43:45",
+    "text" : "diese Regeln zum Beispiel grundsätzlich wieder anwenden können. Don't repeat yourself,"
+  },
+  {
+    "timestamp" : "43:45-43:55",
+    "text" : "kiss und so weiter. Thomas, du nimmst es einfach mit zu Benni und ich mache ein bisschen Hausaufgaben"
+  },
+  {
+    "timestamp" : "43:55-44:03",
+    "text" : "im Hintergrund, dass wir da einen Einblick bekommen und ab dann kann man nämlich hergehen und sagen,"
+  },
+  {
+    "text" : "alles im Unternehmen ist ein Artefakt. Wir schicken kurz eine E-Mail raus oder kriegen eine E-Mail,",
+    "timestamp" : "44:03-44:09"
+  },
+  {
+    "text" : "sofort ein Artefakt. Jetzt kann die Anwendungslogik greifen, wenn das eine eingehende E-Mail ist,",
+    "timestamp" : "44:09-44:16"
+  },
+  {
+    "timestamp" : "44:16-44:21",
+    "text" : "in der kommt eine bestimmte Frage vor, werden bestimmte Entitäten getriggert, die Entitäten"
+  },
+  {
+    "text" : "triggern die zugehörigen Artefakte. Ein KI-System kann relativ schnell und sehr zielsicher erfassen,",
+    "timestamp" : "44:21-44:28"
+  },
+  {
+    "text" : "was gibt es hier zu tun, welcher Scope gilt. Ist es Webseite, Datenbank, ist es ERP, ist es CRM,",
+    "timestamp" : "44:28-44:37"
+  },
+  {
+    "text" : "was ist der Scope, was sind die Regeln, also erstmal was sind die Guidelines, also was muss",
+    "timestamp" : "44:37-44:43"
+  },
+  {
+    "timestamp" : "44:43-44:49",
+    "text" : "ich tun, was sind die Templates, was sind die Regeln, Autorenprofil oder Codingprofil."
+  },
+  {
+    "timestamp" : "44:51-44:58",
+    "text" : "Dann geht es rein in die Umsetzung. Die KI formuliert einen Auftrag, einen Task und wenn"
+  },
+  {
+    "text" : "der Task irgendwas verändert, zum Beispiel bei mir in den Systemen hinterlegt, muss es einen",
+    "timestamp" : "44:58-45:04"
+  },
+  {
+    "text" : "Intent abgeben, eine Absichtserklärung. Ich möchte diese Datei verändern, wendet sich an das System,",
+    "timestamp" : "45:04-45:11"
+  },
+  {
+    "text" : "das System validiert das, gibt ein Token zurück, jetzt kann Cloud die Sache verändern und es ist",
+    "timestamp" : "45:11-45:19"
+  },
+  {
+    "text" : "automatisch dokumentiert. Warum wurde das verändert? Hier steht die Begründung, dann wird",
+    "timestamp" : "45:19-45:25"
+  },
+  {
+    "text" : "die Veränderung durchgeführt, das System dokumentiert sich, aktualisiert sich, automatisiert",
+    "timestamp" : "45:25-45:31"
+  },
+  {
+    "text" : "und wir haben grundsätzlich einen vollen Überblick über das, was im System passiert und gleichzeitig",
+    "timestamp" : "45:31-45:39"
+  },
+  {
+    "text" : "versioniert mit einer Historie. Das ist so ein bisschen der Einblick. Ich hätte da gleich noch",
+    "timestamp" : "45:39-45:47"
+  },
+  {
+    "timestamp" : "45:47-45:57",
+    "text" : "eine kleine Frage. Wir hatten ursprünglich die Crawls in die Artefakte überführt oder eingebunden."
+  },
+  {
+    "timestamp" : "45:57-46:04",
+    "text" : "Ich bin jetzt aufgrund meiner Historie so ein bisschen wieder davon abgewichen und habe für"
+  },
+  {
+    "text" : "die Crawls zum einen separate Tabellen gemacht, weil ich jetzt mir gedacht habe, wenn ich da",
+    "timestamp" : "46:04-46:10"
+  },
+  {
+    "text" : "tatsächlich 200.000, 300.000 Seiten Crawls drin habe, dann würde ich gerne eine Liste haben und",
+    "timestamp" : "46:10-46:16"
+  },
+  {
+    "text" : "sagen, gib mir mal nur alle Webseiten, die diesen CMP haben oder die diese Eigenschaften haben oder",
+    "timestamp" : "46:16-46:22"
+  },
+  {
+    "text" : "oder oder. Da kommt bei mir so der Entwicklergedanke durch, wenn ich jetzt das System losschicke,",
+    "timestamp" : "46:22-46:29"
+  },
+  {
+    "text" : "die JSON-Daten aus diesen Artefakten allesamt erstmal analysieren, extrahieren muss, um diese",
+    "timestamp" : "46:29-46:35"
+  },
+  {
+    "text" : "Übersicht mir zusammenzustellen, wird mir das nicht möglicherweise das komplette Genick brechen",
+    "timestamp" : "46:35-46:41"
+  },
+  {
+    "text" : "und deswegen bin ich schon wieder davon abgewichten, habe mir halt eben Übersichtstabellen dafür",
+    "timestamp" : "46:41-46:45"
+  },
+  {
+    "timestamp" : "46:45-46:57",
+    "text" : "gebaut. Ich habe das bei mir hier mal ein bisschen simuliert. Ich hatte hier auf dem Hetzner gesagt,"
+  },
+  {
+    "timestamp" : "46:57-47:05",
+    "text" : "was passiert eigentlich, wenn ich 10 Milliarden Datensätze anlege? Also 10 Millionen Entitäten,"
+  },
+  {
+    "timestamp" : "47:05-47:12",
+    "text" : "fiktive Entitäten und 10 Milliarden Artefakte und die auch noch miteinander vernetzt. Und dann"
+  },
+  {
+    "text" : "kommt man bei MariaDB ein bisschen an kleine Latenzgrenzen. Da dauert so eine Abfrage halt",
+    "timestamp" : "47:12-47:18"
+  },
+  {
+    "text" : "mal kurz, wenn man es nicht sauber durchindexiert hat. Wenn man es durchindexiert hat, ist super.",
+    "timestamp" : "47:18-47:23"
+  },
+  {
+    "text" : "Und in dem Fall, das ist ja so ein Skalierungs-Edge-Case, geht man dann her und sagt,",
+    "timestamp" : "47:23-47:30"
+  },
+  {
+    "timestamp" : "47:30-47:36",
+    "text" : "man nimmt Redis dazu und nimmt sich eine Kiste mit ein bisschen mehr Speicher an der Stelle"
+  },
+  {
+    "text" : "und benutzt Redis als Cache. Warum? Redis hält die Entitäten und kann auch die Artefakte komplett",
+    "timestamp" : "47:36-47:44"
+  },
+  {
+    "timestamp" : "47:44-47:56",
+    "text" : "in Cache laufen lassen und statt Python nehme ich C. Und dann war dieses System mit 10 Milliarden"
+  },
+  {
+    "timestamp" : "47:56-48:05",
+    "text" : "Artefakten und mit dem C-Unterbau performanter als meine kleine hier lokale Python-Variante"
+  },
+  {
+    "timestamp" : "48:05-48:13",
+    "text" : "für meinen operativen Betrieb mit nur MariaDB. Das heißt, die Wahrscheinlichkeit, dass du hier"
+  },
+  {
+    "timestamp" : "48:13-48:19",
+    "text" : "eine inakzeptable Performance-Grenze stößt, ist mit der heutigen Technologie eher nicht gegeben."
+  },
+  {
+    "text" : "Also im Prinzip kannst du alles da drin lassen und die Sachen in ihren Schematar belassen,",
+    "timestamp" : "48:19-48:27"
+  },
+  {
+    "text" : "in der Unstrukturiertheit der Schematar in der Datenbank und wechselst dann letzten Endes",
+    "timestamp" : "48:27-48:33"
+  },
+  {
+    "text" : "eigentlich nur die Technologie darunter aus. Der Wechsel von Python auf C ist kein Hexenwerk in",
+    "timestamp" : "48:33-48:39"
+  },
+  {
+    "timestamp" : "48:39-48:46",
+    "text" : "dem Sinn und hättest dort, selbst wenn du einen kleinen Mini-Konzern jetzt hast mit dem Tool,"
+  },
+  {
+    "text" : "das du baust, hättest du immer noch Puffer, um trotzdem performant zu bleiben.",
+    "timestamp" : "48:46-48:50"
+  },
+  {
+    "text" : "Aber zum Verständnis nochmal, wenn ich jetzt nur die Informationen, welches CMS gefunden wurde,",
+    "timestamp" : "48:50-48:55"
+  },
+  {
+    "text" : "welches CMP gefunden wurde, in dem JSON in der Datenbank, in dem Artefakt drin habe,",
+    "timestamp" : "48:55-49:01"
+  },
+  {
+    "text" : "dann muss er theoretisch immer auf das gesamte JSON, auf diesen gesamten Container, die Like-Abfragen",
+    "timestamp" : "49:01-49:09"
+  },
+  {
+    "text" : "im Endeffekt machen, um das dann rauszuholen. Oder gibt es da irgendwie einen Weg, den ich",
+    "timestamp" : "49:09-49:13"
+  },
+  {
+    "text" : "jetzt gerade übersiere? Es gibt noch einen Weg. Du kannst nämlich die Abfrage auch gezielt über",
+    "timestamp" : "49:13-49:20"
+  },
+  {
+    "text" : "die Entitäten machen und die anhand der Entitäten letzten Endes sagen, was ist der Bereich, den ich",
+    "timestamp" : "49:20-49:25"
+  },
+  {
+    "text" : "überhaupt scannen muss. Das ist der eine Weg. Aber dann brauche ich jetzt mal das Entitätensystem.",
+    "timestamp" : "49:25-49:29"
+  },
+  {
+    "timestamp" : "49:29-49:32",
+    "text" : "Das habe ich ja momentan nicht. Genau, das hast du noch nicht. Da haben wir bei dir gesagt,"
+  },
+  {
+    "text" : "wir machen jetzt eine Abkürzung und du wirst fluchen, wenn wir es bei dir einführen, weil",
+    "timestamp" : "49:32-49:37"
+  },
+  {
+    "text" : "du dann ja alles migrieren musst. Aber das hätte uns nochmal ungefähr zwei Stunden gekostet an",
+    "timestamp" : "49:37-49:41"
+  },
+  {
+    "text" : "dem Tag. Gut, wann bist du wieder hier? Das ist der eine Weg. Der andere Weg, den ich da",
+    "timestamp" : "49:41-49:49"
+  },
+  {
+    "text" : "grundsätzlich empfehle, Artefakte grundsätzlich zusätzlich in einer Graf-Datenbank abbilden.",
+    "timestamp" : "49:49-49:59"
+  },
+  {
+    "timestamp" : "49:59-50:05",
+    "text" : "Weil in Graf-Datenbank bilden wir die Relationen der Dinge untereinander ab und haben nochmal ganz"
+  },
+  {
+    "timestamp" : "50:05-50:13",
+    "text" : "andere Abfragemöglichkeiten dafür. Hochperformant an dieser Stelle. Kommt alles ein bisschen später,"
+  },
+  {
+    "text" : "würde jetzt die Komplexität unnötig in die Höhe treiben. Also die High-Performance-Setups",
+    "timestamp" : "50:13-50:19"
+  },
+  {
+    "timestamp" : "50:19-50:25",
+    "text" : "sind eigentlich, wir haben eine strukturierte Datenbank, die halten Entitäten und Artefakte."
+  },
+  {
+    "text" : "Wir haben eine Redis fürs Caching, wenn es dem Business relevant ist. Wir haben die Qt-Rand,",
+    "timestamp" : "50:25-50:32"
+  },
+  {
+    "text" : "letztendlich für die semantische Nähmberechnung. Und wir haben eine Graf-Datenbank, um zum Beispiel",
+    "timestamp" : "50:32-50:38"
+  },
+  {
+    "text" : "taxonomische, ontologische und semantische Astabfragen durchzuführen. Das ist im Prinzip",
+    "timestamp" : "50:38-50:47"
+  },
+  {
+    "text" : "so das Gesamt-Setup. Und wenn du da eine KI in die Mitte setzt, die ja für Mustererkennung",
+    "timestamp" : "50:47-50:55"
+  },
+  {
+    "timestamp" : "50:55-51:03",
+    "text" : "letzten Endes prädestiniert ist, das ist Schwelgen pur in diesen Informationen, die du da hast."
+  },
+  {
+    "text" : "Ich hatte ja eine Frage. Ich habe zwischenzeitlich mal so verstanden,",
+    "timestamp" : "51:03-51:08"
+  },
+  {
+    "text" : "sobald ich ein Artefakt, was ja ein Arbeitsergebnis ist, also ich habe irgendwie eine Entität,",
+    "timestamp" : "51:08-51:13"
+  },
+  {
+    "text" : "die beschreibt eine Eigenschaft, dann sage ich, mache irgendwas, dann entsteht ein Arbeitsergebnis,",
+    "timestamp" : "51:13-51:17"
+  },
+  {
+    "text" : "als Artefakt und das speichere ich wieder in der Datenbank und es bekommt eine ID. Hätte ich jetzt",
+    "timestamp" : "51:17-51:22"
+  },
+  {
+    "timestamp" : "51:22-51:27",
+    "text" : "so verstanden, dann wird das Artefakt automatisch zur Entität. Aber das ist nicht so. Sondern das"
+  },
+  {
+    "text" : "Artefakt wird nur zur Entität, wenn ich wieder sage, es gibt immer fixe Eigenschaften, die quasi",
+    "timestamp" : "51:27-51:31"
+  },
+  {
+    "text" : "das Ergebnis strukturell beschreiben. Ein Artefakt ist immer auch gleichzeitig",
+    "timestamp" : "51:31-51:38"
+  },
+  {
+    "timestamp" : "51:38-51:43",
+    "text" : "eine Entität durch seinen Eigennamen. Der Eigenname kann zum Beispiel sein,"
+  },
+  {
+    "timestamp" : "51:43-51:55",
+    "text" : "Thomas Kilian Unternehmer. Das wäre ein Artefakt, in dessen Inhalt Thomas Kilian als Unternehmer"
+  },
+  {
+    "timestamp" : "51:55-52:01",
+    "text" : "beschrieben wird. Das Artefakt hat dennoch über seinen eigenen Namen, zum Beispiel seine Adresse,"
+  },
+  {
+    "timestamp" : "52:01-52:05",
+    "text" : "Thomas Kilian Unternehmer, ist eine Entität mit einer ID."
+  },
+  {
+    "timestamp" : "52:05-52:16",
+    "text" : "Jetzt hatten wir gerade die Crawls von Joachim. Die Ergebnisse seiner Crawls waren ja Artefakte."
+  },
+  {
+    "timestamp" : "52:16-52:24",
+    "text" : "Würde jetzt jedes Crawlergebnis zur Entität werden oder in welcher Konstellation würde"
+  },
+  {
+    "timestamp" : "52:24-52:30",
+    "text" : "das dann zu einer Entität werden? Jedes Wort, jeder Token wird zur Entität."
+  },
+  {
+    "text" : "Also wenn bei Joachim zum Beispiel das Crawlergebnis lautet \"Json\" \"www.job.de\"",
+    "timestamp" : "52:30-52:45"
+  },
+  {
+    "timestamp" : "52:45-52:52",
+    "text" : "und so weiter, dann ist \"Json\" \"www.job.de\" sind Entitäten."
+  },
+  {
+    "timestamp" : "52:52-53:00",
+    "text" : "\"De\" ist schon lange eine Entität. Und \"www\" auch schon lange. Und \"Json\" auch schon lange."
+  },
+  {
+    "timestamp" : "53:00-53:06",
+    "text" : "Das einzige, was als neue Entität dazugekommen ist, ist \"job\". Also \"C-H-O-P\"."
+  },
+  {
+    "text" : "Das heißt, ein Artefakt ist größer als Entität?",
+    "timestamp" : "53:06-53:10"
+  },
+  {
+    "timestamp" : "53:10-53:15",
+    "text" : "Genau. Das Artefakt verbindet letzten Endes Entitäten miteinander."
+  },
+  {
+    "text" : "Ich selber trinke keinen Alkohol, aber ich glaube, ein Schnaps kann dabei manchmal helfen.",
+    "timestamp" : "53:15-53:25"
+  },
+  {
+    "text" : "Ist es dir leicht möglich, einfach nur diese beiden Tabellen anzuschauen, darzustellen?",
+    "timestamp" : "53:25-53:35"
+  },
+  {
+    "text" : "Jetzt per SQL, nicht irgendwie mit einer Web-Oberfläche, wo wieder Metazeug passiert.",
+    "timestamp" : "53:35-53:43"
+  },
+  {
+    "text" : "Ich habe mich nämlich vorhin auf meiner Kiste ausgesperrt.",
+    "timestamp" : "53:43-53:52"
+  },
+  {
+    "timestamp" : "53:52-53:58",
+    "text" : "Ich wollte noch ein Unban machen, aber das System, das den Unban macht, habe ich gerade nicht erreicht."
+  },
+  {
+    "text" : "Aber ich versuche, bevor ich wieder einsteige, hat jemand noch eine Frage vorab?",
+    "timestamp" : "53:58-54:05"
+  },
+  {
+    "text" : "Bevor ich hier kurz um die Tiefe gehe.",
+    "timestamp" : "54:05-54:15"
+  },
+  {
+    "text" : "Wir können auch...",
+    "timestamp" : "54:15-54:37"
+  },
+  {
+    "timestamp" : "54:37-54:45",
+    "text" : "Ich versuche, hier mal durchzukommen."
+  },
+  {
+    "timestamp" : "54:45-54:51",
+    "text" : "Ansonsten bereite ich das einfach mal vor, dass wir das beim nächsten Mal anschauen können."
+  },
+  {
+    "timestamp" : "54:51-55:01",
+    "text" : "Aber... Moment."
+  },
+  {
+    "text" : "Sekunde.",
+    "timestamp" : "55:01-55:09"
+  },
+  {
+    "timestamp" : "55:09-55:14",
+    "text" : "Ist das nicht Donnerstag, wo wir uns genau anschauen, wie die Datenbanken Artefakte und Entitäten..."
+  },
+  {
+    "timestamp" : "55:14-55:18",
+    "text" : "Achso, dann warte ich."
+  },
+  {
+    "timestamp" : "55:18-55:21",
+    "text" : "Das wäre jetzt auch eine Frage von mir."
+  },
+  {
+    "text" : "Ich baue das erst mal für uns zum Angucken auf.",
+    "timestamp" : "55:21-55:26"
+  },
+  {
+    "text" : "Das Entität- und Artefakt-System ist eigentlich noch nicht Bestandteil von dem, was wir hier machen.",
+    "timestamp" : "55:26-55:34"
+  },
+  {
+    "timestamp" : "55:34-55:39",
+    "text" : "Einfach weil der didaktische Sprung für die allermeisten zu hoch ist."
+  },
+  {
+    "text" : "Ganz einfach. Wir müssen uns da relativ langsam rantasten.",
+    "timestamp" : "55:39-55:43"
+  },
+  {
+    "timestamp" : "55:43-55:50",
+    "text" : "Eberhard, ich habe mich vorhin, fünf Minuten bevor wir losgelegt haben, selber mit..."
+  },
+  {
+    "timestamp" : "55:50-55:56",
+    "text" : "über Fail2ban aus meinem Hauptsystem ausgeschlossen und das Backup-System, über das ich draufgehe."
+  },
+  {
+    "text" : "Das reagiert gerade nicht.",
+    "timestamp" : "55:56-55:59"
+  },
+  {
+    "text" : "Ich würde lieben, gern mit dir kurz einfach auf die Datenbank draufgucken.",
+    "timestamp" : "55:59-56:05"
+  },
+  {
+    "timestamp" : "56:05-56:08",
+    "text" : "Wir schauen beim nächsten Mal einfach drauf."
+  },
+  {
+    "timestamp" : "56:08-56:13",
+    "text" : "Ich habe tatsächlich einfach nur zwei Tabellen."
+  },
+  {
+    "timestamp" : "56:13-56:22",
+    "text" : "Ich würde es gerne noch kürzer probieren. Ich habe eine Tabelle, 1 Eberhard, 2 hat, 3 eine, 4..."
+  },
+  {
+    "timestamp" : "56:22-56:25",
+    "text" : "Nein, einen Kaffee."
+  },
+  {
+    "text" : "Das sind vier Datensätze in der einen Tabelle.",
+    "timestamp" : "56:25-56:28"
+  },
+  {
+    "text" : "Und in der zweiten Tabelle ist die erste Spalte Eberhard hat einen Kaffee.",
+    "timestamp" : "56:28-56:33"
+  },
+  {
+    "text" : "In der zweiten Spalte steht 1, 2, 3, 4.",
+    "timestamp" : "56:33-56:37"
+  },
+  {
+    "timestamp" : "56:37-56:44",
+    "text" : "Du hast eine Tabelle Eberhard 1 hat 2, 1, 3, Kaffee 4."
+  },
+  {
+    "text" : "Das sind vier Zeilen. Das ist die Tabelle.",
+    "timestamp" : "56:44-56:48"
+  },
+  {
+    "text" : "In der Artefakt-Tabelle hast du vorne eine ID, AutoIncrement.",
+    "timestamp" : "56:48-56:52"
+  },
+  {
+    "text" : "Da steht drin 1~2~3~4.",
+    "timestamp" : "56:52-56:57"
+  },
+  {
+    "text" : "Okay, alles klar. Begriffen.",
+    "timestamp" : "56:57-56:59"
+  },
+  {
+    "timestamp" : "56:59-57:02",
+    "text" : "Das ist die eine Variante."
+  },
+  {
+    "timestamp" : "57:02-57:11",
+    "text" : "Die andere Variante ist die Artefakt-Tabelle. Du hast 1 und hast quasi Artefakt-Entity-Table."
+  },
+  {
+    "text" : "Und da ist der Fremdschlüssel 1, ist dann zugeordnet, Spalte Zeile 1, 1, Spalte 2, 2, 3, 3, 4, 4.",
+    "timestamp" : "57:11-57:22"
+  },
+  {
+    "timestamp" : "57:22-57:25",
+    "text" : "Okay, also relational gespeichert."
+  },
+  {
+    "timestamp" : "57:25-57:26",
+    "text" : "Genau."
+  },
+  {
+    "text" : "Okay.",
+    "timestamp" : "57:26-57:27"
+  },
+  {
+    "text" : "Ja. Und...",
+    "timestamp" : "57:27-57:30"
+  },
+  {
+    "text" : "Dann habe ich es jedenfalls verstanden.",
+    "timestamp" : "57:30-57:32"
+  },
+  {
+    "text" : "Das wäre im Prinzip der ideale Weg.",
+    "timestamp" : "57:32-57:34"
+  },
+  {
+    "timestamp" : "57:34-57:41",
+    "text" : "Aber wenn sich in Artefakten was verändert, dann bricht quasi datenbanktechnisch die Hölle los."
+  },
+  {
+    "text" : "Deshalb muss man da ein bisschen davon abgehen.",
+    "timestamp" : "57:41-57:45"
+  },
+  {
+    "text" : "Und macht quasi eine schmutzige Implementierung, die aber näher an der Welt ist.",
+    "timestamp" : "57:45-57:52"
+  },
+  {
+    "text" : "Wenn sich in Artefakten was verändert, dann ändern sich quasi die Werte zwischen den Tilden.",
+    "timestamp" : "57:52-57:57"
+  },
+  {
+    "timestamp" : "57:57-58:04",
+    "text" : "Und das wird von der Programmlogik entweder über Python oder über C sehr performant dann übersetzt."
+  },
+  {
+    "text" : "Okay, ja.",
+    "timestamp" : "58:04-58:05"
+  },
+  {
+    "text" : "Weil, das brauche ich dir jetzt nicht zu erzählen, weil würden wir es datenbankbasiert machen,",
+    "timestamp" : "58:05-58:12"
+  },
+  {
+    "text" : "dann würden wir nicht mehr mit MariaDB arbeiten, sondern wahrscheinlich mit Oracle oder mit Redis.",
+    "timestamp" : "58:12-58:17"
+  },
+  {
+    "timestamp" : "58:17-58:21",
+    "text" : "Ja, dann bist du nämlich bei mehreren Milliarden Daten."
+  },
+  {
+    "text" : "Genau, genau. Das ist so ein bisschen so der Hintergrund.",
+    "timestamp" : "58:21-58:24"
+  },
+  {
+    "text" : "Okay, dann habe ich den Schritt verstanden.",
+    "timestamp" : "58:24-58:27"
+  },
+  {
+    "text" : "Ja, genau.",
+    "timestamp" : "58:27-58:29"
+  },
+  {
+    "timestamp" : "58:29-58:35",
+    "text" : "Und da möchte ich mit euch eigentlich immerhin auch aus einer systemischen Sicht,"
+  },
+  {
+    "timestamp" : "58:35-58:43",
+    "text" : "dass wir mit den einfachsten Elementen quasi jede beliebige Komplexität erzeugen können und aufsteuern können."
+  },
+  {
+    "timestamp" : "58:43-58:49",
+    "text" : "Das ist so ein bisschen der tiefere Sinn in diesem ganzen Spiel."
+  },
+  {
+    "timestamp" : "58:49-59:06",
+    "text" : "Und Joachim, das was du angesprochen hast, dann breche ich das dort auf und mache aus den Schemata in den Inhalten dann doch wieder eine Tabelle."
+  },
+  {
+    "timestamp" : "59:06-59:11",
+    "text" : "Das kann sein, dass das kurz mal irgendeinen operativen Schmerz löst."
+  },
+  {
+    "text" : "Eigentlich nicht, wenn man komplett durchgängig schemafrei ist.",
+    "timestamp" : "59:11-59:15"
+  },
+  {
+    "text" : "Aber sobald du das im Leben hast, das ist wie nochmal ein zusätzliches Kind bekommen.",
+    "timestamp" : "59:15-59:21"
+  },
+  {
+    "timestamp" : "59:21-59:30",
+    "text" : "Und um das musst du dich ab dann kümmern, weil das wieder zurück in das System zu bringen, das passiert meistens nicht."
+  },
+  {
+    "text" : "Okay.",
+    "timestamp" : "59:30-59:31"
+  },
+  {
+    "text" : "Wir hatten diesen Effekt zum Beispiel bei Nebo.",
+    "timestamp" : "59:31-59:36"
+  },
+  {
+    "timestamp" : "59:36-59:39",
+    "text" : "Am Anfang, wir brauchen nur eine Webseite."
+  },
+  {
+    "timestamp" : "59:39-59:45",
+    "text" : "Okay, jetzt habt ihr die Webseite. Ah, wir brauchen ein Websystem, weil darüber sollen auch die Buchungen stattfinden und so weiter und so fort."
+  },
+  {
+    "text" : "Ah, wir wollen die Inhalte KI generiert machen.",
+    "timestamp" : "59:45-59:48"
+  },
+  {
+    "timestamp" : "59:48-59:53",
+    "text" : "Und ich habe denen jedes Mal eine GUI gebaut und die entsprechenden Datenbankstrukturen."
+  },
+  {
+    "text" : "Und nach einer Weile hat sich das so dermaßen überholt, dass ich gesagt habe, ich baue euch keine weiteren grafischen Oberflächen,",
+    "timestamp" : "59:53-01:00:03"
+  },
+  {
+    "timestamp" : "01:00:03-01:00:07",
+    "text" : "weil sich die Anforderungen bei euch so schnell ändern."
+  },
+  {
+    "timestamp" : "01:00:07-01:00:13",
+    "text" : "Ich muss alle GUIs maintainen und gleichzeitig jedes Mal erweitern, dokumentieren."
+  },
+  {
+    "timestamp" : "01:00:13-01:00:19",
+    "text" : "Ich bringe euch jetzt den Umgang mit KI-Systemen bei und ihr macht das alles komplett KI-basiert."
+  },
+  {
+    "timestamp" : "01:00:19-01:00:21",
+    "text" : "Ganz einfacher Effekt."
+  },
+  {
+    "text" : "Das heißt, überall wo man hergeht und sagt, in der KI-Ära, wir arbeiten mit einer festen Struktur,",
+    "timestamp" : "01:00:21-01:00:28"
+  },
+  {
+    "timestamp" : "01:00:28-01:00:35",
+    "text" : "die wird in Blitzeseile, letzten Endes vom Veränderungs-Tsunami einfach überrollt."
+  },
+  {
+    "timestamp" : "01:00:35-01:00:43",
+    "text" : "Und da ist es für uns wichtig, dass wir quasi die Grundstruktur behalten, nämlich Entität und Artefakt."
+  },
+  {
+    "timestamp" : "01:00:43-01:00:50",
+    "text" : "Dann weichen wir davon auch nicht mehr ab, weil eine Abweichung würde bedeuten, wir haben einen systemischen Drift."
+  },
+  {
+    "timestamp" : "01:00:50-01:00:59",
+    "text" : "Wenn ein System driftet, das nennt man in der Medizin Psychose und ähnliches ist es dann auch im Digitalen."
+  },
+  {
+    "text" : "Dann wird alles ein bisschen anstrengender als sonst.",
+    "timestamp" : "01:00:59-01:01:03"
+  },
+  {
+    "timestamp" : "01:01:03-01:01:13",
+    "text" : "Können wir zum Fastabschluss irgendwas Ermutigendes hören? Sowas wie \"fangt erst mal an und dann entwickelt sich das organisch\" oder so?"
+  },
+  {
+    "text" : "Das ist das, was Joachim und ich gemacht haben. Wir fangen jetzt erst mal an.",
+    "timestamp" : "01:01:16-01:01:20"
+  },
+  {
+    "text" : "Am Anfang macht man eine Tabelle, da sind die Tasks drin und eine Tabelle, da sind die Templates drin.",
+    "timestamp" : "01:01:20-01:01:26"
+  },
+  {
+    "timestamp" : "01:01:26-01:01:32",
+    "text" : "Und dann wird man ein bisschen mutiger und sagt, ab jetzt ist alles, was ich definiere, ein Artefakt."
+  },
+  {
+    "timestamp" : "01:01:32-01:01:39",
+    "text" : "Eine Geschäftsregel, ein Autorenprofil, ein Template, wie ein Content-Stückchen aussehen soll,"
+  },
+  {
+    "text" : "eine Beschreibung, wie ein Controller funktioniert, ein Code-Paradigma.",
+    "timestamp" : "01:01:39-01:01:44"
+  },
+  {
+    "text" : "All das sind Artefakte und ich habe noch gar keinen Überblick, was alles zu dem Artefakt gehört, aber ich schreibe schon mal hin.",
+    "timestamp" : "01:01:44-01:01:52"
+  },
+  {
+    "text" : "Und hier habe ich jetzt noch eine Idee, was ich als nächstes machen möchte. Ich speichere das als Artefakt, als Idee.",
+    "timestamp" : "01:01:52-01:01:58"
+  },
+  {
+    "timestamp" : "01:01:58-01:02:06",
+    "text" : "Die Strukturierung der Artefakte passiert erst mal ad hoc, so wie wir auch in der Welt sind."
+  },
+  {
+    "timestamp" : "01:02:06-01:02:13",
+    "text" : "Ich habe Erkenntnisse, ich bilde sie ab und ich führe sie nachher zusammen, um sie zu vernetzen."
+  },
+  {
+    "text" : "Nach einer Weile kriegen wir mehr Erkenntnisse.",
+    "timestamp" : "01:02:13-01:02:16"
+  },
+  {
+    "text" : "Wenn wir über Datenbankspezifikationen sprechen, dann brauchen Schemata eine bestimmte Grammatik.",
+    "timestamp" : "01:02:16-01:02:26"
+  },
+  {
+    "text" : "Neues Artefakt. Artefakte zufügen, verknüpfen mit.",
+    "timestamp" : "01:02:26-01:02:31"
+  },
+  {
+    "timestamp" : "01:02:31-01:02:39",
+    "text" : "Liebe KI, wann immer du etwas Neues an der Datenbank machst, das hier ist die Grundspezifikation für die Datenbankschemata."
+  },
+  {
+    "timestamp" : "01:02:39-01:02:43",
+    "text" : "Und zwar wie sie hier ist."
+  },
+  {
+    "text" : "Wir bilden quasi unser Gehirn und die Ereignisse, die durch uns durchfließen, Protokolle, Logs, Crawls, E-Mails,",
+    "timestamp" : "01:02:43-01:02:53"
+  },
+  {
+    "timestamp" : "01:02:53-01:02:56",
+    "text" : "wir bilden das alles insgesamt als Artefakt ab."
+  },
+  {
+    "timestamp" : "01:02:56-01:03:04",
+    "text" : "Der erste Schritt ist, ich habe eine Tabelle, da fließen alle Worte rein, mit denen die Systeme in Verbindung kommen."
+  },
+  {
+    "timestamp" : "01:03:04-01:03:11",
+    "text" : "Ich habe eine zweite Tabelle, da kommen alle Fragmente rein, denen ich ausgesetzt bin."
+  },
+  {
+    "text" : "Das ist eine komplett andere Denkweise, ist aber etwas, was ich in der KI-Ära jedem empfehlen möchte.",
+    "timestamp" : "01:03:11-01:03:21"
+  },
+  {
+    "text" : "Ansonsten macht man relativ schnell den Nokia.",
+    "timestamp" : "01:03:21-01:03:28"
+  },
+  {
+    "timestamp" : "01:03:28-01:03:35",
+    "text" : "Man muss doch trotzdem irgendwo sicherstellen, dass alle Protokolle ähnliche Felder haben, oder?"
+  },
+  {
+    "text" : "Jedes Protokoll, also ein Beispiel, bei mir laufen aus allen Systemen alle Protokolle, und zwar sei es eine HTTP 200,",
+    "timestamp" : "01:03:35-01:03:44"
+  },
+  {
+    "text" : "oder sei es ein PHP Fehler, aus jedem wird ein Artefakt.",
+    "timestamp" : "01:03:44-01:03:50"
+  },
+  {
+    "timestamp" : "01:03:50-01:03:55",
+    "text" : "Und jedes hat sein eigenes Schema, jedes ist selbstbeschreibend."
+  },
+  {
+    "text" : "Warum kann ich damit gut umgehen? Weil ich ein schemaloses System habe.",
+    "timestamp" : "01:03:55-01:04:00"
+  },
+  {
+    "text" : "Und alles orientiert sich an den Entitäten da drinnen.",
+    "timestamp" : "01:04:00-01:04:06"
+  },
+  {
+    "text" : "Warum speiche ich tatsächlich alles? Weil auch in den erlaubten Dingen Muster drin sind.",
+    "timestamp" : "01:04:06-01:04:14"
+  },
+  {
+    "text" : "Irgendwoher kommt viel Traffic und ich freue mich, und dann mache ich eine Musteranalyse und dann stelle ich fest,",
+    "timestamp" : "01:04:14-01:04:20"
+  },
+  {
+    "timestamp" : "01:04:20-01:04:24",
+    "text" : "ah, das ist eine Art von Scraping, die hatte ich noch nie auf dem Radar."
+  },
+  {
+    "text" : "Also ich habe zum Beispiel zusammengehörende Motive, die zu einer Motivreihe gehören,",
+    "timestamp" : "01:04:24-01:04:29"
+  },
+  {
+    "timestamp" : "01:04:29-01:04:32",
+    "text" : "und da brauche ich dann eine Kollektion mit Shopify für."
+  },
+  {
+    "text" : "Also habe ich gesagt, ich habe jetzt Artefakte von der Entität Motivreihe,",
+    "timestamp" : "01:04:32-01:04:36"
+  },
+  {
+    "timestamp" : "01:04:36-01:04:40",
+    "text" : "und wenn die veröffentlicht werden, kriegen sie eine Shopify-Kollektion."
+  },
+  {
+    "timestamp" : "01:04:40-01:04:45",
+    "text" : "Diese Kollektion ist als JSON-Metadata gespeichert, es ist nicht in der Tabelle fix drin."
+  },
+  {
+    "text" : "Aber ich habe schon das Konzept, es gibt Motivreihen, und das sind andere Artefakte als die Ziele.",
+    "timestamp" : "01:04:45-01:04:51"
+  },
+  {
+    "text" : "Die Artefakte dürfen ja jede beliebige Form annehmen, das ist schon okay.",
+    "timestamp" : "01:04:51-01:04:56"
+  },
+  {
+    "text" : "So ist ja auch das Leben. Wir versuchen die Dinge in Strukturen zu pressen, die sie nicht haben.",
+    "timestamp" : "01:04:56-01:05:02"
+  },
+  {
+    "timestamp" : "01:05:02-01:05:08",
+    "text" : "Entweder es fehlt was oder es ist was falsch. Deshalb gehe ich da schemalos dran."
+  },
+  {
+    "timestamp" : "01:05:08-01:05:13",
+    "text" : "Für Menschen, die in Schemata denken und auch Schemata brauchen, um sich zu orientieren, ist das die Hölle."
+  },
+  {
+    "text" : "Da möchte ich jeden bitten, mir nicht weiterzufolgen.",
+    "timestamp" : "01:05:13-01:05:18"
+  },
+  {
+    "text" : "Gleichzeitig müssen wir unsere Gehirne letzten Endes aufmachen für das, was kommt.",
+    "timestamp" : "01:05:18-01:05:23"
+  },
+  {
+    "text" : "Weil das, was vor uns liegt, das ist ziemlich nicht zu fassen.",
+    "timestamp" : "01:05:23-01:05:29"
+  },
+  {
+    "text" : "Deshalb brauchen wir schemalose, zustandslose Denksysteme, die resonanzfähig und adaptionsfähig sind.",
+    "timestamp" : "01:05:29-01:05:38"
+  },
+  {
+    "timestamp" : "01:05:38-01:05:44",
+    "text" : "Das geht jetzt weit über das KI-Seminar hinaus."
+  },
+  {
+    "text" : "Ich würde sagen, Thomas, zu deinem Thema Dokumentation und wie kriege ich das alles verwurstet,",
+    "timestamp" : "01:05:44-01:05:53"
+  },
+  {
+    "text" : "findet es Sinn, jede Codedatei hat ein Artefakt, jede Prozessbeschreibung sind Artefakte",
+    "timestamp" : "01:05:53-01:06:01"
+  },
+  {
+    "timestamp" : "01:06:01-01:06:05",
+    "text" : "und wir führen die alle einfach miteinander zusammen."
+  },
+  {
+    "timestamp" : "01:06:05-01:06:08",
+    "text" : "Beantwortet das deine Frage?"
+  },
+  {
+    "text" : "Sagen wir es mal so, es weist nochmal einen neuen Weg.",
+    "timestamp" : "01:06:08-01:06:12"
+  },
+  {
+    "timestamp" : "01:06:12-01:06:21",
+    "text" : "Ich brauche jetzt glaube ich mal meinen Kollegen, der das dann verstoffwechselt in Form von Code und Umsetzung und Projekt,"
+  },
+  {
+    "text" : "damit ich dann wieder in einer für mich angenehmeren Form die Daten einspeisen kann.",
+    "timestamp" : "01:06:21-01:06:25"
+  },
+  {
+    "text" : "Was dann im Hintergrund zerlegt wird, das will ich dann dem Benni überlassen.",
+    "timestamp" : "01:06:25-01:06:30"
+  },
+  {
+    "timestamp" : "01:06:30-01:06:34",
+    "text" : "Da wäre er heute sicherlich der bessere Ansprechpartner gewesen von seiner Herangehensweise."
+  },
+  {
+    "text" : "Aber er hat schon gesagt, er hat Bock und freut sich schon auf die Aufzeichnung.",
+    "timestamp" : "01:06:34-01:06:37"
+  },
+  {
+    "text" : "Insofern, wenn du die möglichst schnell rüberkabeln könntest, ich würde mich sehr freuen.",
+    "timestamp" : "01:06:37-01:06:40"
+  },
+  {
+    "text" : "Es war gut, dass du heute da bist, weil wenn er damit um die Ecke kommt, das wäre für dich nicht gut anschlussfähig gewesen.",
+    "timestamp" : "01:06:40-01:06:50"
+  },
+  {
+    "timestamp" : "01:06:50-01:06:52",
+    "text" : "Ich befürchte auch."
+  },
+  {
+    "text" : "Du hättest ihn gefragt, ob er den Verstand verloren hat und warum sich hier plötzlich alles miteinander vernetzt.",
+    "timestamp" : "01:06:52-01:06:59"
+  },
+  {
+    "timestamp" : "01:06:59-01:07:04",
+    "text" : "Das ist eigentlich so der Hauptpunkt, den ich dir mitgeben möchte."
+  },
+  {
+    "text" : "Im Prinzip wandert alles in eine einzige Form, nämlich diese, wir bilden das als Artefakt ab",
+    "timestamp" : "01:07:04-01:07:11"
+  },
+  {
+    "timestamp" : "01:07:11-01:07:21",
+    "text" : "und die Akzeptanz, dass die Dinge sich miteinander vernetzen, mit gigantischen Möglichkeiten, die sich daraus umgeben."
+  },
+  {
+    "text" : "Jetzt gucke ich Artefaktsystem, das war auf jeden Fall.",
+    "timestamp" : "01:07:21-01:07:27"
+  },
+  {
+    "timestamp" : "01:07:27-01:07:34",
+    "text" : "Dann ist unsere Zeit für heute auch schon ein bisschen rum."
+  },
+  {
+    "timestamp" : "01:07:34-01:07:40",
+    "text" : "Ich glaube, jeder von uns hat gerade auch genug für den Moment, denke ich."
+  },
+  {
+    "text" : "Ich freue mich auf euch am Donnerstag.",
+    "timestamp" : "01:07:40-01:07:44"
+  },
+  {
+    "timestamp" : "01:07:44-01:07:49",
+    "text" : "Da gehen wir rein aus der technischen Sicht in die Vertiefung."
+  },
+  {
+    "text" : "Wie kriegen wir überhaupt ein verdammtes Dokument in die MariaDB?",
+    "timestamp" : "01:07:49-01:07:54"
+  },
+  {
+    "text" : "Wie kriegen wir es von dort aus in den Vector Datenbank?",
+    "timestamp" : "01:07:54-01:07:56"
+  },
+  {
+    "text" : "Wie kriegen wir es wieder raus?",
+    "timestamp" : "01:07:56-01:07:57"
+  },
+  {
+    "text" : "Gucken wir uns einmal auf der technischen Sicht an.",
+    "timestamp" : "01:07:57-01:08:00"
+  },
+  {
+    "text" : "Wie kriegen wir es gebaut?",
+    "timestamp" : "01:08:00-01:08:01"
+  },
+  {
+    "text" : "Und dann aus der unternehmerischen Sicht, aus der prozessualen Sicht.",
+    "timestamp" : "01:08:01-01:08:05"
+  },
+  {
+    "text" : "Jetzt habe ich hier E-Mails oder Dokumente oder sonst irgendwas.",
+    "timestamp" : "01:08:05-01:08:09"
+  },
+  {
+    "timestamp" : "01:08:09-01:08:12",
+    "text" : "Wie geht es in ein gesamtes Wissenssystem?"
+  },
+  {
+    "timestamp" : "01:08:12-01:08:15",
+    "text" : "Und wie können wir daraus später schöpfen?"
+  },
+  {
+    "timestamp" : "01:08:15-01:08:21",
+    "text" : "Einmal per Chat oder per Content-Produktion oder per automatisierte E-Mail-Beantwortung."
+  },
+  {
+    "text" : "Das machen wir dann so richtig mit der Hand am Arm von Null auf in alle Details rein.",
+    "timestamp" : "01:08:21-01:08:29"
+  },
+  {
+    "timestamp" : "01:08:29-01:08:32",
+    "text" : "Dann würde ich..."
+  }
+]

@@ -1,0 +1,16 @@
+Schreibregeln fuer Thoxan-Texte
+
+1. Tonalitaet und Ansprache
+Wir verwenden grundsaetzlich die Du-Ansprache in allen Texten. Der Ton ist freundlich, kompetent und auf Augenhoehe. Wir vermeiden akademische Sprache und setzen auf verstaendliche Formulierungen.
+
+2. Satzstruktur
+Saetze sollten maximal 20 Woerter lang sein. Wir bevorzugen aktive Formulierungen gegenueber passiven Konstruktionen. Verschachtelte Nebensaetze sind zu vermeiden.
+
+3. SEO-Richtlinien
+Jeder Text muss ein Fokus-Keyword enthalten, das im Titel, in der Einleitung und mindestens zwei Zwischenueberschriften vorkommt. Meta-Descriptions haben eine Laenge von 150-160 Zeichen.
+
+4. Formatierung
+Absaetze haben maximal 3-4 Saetze. Zwischenueberschriften gliedern den Text alle 200-300 Woerter. Aufzaehlungen werden sparsam und nur bei mehr als 3 Punkten eingesetzt.
+
+5. Unternehmens-Hintergrund
+Thoxan ist eine Digital-Agentur mit Sitz in Paderborn, gegruendet 2008. Schwerpunkte sind Content-Marketing, SEO und KI-gestuetzte Textproduktion. Das Team besteht aus 15 Mitarbeitern.

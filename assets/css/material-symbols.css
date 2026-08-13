@@ -1,0 +1,59 @@
+/* Material Symbols Rounded - Lokal eingebunden */
+@font-face {
+    font-family: 'Material Symbols Rounded';
+    font-style: normal;
+    font-weight: 100 700;
+    font-display: swap;
+    src: url('../fonts/material-symbols-rounded.woff2') format('woff2');
+}
+
+.material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Variationen */
+.material-symbols-rounded.filled {
+    font-variation-settings: 'FILL' 1;
+}
+
+.material-symbols-rounded.outlined {
+    font-variation-settings: 'FILL' 0;
+}
+
+/* Groessen */
+.material-symbols-rounded.size-16 {
+    font-size: 16px;
+}
+
+.material-symbols-rounded.size-20 {
+    font-size: 20px;
+}
+
+.material-symbols-rounded.size-24 {
+    font-size: 24px;
+}
+
+.material-symbols-rounded.size-32 {
+    font-size: 32px;
+}
+
+.material-symbols-rounded.size-40 {
+    font-size: 40px;
+}
+
+.material-symbols-rounded.size-48 {
+    font-size: 48px;
+}

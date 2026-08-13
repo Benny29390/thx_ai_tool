@@ -1,0 +1,312 @@
+/* ============================================================================
+   Thoxan-Design-Tokens — global gueltig fuer das gesamte KI-Tool.
+
+   Reihenfolge im Layout:
+     1. style.css        — Basis-Styles des KI-Tools
+     2. thx-tokens.css   — diese Datei: ueberschreibt Schrift, Groesse, Farben
+     3. thx-components.css — wiederverwendbare .thx-*-Klassen
+     4. lam.css          — uebergangsweise LAM-spezifische Klassen (.lam-*)
+
+   Loesch-Reihenfolge bei der Konsolidierung:
+     - lam.css verschwindet, wenn alle Views auf .thx-* umgestellt sind.
+     - Tokens aus style.css werden schrittweise durch diese Datei ersetzt.
+   ============================================================================ */
+
+/* --- Frutiger Webfont ----------------------------------------------------
+   ascent-override / descent-override / line-gap-override: Eine zentrale
+   Korrektur der Schrift-Metric von Frutiger LT Std. Ohne diese Werte sitzt
+   die Schrift in JEDEM line-box ca. 2 px zu hoch — sichtbar in Buttons,
+   Badges, Topbar-Links, Sidebar-Items usw. Statt jeden Komponente einzeln
+   mit asymmetrischem Padding zu korrigieren, ziehen wir die Metric einmal
+   global gerade. Damit gelten ueberall die gleichen Klassen-Styles. */
+/* Echte Thoxan-Brand-Schnitte (aus dem Corporate Design): 45 Light fuers Fliesstext,
+   65 Bold fuer Headlines/Akzente, 95 UltraBlack als seltener Hoehepunkt. Damit ist die
+   Schrift im Tool konsistent zum Styleguide — und der Fliesstext leichter (statt des
+   schwereren „Roman", das oft zu klobig wirkte). woff2 aus TTF re-serialisiert (cmap-Fix);
+   Quelle/Doku siehe docs/design-reference/thoxan-styleguide/README.md.
+   Die Metrik-Overrides bleiben, damit alle bestehenden Zeilenhoehen/Paddings stimmen. */
+@font-face {
+    font-family: 'Frutiger LT Std';
+    src: url('/assets/fonts/styleguide/frutiger-45-light.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    ascent-override: 95%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+}
+@font-face {
+    font-family: 'Frutiger LT Std';
+    src: url('/assets/fonts/styleguide/frutiger-65-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    ascent-override: 95%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+}
+@font-face {
+    font-family: 'Frutiger LT Std';
+    src: url('/assets/fonts/styleguide/frutiger-95-ultrablack.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+    ascent-override: 95%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+}
+
+/* --- Globale Tokens ------------------------------------------------------ */
+:root {
+    /* Thoxan-Hausfarben */
+    --thoxan-50:  #e6f0f8;
+    --thoxan-100: #cce1f1;
+    --thoxan-200: #99c3e3;
+    --thoxan-300: #66a5d5;
+    --thoxan-400: #3387c7;
+    --thoxan-500: #006fb9;
+    --thoxan-600: #005da8;
+    --thoxan-700: #004a86;
+    --thoxan-800: #003864;
+    --thoxan-900: #002542;
+    --thoxan-950: #001329;
+
+    /* Slate (Text, Borders, Hintergruende) */
+    --slate-50:  #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+
+    /* Semantische Farben (Status, Empfehlung, Erreichbarkeit) */
+    --emerald-50:  #ecfdf5;
+    --emerald-100: #d1fae5;
+    --emerald-200: #a7f3d0;
+    --emerald-500: #10b981;
+    --emerald-600: #059669;
+    --emerald-700: #047857;
+    --emerald-800: #065f46;
+
+    --amber-50:  #fffbeb;
+    --amber-100: #fef3c7;
+    --amber-200: #fde68a;
+    --amber-300: #fcd34d;
+    --amber-500: #f59e0b;
+    --amber-600: #d97706;
+    --amber-700: #b45309;
+    --amber-800: #92400e;
+
+    --rose-50:  #fff1f2;
+    --rose-100: #ffe4e6;
+    --rose-200: #fecdd3;
+    --rose-500: #f43f5e;
+    --rose-600: #e11d48;
+    --rose-700: #be123c;
+    --rose-800: #9f1239;
+
+    --indigo-50:  #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+
+    --red-50:  #fef2f2;
+    --red-200: #fecaca;
+    --red-800: #991b1b;
+
+    /* Typo-Skalierung: in rem, damit html { font-size: 120% } automatisch wirkt.
+       Die Werte entsprechen Tailwind text-xs/sm/base/lg/xl/2xl/3xl/4xl. */
+    --fs-xs:   0.75rem;   /* 14.4px bei 120% Basis */
+    --fs-sm:   0.875rem;  /* 16.8px */
+    --fs-base: 1rem;      /* 19.2px */
+    --fs-lg:   1.125rem;  /* 21.6px */
+    --fs-xl:   1.25rem;   /* 24px */
+    --fs-2xl:  1.5rem;    /* 28.8px */
+    --fs-3xl:  1.875rem;  /* 36px */
+    --fs-4xl:  2.25rem;   /* 43.2px — Hero */
+
+    /* Spacings (in rem fuer konsistente Skalierung) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+
+    /* Radien */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-full: 9999px;
+
+    /* Schatten */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+
+    /* Transitions */
+    --t-fast: 0.1s ease-out;
+    --t-mid:  0.2s ease-out;
+
+    /* Layout */
+    --container-max: 1920px;
+    --sidebar-w: 260px;
+    --sidebar-w-collapsed: 60px;
+    --topbar-h: 44px;
+    --z-topbar: 60;
+    --z-sidebar: 50;
+    --z-dropdown: 100;
+    --z-drawer: 900;
+    --z-modal: 1000;
+    --z-toast: 1100;
+
+    /* Schrift ueberschreibt --font-family aus style.css (Frutiger statt System) */
+    --font-family: 'Frutiger LT Std', 'Frutiger', system-ui, -apple-system, sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', ui-monospace, Monaco, monospace;
+
+    /* === Density-System: 3 Profile, umschaltbar via data-density auf <html> ===
+       Default = comfortable (Tom-Stand vom 22.05.2026).
+       Pattern: --d-{element}-{prop}
+       Bei 120%-Basis sind 1rem = 19.2px. */
+
+    /* Master-Skalierungs-Faktor: zieht alle freien Schriftgrößen (Stat-Werte,
+       Card-Titel, Section-Header, Body-Tags, Metas etc.) gemeinsam. Wenn ein
+       Element seinen eigenen --d-*-Stepper hat (Page-Title, Button), greift
+       dieser stattdessen. */
+    --d-scale: 0.85;
+    --d-fs-xs:   calc(var(--fs-xs)   * var(--d-scale));
+    --d-fs-sm:   calc(var(--fs-sm)   * var(--d-scale));
+    --d-fs-base: calc(var(--fs-base) * var(--d-scale));
+    --d-fs-lg:   calc(var(--fs-lg)   * var(--d-scale));
+    --d-fs-xl:   calc(var(--fs-xl)   * var(--d-scale));
+    --d-fs-2xl:  calc(var(--fs-2xl)  * var(--d-scale));
+
+    /* Page-Layout */
+    --d-page-pad-x:  0.875rem;
+    --d-page-pad-y:  0.5rem;
+    --d-page-header-mb: 0.5rem;
+    --d-section-gap: 0.5rem;
+
+    /* ===== Standard-Gutter =====
+       Eine Groesse fuer ALLES:
+       - Padding der .main-content (Aussenrand zur Sidebar/Topbar)
+       - Gap zwischen Spalten (Chat, Projektplanner, Mail, KI-Kompass)
+       - Padding INNERHALB von Spalten-/Card-Bereichen (rechte Pane neben Auswahl)
+       So bleibt alles visuell auf einer Linie. */
+    --d-gutter: 18px;
+
+    /* Cards */
+    --d-card-pad:    0.5rem;
+    --d-card-gap:    0.375rem;
+    --d-card-radius: 8px;
+
+    /* Listen-Items / Rows */
+    --d-row-pad-y:   0.25rem;
+    --d-row-pad-x:   0.5rem;
+    --d-row-gap:     0.25rem;
+
+    /* Header (Page-Title-Block) */
+    --d-page-title-fs:  1.25rem;
+    --d-page-sub-fs:    0.875rem;
+    --d-page-h-pad-y:   0.125rem;
+    --d-page-h-pad-x:   0;
+
+    /* Buttons + Inputs */
+    --d-control-h:      1.625rem;
+    --d-control-pad-x:  0.5rem;
+    --d-control-fs:     0.6875rem;
+    --d-control-radius: 5px;
+
+    /* Tabellen — komfortable Werte nahe an LAM-Original (8/12 px) */
+    --d-tbl-pad-y: 0.4rem;
+    --d-tbl-pad-x: 0.625rem;
+
+    /* Modal / Drawer */
+    --d-modal-pad: 0.875rem;
+}
+
+/* --- Density-Profile: 3 Stufen, umschaltbar via [data-density] ---------- */
+
+/* COMPACT — noch dichter als Default, fast tabellarisch */
+html[data-density="compact"] {
+    --d-scale: 0.75;
+    --d-page-pad-x:  0.625rem;
+    --d-page-pad-y:  0.375rem;
+    --d-page-header-mb: 0.375rem;
+    --d-section-gap: 0.375rem;
+    --d-card-pad:    0.375rem;
+    --d-card-gap:    0.25rem;
+    --d-row-pad-y:   0.125rem;
+    --d-row-pad-x:   0.375rem;
+    --d-row-gap:     0.125rem;
+    --d-page-title-fs:  1.125rem;
+    --d-page-sub-fs:    0.75rem;
+    --d-page-h-pad-y:   0;
+    --d-control-h:      1.5rem;
+    --d-control-pad-x:  0.375rem;
+    --d-control-fs:     0.625rem;
+    --d-tbl-pad-y: 0.125rem;
+    --d-tbl-pad-x: 0.375rem;
+    --d-modal-pad: 0.625rem;
+    --d-gutter:    12px;
+}
+
+/* COMFORTABLE — Default, Tom-Stand vom 22.05.2026. Werte oben in :root. */
+
+/* SPACIOUS — deutlich luftiger, fuer Praesentationen und Demos */
+html[data-density="spacious"] {
+    --d-scale: 1.1;
+    --d-page-pad-x:  1.5rem;
+    --d-page-pad-y:  1rem;
+    --d-page-header-mb: 1rem;
+    --d-section-gap: 1rem;
+    --d-card-pad:    1rem;
+    --d-card-gap:    0.75rem;
+    --d-row-pad-y:   0.5rem;
+    --d-row-pad-x:   0.875rem;
+    --d-row-gap:     0.5rem;
+    --d-page-title-fs:  1.625rem;
+    --d-page-sub-fs:    1rem;
+    --d-page-h-pad-y:   0.5rem;
+    --d-control-h:      2rem;
+    --d-control-pad-x:  0.875rem;
+    --d-control-fs:     0.875rem;
+    --d-control-radius: 6px;
+    --d-tbl-pad-y: 0.5rem;
+    --d-tbl-pad-x: 0.875rem;
+    --d-modal-pad: 1.25rem;
+    --d-gutter:    28px;
+}
+
+/* --- Globale Basis-Regeln ----------------------------------------------- */
+
+/* 120% Basis: skaliert alle rem-basierten Werte um 20% — bewusst aus dem
+   LAM-Styleguide uebernommen, jetzt fuers ganze KI-Tool. */
+html {
+    font-size: 120%;
+}
+
+/* Body uebernimmt die neue Schrift via --font-family-Override.
+   Selektor mit hoeherer Spezifitaet als style.css `body { ... }`,
+   damit das Override sicher greift. */
+body,
+.app-shell,
+.main-content {
+    font-family: var(--font-family);
+    font-size: var(--d-fs-sm);   /* Default-Body-Schrift haengt am Master-Scale */
+}
+
+/* Standard-Gutter fuer main-content — gleich wie Spaltenabstand. */
+.main-content {
+    padding: var(--d-gutter);
+}
+

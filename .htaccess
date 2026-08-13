@@ -1,0 +1,63 @@
+# KI Text Tool - Apache Konfiguration
+
+# Rewrite Engine aktivieren
+RewriteEngine On
+
+# HTTPS erzwingen (auskommentieren wenn gewuenscht)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Verzeichnis-Listing deaktivieren
+Options -Indexes
+
+# Zugriff auf sensible Dateien blockieren
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(md|sql|log|sqlite)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# config.php schuetzen
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Alles auf index.php umleiten
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# PHP-Einstellungen
+<IfModule mod_php.c>
+    php_value upload_max_filesize 200M
+    php_value post_max_size 220M
+    php_value max_execution_time 180
+    php_value memory_limit 512M
+</IfModule>
+
+# Kompression aktivieren
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/json application/javascript text/xml application/xml
+</IfModule>
+
+# Browser-Caching fuer Assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

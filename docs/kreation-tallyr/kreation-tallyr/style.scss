@@ -1,0 +1,21 @@
+/*
+Theme Name: Kreation Child
+Theme URI: https://www.wyld.studio
+Author: CodeSuey
+Author URI: https://www.wyld.studio
+Description: Gettin' WYLD
+Template: kreation
+Version: 6.6
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: black, wyld
+Text Domain: kreation
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+
+// @import "sass/generals/*";
+@use 'sass/generals/times' as *;
+@use 'sass/generals/users' as *;

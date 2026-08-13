@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Frutiger LT Std';
+    src: url('/fonts/frutiger-lt-std-roman.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Frutiger LT Std';
+    src: url('/fonts/frutiger-lt-std-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+    html {
+        font-size: 120%;
+    }
+    body {
+        font-family: 'Frutiger LT Std', 'Frutiger', system-ui, sans-serif;
+    }
+}
+
+@layer components {
+    /* Filter-Bereich: einheitlicher Stil fuer Inputs, Selects und Pills
+       quer ueber alle Listen-Seiten (Linkquellen, Linkprofil, ggf. weitere).
+       Frueher pro-Page scoped, jetzt global. */
+    .lam-filter-label {
+        @apply block text-xs font-medium text-slate-600;
+    }
+    .lam-filter-input {
+        @apply w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-thoxan-400 focus:outline-none focus:ring-1 focus:ring-thoxan-300;
+    }
+    .lam-filter-chip {
+        @apply inline-flex items-center rounded px-2.5 py-1 text-xs;
+    }
+}

@@ -1,0 +1,823 @@
+#timespage {
+	header#timesheader {
+		background: var(--timescolor);
+		color: #fff;
+		padding: 1.5rem;
+		text-transform: uppercase;
+		font-size: 1.8rem;
+		font-weight: 700;
+
+		.container {
+			align-items: center;
+
+			div {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				line-height: 1;
+				opacity: .7;
+			}
+		}
+
+		a {
+			display: block;
+			text-decoration: none;
+			height: 4.4rem;
+			width: 4.4rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: rgba(0,0,0,.1);
+			border-radius: 4px;
+
+			i {
+				font-size: 2rem;
+				color: #fff;
+				top: 0 !important;
+			}
+		}
+
+		div i {
+			display: block;
+			padding-right: 5px;
+			position: relative;
+			top: -2px;
+		}
+
+		.client {
+			font-weight: 700;
+			opacity: 1 !important;
+		}
+	}
+}
+
+#timespage #passform {
+	max-width: 500px;
+	margin: 5rem auto;
+
+	input[type="submit"] {
+		background: var(--timescolor);
+		color: #fff;
+		padding: 1rem 2rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: 700;
+	}
+
+	.wrong {
+		color: var(--red);
+		padding: 2rem;
+		background: var(--redlight);
+		font-weight: 700;
+		margin-top: 2rem;
+		font-size: 1.8rem;
+		border-radius: 5px;
+		display: none;
+	}
+}
+
+#times_datepicker {
+	background: #fafafa;
+	border-bottom: 1px solid #eee;
+	padding: 2rem 0;
+	position: relative;
+	z-index: 2;
+
+	.datepicker {
+		font-weight: 700;
+	}
+
+	input {
+		padding: .5rem 1rem;
+		margin: 0 5px;
+		min-width: 170px;
+		border-radius: 4px;
+		border: 1px solid #ddd;
+	}
+
+	button#monthpicker {
+		background: var(--timescolor);
+		color: #fff;
+		padding: .5rem 1rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: 700;
+	}
+
+	.export-buttons {
+		display: flex;
+		gap: 8px;
+		margin-left: auto;
+		margin-right: 15px;
+
+		button {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			padding: 0.5rem 1rem;
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: 600;
+			font-size: 14px;
+			color: #555;
+			transition: all 0.2s;
+
+			i {
+				font-size: 18px;
+			}
+
+			&:hover {
+				background: var(--timescolor);
+				border-color: var(--timescolor);
+				color: #fff;
+			}
+
+			&#export-detailed {
+				i { color: #28a745; }
+				&:hover i { color: #fff; }
+			}
+
+			&#export-cumulated {
+				i { color: #007bff; }
+				&:hover i { color: #fff; }
+			}
+		}
+	}
+
+	#monthpickerwrap {
+		position: relative;
+	}
+
+	#coolpick {
+		position: absolute;
+		top: 50px;
+		right: 0;
+		width: 500px;
+		background: #fff;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+
+		button {
+			background: #ddd;
+			color: #555;
+			padding: 1rem 1rem 0.8rem 1rem;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: 700;
+			width: fit-content;
+			margin: 0 5px;
+			line-height: 1;
+			border: 1px solid #ddd;
+
+			&:hover {
+				border: 1px solid #aaa;
+				background: #ccc;
+			}
+
+			&.active {
+				border: 1px solid var(--dark);
+				background: var(--dark);
+				color: #fff;
+			}
+		}
+
+		#yearstopick {
+			display: block;
+			background: #eee;
+			padding: .5rem 2rem;
+		}
+
+		#monthstopick {
+			padding: 2rem 2rem;
+			// 2 columns
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-gap: 5px;
+
+
+			button {
+				width: 100%;
+			}
+		}
+	}
+}
+
+#clientfilter, #erledigtfilter {
+	margin-top: 3rem;
+	font-weight: 700;
+	border-color: #ddd !important;
+}
+
+#clientfilter {
+	margin-top: 1rem;
+}
+
+// style <div id="projects_and_times"><table><tbody><tr><td>Projektmanagment</td><td></td><td>60</td><td></td><td><table><tbody><tr><td>2024-07-29</td><td>0.25</td><td></td><td>Weekly mit Thomas</td></tr></tbody></table></td></tr></tbody></table></div>
+
+#projects_and_times {
+
+	.load {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		z-index: 9999999;
+		background: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(11px);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 5rem;
+		color: #aaa;
+	}
+
+	.client {
+		margin: 4rem 0;
+		padding: 2rem;
+		border-radius: 4px;
+		background: #fff;
+		border: 2px solid var(--clientcolor);
+
+		h2,h3 {
+			color: var(--dark);
+			font-size: 2rem;
+		}
+
+		h2 {
+			color: var(--clientcolor);
+			font-size: 2.4rem;
+			font-weight: 400;
+			display: flex;
+			justify-content: space-between;
+
+			strong {
+				font-weight: 700;
+			}
+		}
+
+		table {
+			background: #fff;
+		}
+
+		i.bx-check-circle {
+			color: var(--green);
+		}
+		i.bx-x-circle {
+			color: var(--red);
+		}
+	}
+
+	.total {
+		display: flex;
+		justify-content: space-between;
+		font-weight: 700;
+		margin: 2rem 0;
+	}
+
+	.project {
+		padding: 2rem;
+		background-color: rgba(0,0,0,.1);
+		margin: 2rem 0;
+
+		.total {
+			opacity: .5;
+			font-weight: 400;
+		}
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 16px;
+
+		th {
+			background: var(--clientcolor);
+			color: #fff;
+			padding: 1rem;
+			text-align: left;
+			font-weight: 700;
+		}
+
+		td {
+			padding: 1rem;
+			border-bottom: 1px solid #eee;
+			position: relative;
+		}
+
+		td:nth-child(1) {
+			min-width: 100px;
+		}
+
+		td:nth-child(5) table {
+			border-collapse: collapse;
+
+			td {
+				padding: 1rem;
+				border-bottom: 1px solid #eee;
+			}
+		}
+
+		tr:has(button.undone) {
+			background: var(--greenlight);
+		}
+
+		.tdi i {
+			width: 44px;
+			height: 44px;
+			background: transparent;
+			font-size: 2.2rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0;
+			border: 0;
+		}
+	}
+}
+
+
+#todaytimesdiagram {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	width: 100px;
+	height: 100px;
+	transform: scale(0);
+	transition: .3s all cubic-bezier(0.075, 0.82, 0.165, 1);
+	z-index: 2;
+
+	&.open {
+		transform: scale(1);
+	}
+
+	.pie {
+		--p: 0;
+		--b: 10px;
+		--w: 100px;
+		--c: var(--accent);    
+		--f: #444;
+		
+		width: var(--w);
+		aspect-ratio: 1;
+		position: relative;
+		margin: 2px;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 15px;
+		font-weight: 700;
+		color: #777;
+
+
+		span {
+			color: var(--dark);
+		}
+	}
+	.pie:before,
+	.pie:after {
+		content: "";
+		position: absolute;
+		border-radius: 50%;
+		transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
+	}
+	.pie:before {
+		inset: 0;
+		background: radial-gradient(farthest-side, var(--c) 98%, #0000) top/var(--b) var(--b) no-repeat, conic-gradient(var(--c) calc(var(--p) * 1%), var(--f) 0);
+		mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+	}
+	.pie:after {
+		inset: calc(50% - var(--b) / 2);
+		background: var(--c);
+		transform: rotate(calc(var(--p) * 3.6deg)) translateY(calc(50% - var(--w) / 2));
+	}
+	.no-round:before {
+		background-size:0 0,auto;
+	}
+	.no-round:after {
+		content:none;
+	}
+	/* Анимация */
+	@property --p{
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 0;
+	}
+	.pieanimate {
+		animation: p 1s .5s both;
+	}
+	@keyframes p {
+		from{--p:0}
+	}
+}
+
+.copy {
+	cursor: pointer;
+&:hover {
+	opacity: .7;
+}
+}
+
+.adminbtnss {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+
+	button {
+		border: 0;
+		border-radius: 4px;
+		background: #eee;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 40px;
+		min-width: 40px;
+
+		&.deletetime {
+			color: var(--red);
+			background: var(--redlight);
+		}
+	}
+}
+
+#choosaclient {
+	border-color: rgba(255, 255, 255, 0.2);
+	color: #fff;
+	padding: 1rem 1.5rem;
+	min-width: 300px;
+	font-size: 1.8rem;
+	font-weight: 700;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M4 6h2v2H4zm0 5h2v2H4zm0 5h2v2H4zm16-8V6H8.023v2H18.8zM8 11h12v2H8zm0 5h12v2H8z"></path></svg>');
+}
+
+#times_datepicker_admin {
+	border-bottom: 1px solid #eee;
+	padding: 2rem 0;
+	position: relative;
+	z-index: 2;
+	width: 100%;
+
+	.datepicker {
+		font-weight: 700;
+	}
+
+	input {
+		padding: .5rem 1rem;
+		margin: 0 5px;
+		min-width: 170px;
+		border-radius: 4px;
+		border: 1px solid #ddd;
+	}
+
+	button#monthpicker {
+		background: var(--dark);
+		color: #fff;
+		padding: .5rem 1rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: 700;
+	}
+
+	#monthpickerwrap {
+		position: relative;
+	}
+
+	#coolpick {
+		position: absolute;
+		top: 50px;
+		right: 0;
+		width: 500px;
+		background: #fff;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+
+		button {
+			background: #ddd;
+			color: #555;
+			padding: 1rem 1rem 0.8rem 1rem;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: 700;
+			width: fit-content;
+			margin: 0 5px;
+			line-height: 1;
+			border: 1px solid #ddd;
+
+			&:hover {
+				border: 1px solid #aaa;
+				background: #ccc;
+			}
+
+			&.active {
+				border: 1px solid var(--dark);
+				background: var(--dark);
+				color: #fff;
+			}
+		}
+
+		#yearstopick {
+			display: block;
+			background: #eee;
+			padding: .5rem 2rem;
+		}
+
+		#monthstopick {
+			padding: 2rem 2rem;
+			// 2 columns
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-gap: 5px;
+
+
+			button {
+				width: 100%;
+			}
+		}
+	}
+}
+
+#timesadmin .container {
+	gap: 20px;
+	margin-top: 3rem;
+
+	.item {
+		background: #fff;
+		border: 1px solid #eee;
+		border-radius: 5px;
+		padding: 2rem;
+		text-align: center;
+		font-size: 3rem;
+		font-weight: 700;
+		width: 100%;
+	
+		strong {
+			display: block;
+			font-size: 1.8rem;
+			opacity: .6;
+		}
+	}
+}
+
+#timesadmintable table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 16px;
+
+	th {
+		background: var(--dark);
+		color: #fff;
+		padding: 1rem;
+		text-align: left;
+		font-weight: 700;
+	}
+
+	td {
+		padding: 1rem;
+		border-bottom: 1px solid #eee;
+		position: relative;
+	}
+
+	td:nth-child(1) {
+		min-width: 100px;
+	}
+
+	td:nth-child(5) table {
+		border-collapse: collapse;
+
+		td {
+			padding: 1rem;
+			border-bottom: 1px solid #eee;
+		}
+	}
+
+	tr.billed {
+		background: var(--greenlight);
+	}
+	tr.notbilled {
+		background: var(--redlight);
+	}
+	tr.notbillable {
+		background:#ddd;
+	}
+}
+
+#projects_and_times {
+	.done {
+		width: 44px;
+		height: 44px;
+		background: transparent;
+		font-size: 2.2rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		border: 0;
+		opacity: 0.3;
+
+		&:hover {
+			opacity: .6;
+			background: rgba(0,0,0,.03);
+		}
+
+		&.undone {
+			opacity: 1;
+		}
+	}
+}
+
+#timesnooo {
+	background: #fafafa;
+	padding: 3rem;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 2rem;
+	font-weight: 700;
+	margin: 4rem 0;
+
+	h2 {
+		font-size: 4rem;
+		max-width: 60rem;
+		margin: 3rem auto 0;
+		opacity: .6;
+	}
+
+	div {
+		background: var(--redlight);
+		color: var(--red);
+		border-radius: 4px;
+		width: fit-content;
+		margin: 0 auto 1rem;
+		text-transform: uppercase;
+		letter-spacing: .3px;
+		padding: 1.3rem 2rem 1rem 2rem;
+		line-height: 1;
+	}
+}
+
+#tvers {
+	position: fixed;
+	left: 10px;
+	bottom: 0;
+	font-size: 12px;
+	opacity: .6;
+	padding: 5px;
+	pointer-events: none;
+}
+
+.linknoticefront {
+	font-style: italic;
+	color: #777;
+	display: block;
+	font-size: 13px;
+
+	a {
+		display: inline-block;
+		vertical-align: middle;
+		color: #6a6a6a;
+		// max length of 30 characters
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 230px;
+
+		&:hover {
+			color: #222;
+		}
+	}
+}
+
+.commentsbtns button {
+	background: #f4f4f4;
+	color: #999;
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	padding: .5rem 1rem;
+	border: 0;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-top: 4px;
+	position: relative;
+
+	&.togglecomments {
+		display: none;
+	}
+
+	&.thera:after {
+		content: '';
+		position: absolute;
+		right: -3px;
+		top: -3px;
+		width: 10px;
+		height: 10px;
+		background: #9fd89c;
+		box-shadow: 0 0 10px 0 #9fd89c;
+		border-radius: 100%;
+	}
+}
+
+.commentsbtns {
+	display: flex;
+	gap: 5px;
+}
+
+#projects_and_times .commentbox {
+	background: #f4f4f4;
+	padding: 1rem;
+	border-radius: 4px;
+	margin-top: 5px;
+
+	textarea {
+		width: 100%;
+		min-height: 60px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: .5rem;
+		resize: vertical;
+		font-size: 15px;
+		font-family: inherit;
+	}
+
+	button {
+		background: var(--dark);
+		color: #fff;
+		padding: .5rem 1rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: 700;
+		margin-top: 5px;
+		font-size: 13px;
+	}
+}
+
+.commentswrapp {
+	display: none;
+}
+
+#projects_and_times .comments {
+	margin-top: 1rem;
+	font-size: 13px;
+
+	.comment {
+		background: #f4f4f4;
+		padding: 2rem 1rem 1rem;
+		border-radius: 4px;
+		margin-bottom: 5px;
+		position: relative;
+		max-width: 90%;
+
+		.date {
+			position: absolute;
+			top: 3px;
+			left: 1rem;
+			font-size: 11px;
+			color: #999;
+		}
+		.deletemessage {
+			position: absolute;
+			top: 3px;
+			right: 1rem;
+			font-size: 12px;
+			color: var(--red);
+			cursor: pointer;
+			display: none;
+		}
+
+		&.seenmessage {
+			.seen {
+				color: var(--green);
+				position: absolute;
+				top: 3px;
+				right: 2.5rem;
+				font-size: 15px;
+			}
+		}
+
+		&.fromclient {
+			margin-left: 10%;
+			background: #d0fecf;
+
+			.deletemessage {
+				display: block;
+			}
+		}
+	}
+}
+
+.timerow:has(.comment) {
+	.togglecomments {
+		display: inline-block !important;
+	}
+}

@@ -1,0 +1,56 @@
+<?php
+add_action('acf/init', 'acf_init_tallyrcomments');
+function acf_init_tallyrcomments() {
+
+    if( function_exists('acf_register_block_type') ) {
+
+        acf_register_block_type(array(
+            'name'              => 'tallyrcomments',
+            'title'             => __('Tallyr Nachrichten'),
+            'render_template'   => 'blocks/tallyrcomments.php',
+            'category'          => 'codesueyblocks',
+            'icon'              => 'cover-image',
+            'keywords'          => array( 'Hero', 'Header' ),
+            'align' => 'full',
+            'example'  => array(
+	            'attributes' => array(
+	                'mode' => 'preview',
+	                'data' => array(
+	                	'preview_image_help' => 'blockpreviews/tallyrcomments.png',
+	                )
+	            )
+	        )
+        ));
+    }
+}
+
+if( function_exists('acf_add_local_field_group') ):
+
+    acf_add_local_field_group(array(
+        'key' => 'group_s2aca027af21ce',
+        'title' => 'Tallyr Kommentare',
+        'fields' => array(
+            /* child_global_block_fields(), */
+            
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/tallyrcomments',
+                ),
+            ),
+        ),
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'hide_on_screen' => '',
+        'active' => true,
+        'description' => '',
+        'show_in_rest' => 0,
+    ));
+    
+    endif;
