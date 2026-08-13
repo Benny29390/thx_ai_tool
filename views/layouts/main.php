@@ -307,25 +307,25 @@ try {
                     <span class="nav-icon material-symbols-rounded">dashboard</span>
                     Dashboard
                 </a>
-                <?php if (\Core\Auth::can(CAP_CUSTOMERS_VIEW)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_CUSTOMERS_VIEW)): ?>
                 <a href="/admin/customers" class="nav-item <?= strpos($currentUri, '/admin/customers') === 0 ? 'active' : '' ?>">
                     <span class="nav-icon material-symbols-rounded">business</span>
                     Kunden
                 </a>
                 <?php endif; ?>
-                <?php if (\Core\Auth::can(CAP_CHAT)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_CHAT)): ?>
                 <a href="/chat" class="nav-item <?= $currentUri === '/chat' ? 'active' : '' ?>">
                     <span class="nav-icon material-symbols-rounded">chat</span>
                     Chat
                 </a>
                 <?php endif; ?>
-                <?php if (\Core\Auth::can(CAP_KNOWLEDGE) || \Core\Auth::can(CAP_TRANSCRIPTION)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_KNOWLEDGE) || \Core\Modules::navVisible(CAP_TRANSCRIPTION)): ?>
                 <?php
                     // Sidebar-Eintrag: ein flacher Link „Wissen". Innerhalb der Seite
                     // entscheiden Tabs zwischen Wissensdatenbank und Transkripten.
                     // Default-Ziel: Wissensdatenbank, oder Transkripte wenn der User
                     // nur CAP_TRANSCRIPTION hat.
-                    $wissenHref = \Core\Auth::can(CAP_KNOWLEDGE) ? '/wissen' : '/admin/transkription';
+                    $wissenHref = \Core\Modules::navVisible(CAP_KNOWLEDGE) ? '/wissen' : '/admin/transkription';
                     $wissenActive = strpos($currentUri, '/wissen') === 0 || strpos($currentUri, '/admin/transkription') === 0;
                 ?>
                 <a href="<?= $wissenHref ?>" class="nav-item <?= $wissenActive ? 'active' : '' ?>">
@@ -345,7 +345,7 @@ try {
                     Regeln
                 </a>
                 <?php endif; ?>
-                <?php if (\Core\Auth::can(CAP_PROJEKTPLANNER)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_PROJEKTPLANNER)): ?>
                 <a href="/admin/projektplanner" class="nav-item <?= strpos($currentUri, '/admin/projektplanner') === 0 ? 'active' : '' ?>">
                     <span class="nav-icon material-symbols-rounded">view_kanban</span>
                     Projektplanner
@@ -355,13 +355,13 @@ try {
                     <span class="nav-icon material-symbols-rounded">today</span>
                     Tagesplan
                 </a>
-                <?php if (\Core\Auth::can(CAP_SITE_MONITOR)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_SITE_MONITOR)): ?>
                 <a href="/admin/site-monitor" class="nav-item <?= strpos($currentUri, '/admin/site-monitor') === 0 ? 'active' : '' ?>">
                     <span class="nav-icon material-symbols-rounded">monitoring</span>
                     Website-Monitor
                 </a>
                 <?php endif; ?>
-                <?php if (\Core\Auth::can(CAP_LAM)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_LAM)): ?>
                 <a href="/lam"
                    id="nav-lam-link"
                    class="nav-item <?= strpos($currentUri, '/lam') === 0 ? 'active' : '' ?>"
@@ -385,7 +385,7 @@ try {
                 }
                 </script>
                 <?php endif; ?>
-                <?php if (\Core\Auth::can(CAP_CRM)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_CRM)): ?>
                 <a href="/crm"
                    id="nav-crm-link"
                    class="nav-item <?= strpos($currentUri, '/crm') === 0 ? 'active' : '' ?>"
@@ -406,7 +406,7 @@ try {
                 }
                 </script>
                 <?php endif; ?>
-                <?php if (\Core\Auth::can(CAP_MAIL)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_MAIL)): ?>
                 <a href="/mail" class="nav-item <?= strpos($currentUri, '/mail') === 0 ? 'active' : '' ?>" style="position:relative;">
                     <span class="nav-icon material-symbols-rounded">mail</span>
                     <span>Mail</span>
@@ -433,7 +433,7 @@ try {
                 </script>
                 <?php endif; ?>
 
-                <?php if (\Core\Auth::can(CAP_STYLEGUIDE)): ?>
+                <?php if (\Core\Modules::navVisible(CAP_STYLEGUIDE)): ?>
                 <a href="/admin/styleguide" class="nav-item <?= strpos($currentUri, '/admin/styleguide') === 0 ? 'active' : '' ?>">
                     <span class="nav-icon material-symbols-rounded">palette</span>
                     Styleguide
@@ -474,7 +474,7 @@ try {
                                 <span class="nav-icon material-symbols-rounded">hub</span>
                                 Wissens-Status
                             </a>
-                            <?php if (\Core\Auth::can(CAP_PROMPT_INSIGHTS)): ?>
+                            <?php if (\Core\Modules::navVisible(CAP_PROMPT_INSIGHTS)): ?>
                             <a href="/admin/prompt-insights" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/prompt-insights') === 0 ? 'active' : '' ?>">
                                 <span class="nav-icon material-symbols-rounded">psychology</span>
                                 Prompt-Insights
@@ -515,6 +515,10 @@ try {
                                 <span class="nav-icon material-symbols-rounded">settings</span>
                                 Einstellungen
                             </a>
+                            <a href="/admin/modules" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/modules') === 0 ? 'active' : '' ?>">
+                                <span class="nav-icon material-symbols-rounded">widgets</span>
+                                Module
+                            </a>
                             <a href="/admin/backups" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/backups') === 0 ? 'active' : '' ?>">
                                 <span class="nav-icon material-symbols-rounded">backup</span>
                                 Backups
@@ -523,7 +527,7 @@ try {
                                 <span class="nav-icon material-symbols-rounded">monitor_heart</span>
                                 System-Log
                             </a>
-                            <?php if (\Core\Auth::can(CAP_FIREWALL)): ?>
+                            <?php if (\Core\Modules::navVisible(CAP_FIREWALL)): ?>
                             <a href="/admin/firewall" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/firewall') === 0 ? 'active' : '' ?>">
                                 <span class="nav-icon material-symbols-rounded">security</span>
                                 Firewall / IP-Sperren

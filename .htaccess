@@ -3,6 +3,11 @@
 # Rewrite Engine aktivieren
 RewriteEngine On
 
+# Versteckte Verzeichnisse (.git, .svn, .hg) und .env in JEDEM Pfad-Segment sperren.
+# Wichtig: <FilesMatch "^\."> greift nur auf den Dateinamen — /.git/config hat den
+# Dateinamen "config" und wuerde sonst durchrutschen und die komplette Historie leaken.
+RewriteRule "(^|/)\.(git|svn|hg|env)(/|$)" - [F,L]
+
 # HTTPS erzwingen (auskommentieren wenn gewuenscht)
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
@@ -23,6 +28,12 @@ Options -Indexes
 
 # config.php schuetzen
 <Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Lizenzdatei schuetzen (installationsspezifisch, signiert)
+<Files "license.json">
     Order allow,deny
     Deny from all
 </Files>

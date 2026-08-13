@@ -194,6 +194,7 @@ if (Auth::check() && !$isPublic) {
 
         // --- Einstellungen / System (Admin-Bereich) ---
         ['/admin/firewall',        CAP_FIREWALL],
+        ['/admin/modules',         CAP_SETTINGS_MANAGE],
         ['/admin/settings',        CAP_SETTINGS_MANAGE],
         ['/admin/system-prompts',  CAP_SETTINGS_MANAGE],
         ['/admin/models',          CAP_SETTINGS_MANAGE],
@@ -216,6 +217,12 @@ if (Auth::check() && !$isPublic) {
         if ($cap === '__admin__') {
             if (!Auth::isAdmin()) Response::forbidden('Nur fuer Administratoren.');
         } else {
+            // Modul-Gate ZUERST: ein installationsweit deaktiviertes (oder nicht
+            // lizenziertes) Modul ist fuer ALLE gesperrt, auch fuer Admins.
+            // capActive() ist fail-open (Kern-Caps/DB-Fehler -> true).
+            if (!\Core\Modules::capActive($cap)) {
+                Response::forbidden('Dieses Modul ist auf dieser Installation nicht aktiv.');
+            }
             if (!Auth::can($cap)) Response::forbidden('Keine Berechtigung (Capability: ' . $cap . ').');
         }
         break;
@@ -1473,6 +1480,8 @@ try {
             } elseif ($uri === '/admin/backups') {
                 if (!Auth::isAdmin()) Response::forbidden();
                 require API_PATH . '/v1/admin/backups.php';
+            } elseif ($uri === '/admin/modules') {
+                require API_PATH . '/v1/admin/modules.php';
             }
             // ====== Projektplanner Routen ======
             elseif (preg_match('#^/admin/projektplanner/plans/(\d+)/rows/(\d+)/save-beacon$#', $uri, $m)) {

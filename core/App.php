@@ -181,6 +181,14 @@ class App
         // Verwendung in Routen:  [$authMiddleware, $capMiddleware(CAP_LAM)]
         $capMiddleware = function (string $cap) {
             return function () use ($cap) {
+                // Modul-Gate ZUERST: ist das Modul hinter diesem Cap auf dieser
+                // Installation aktiv? Greift fuer ALLE inkl. Admin. capActive() ist
+                // fail-open (Kern-Caps/DB-Fehler -> true), sperrt also nie die
+                // Verwaltung aus.
+                if (!\Core\Modules::capActive($cap)) {
+                    Response::forbidden('Dieses Modul ist auf dieser Installation nicht aktiv.');
+                    return false;
+                }
                 if (!Auth::can($cap)) {
                     Response::forbidden('Keine Berechtigung fuer diese Funktion (Capability: ' . $cap . ')');
                     return false;
@@ -1302,6 +1310,14 @@ class App
             $aiModels = $db->query("SELECT model_id, display_name, provider FROM ai_models WHERE is_active = 1 ORDER BY sort_order, display_name");
             Response::view('admin/settings', ['settings' => $settings, 'aiModels' => $aiModels]);
         }, [$authMiddleware, $adminMiddleware]);
+
+        // Modul-Verwaltung (installationsweit an/aus, innerhalb Lizenz)
+        $router->get('/admin/modules', function () {
+            Response::view('admin/module-verwaltung', [
+                'module'    => \Core\Modules::withState(),
+                'selfcheck' => \Core\Modules::selfCheck(),
+            ]);
+        }, [$authMiddleware, $capMiddleware(CAP_SETTINGS_MANAGE)]);
 
         // Migration Route (temporaer)
         $router->get('/admin/migrate', function () use ($db) {
