@@ -1,0 +1,21 @@
+# KI Text Tool — Update-Cron (Vorlage fuer Provisioning)
+# Ablageort: /etc/cron.d/ki-tool-autoupdate
+#
+# Laeuft privilegiert (als root oder als Repo-Owner), damit Git-Reset, composer
+# und das Loeschen der Anforderungs-Markierung funktionieren. Die Web-Oberflaeche
+# schreibt nur storage/UPDATE_REQUESTED; installiert wird ausschliesslich hier.
+#
+# KEIN unbeaufsichtigtes Auto-Installieren per Default (ein fehlerhaftes Update
+# soll nicht automatisch alle Installationen treffen). Nur:
+#   --write-status : alle 10 Min den Remote pruefen und Status ablegen
+#   --if-requested : jede Minute schauen, ob ein Admin ein Update angefordert hat
+#
+# Optionales naechtliches Auto-Update (nur wenn bewusst gewuenscht) — auskommentiert:
+# 30 3 * * * root php __APP_DIR__/scripts/update.php --auto >> /var/log/ki-tool-update.log 2>&1
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+
+*/10 * * * * root php __APP_DIR__/scripts/update.php --write-status >> /var/log/ki-tool-update.log 2>&1
+*   * * * * root php __APP_DIR__/scripts/update.php --if-requested >> /var/log/ki-tool-update.log 2>&1

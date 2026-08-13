@@ -1319,6 +1319,14 @@ class App
             ]);
         }, [$authMiddleware, $capMiddleware(CAP_SETTINGS_MANAGE)]);
 
+        // System-Update (zentrale Weiterentwicklung einspielen)
+        $router->get('/admin/system-update', function () {
+            Response::view('admin/system-update', [
+                'version' => \Core\Version::status(),
+                'license' => \Core\License::info(),
+            ]);
+        }, [$authMiddleware, $capMiddleware(CAP_SETTINGS_MANAGE)]);
+
         // Migration Route (temporaer)
         $router->get('/admin/migrate', function () use ($db) {
             $results = [];

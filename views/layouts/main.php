@@ -519,6 +519,10 @@ try {
                                 <span class="nav-icon material-symbols-rounded">widgets</span>
                                 Module
                             </a>
+                            <a href="/admin/system-update" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/system-update') === 0 ? 'active' : '' ?>">
+                                <span class="nav-icon material-symbols-rounded">system_update_alt</span>
+                                System-Update
+                            </a>
                             <a href="/admin/backups" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/backups') === 0 ? 'active' : '' ?>">
                                 <span class="nav-icon material-symbols-rounded">backup</span>
                                 Backups

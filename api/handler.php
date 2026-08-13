@@ -195,6 +195,7 @@ if (Auth::check() && !$isPublic) {
         // --- Einstellungen / System (Admin-Bereich) ---
         ['/admin/firewall',        CAP_FIREWALL],
         ['/admin/modules',         CAP_SETTINGS_MANAGE],
+        ['/admin/update',          CAP_SETTINGS_MANAGE],
         ['/admin/settings',        CAP_SETTINGS_MANAGE],
         ['/admin/system-prompts',  CAP_SETTINGS_MANAGE],
         ['/admin/models',          CAP_SETTINGS_MANAGE],
@@ -1482,6 +1483,8 @@ try {
                 require API_PATH . '/v1/admin/backups.php';
             } elseif ($uri === '/admin/modules') {
                 require API_PATH . '/v1/admin/modules.php';
+            } elseif ($uri === '/admin/update') {
+                require API_PATH . '/v1/admin/update.php';
             }
             // ====== Projektplanner Routen ======
             elseif (preg_match('#^/admin/projektplanner/plans/(\d+)/rows/(\d+)/save-beacon$#', $uri, $m)) {
