@@ -84,26 +84,57 @@ class Brand
     }
 
     /**
-     * Inline-CSS, das die --thoxan-*-Custom-Properties mit der Kundenfarbe
-     * ueberschreibt. Wird im <head> NACH thx-tokens.css ausgegeben, sodass alle
-     * bestehenden .thx-*-Klassen automatisch die Kundenfarbe erben — ohne dass
-     * eine CSS-Datei angefasst werden muss.
+     * Inline-CSS, das die KOMPLETTE --thoxan-*-Farbrampe (50..950) mit einer aus
+     * der Kundenfarbe generierten Rampe ueberschreibt. Wird im <head> NACH
+     * thx-tokens.css ausgegeben, sodass alle .thx-*-Klassen die Kundenfarbe erben
+     * — durchgaengig, nicht nur bei Buttons.
      *
-     * Ist keine brand_primary_color gesetzt, wird ein leerer String geliefert
-     * (kein Override → identisches Thoxan-Aussehen).
+     * Semantische Farben (emerald/amber/rose = Erfolg/Warnung/Fehler) bleiben
+     * bewusst unveraendert; nur die Markenfarbe wird getauscht.
+     *
+     * Ohne gesetzte brand_primary_color: leerer String (identisches Thoxan).
      */
     public static function cssVars(): string
     {
-        $primary = self::setting('brand_primary_color');
-        if ($primary === null || $primary === '' || !self::isHexColor($primary)) {
+        $ramp = self::primaryRamp();
+        if ($ramp === null) {
             return '';
         }
-        [$c600, $c700] = self::darken($primary);
-        return ':root{'
-            . '--thoxan-500:' . $primary . ';'
-            . '--thoxan-600:' . $c600 . ';'
-            . '--thoxan-700:' . $c700 . ';'
-            . '}';
+        $css = ':root{';
+        foreach ($ramp as $stop => $hex) {
+            $css .= '--thoxan-' . $stop . ':' . $hex . ';';
+        }
+        $css .= '}';
+        return $css;
+    }
+
+    /**
+     * Erzeugt die volle 50..950-Rampe aus brand_primary_color (= Stop 500).
+     * Helle Stops mischen zu Weiss, dunkle zu Schwarz — die Mischungsverhaeltnisse
+     * sind an der Original-Thoxan-Rampe kalibriert.
+     * @return array<int,string>|null  stop => Hex, oder null ohne/ungueltige Farbe
+     */
+    public static function primaryRamp(): ?array
+    {
+        $primary = self::setting('brand_primary_color');
+        if ($primary === null || $primary === '' || !self::isHexColor($primary)) {
+            return null;
+        }
+        // Mischung zu Weiss (Anteil Weiss) fuer die hellen Stops.
+        $light = [50 => 0.90, 100 => 0.80, 200 => 0.60, 300 => 0.40, 400 => 0.20];
+        // Abdunkeln (Anteil Schwarz) fuer die dunklen Stops.
+        $dark  = [600 => 0.10, 700 => 0.30, 800 => 0.47, 900 => 0.65, 950 => 0.80];
+
+        $ramp = [];
+        foreach ($light as $stop => $r) {
+            $ramp[$stop] = self::mixWhite($primary, $r);
+        }
+        $ramp[500] = self::normalizeHex($primary);
+        foreach ($dark as $stop => $r) {
+            $ramp[$stop] = self::mixBlack($primary, $r);
+        }
+        ksort($ramp);
+        return $ramp;
     }
 
     // ---------------------------------------------------------------------
@@ -155,26 +186,41 @@ class Brand
         return (bool) preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $v);
     }
 
-    /**
-     * Erzeugt zwei dunklere Abstufungen einer Hex-Farbe (Hover-Stufen 600/700),
-     * analog zum Thoxan-Verlauf (500 → 600 → 700).
-     * @return array{0:string,1:string}
-     */
-    private static function darken(string $hex): array
+    /** @return array{0:int,1:int,2:int} RGB einer #rgb/#rrggbb-Farbe */
+    private static function toRgb(string $hex): array
     {
         $hex = ltrim($hex, '#');
         if (strlen($hex) === 3) {
             $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
         }
-        $r = hexdec(substr($hex, 0, 2));
-        $g = hexdec(substr($hex, 2, 2));
-        $b = hexdec(substr($hex, 4, 2));
-        $mk = function (float $factor) use ($r, $g, $b): string {
-            $rr = max(0, (int) round($r * $factor));
-            $gg = max(0, (int) round($g * $factor));
-            $bb = max(0, (int) round($b * $factor));
-            return sprintf('#%02x%02x%02x', $rr, $gg, $bb);
-        };
-        return [$mk(0.86), $mk(0.72)];
+        return [
+            (int) hexdec(substr($hex, 0, 2)),
+            (int) hexdec(substr($hex, 2, 2)),
+            (int) hexdec(substr($hex, 4, 2)),
+        ];
+    }
+
+    private static function normalizeHex(string $hex): string
+    {
+        [$r, $g, $b] = self::toRgb($hex);
+        return sprintf('#%02x%02x%02x', $r, $g, $b);
+    }
+
+    /** Farbe um $ratio (0..1) zu Weiss mischen (heller). */
+    private static function mixWhite(string $hex, float $ratio): string
+    {
+        [$r, $g, $b] = self::toRgb($hex);
+        $r = (int) round($r + (255 - $r) * $ratio);
+        $g = (int) round($g + (255 - $g) * $ratio);
+        $b = (int) round($b + (255 - $b) * $ratio);
+        return sprintf('#%02x%02x%02x', $r, $g, $b);
+    }
+
+    /** Farbe um $ratio (0..1) zu Schwarz mischen (dunkler). */
+    private static function mixBlack(string $hex, float $ratio): string
+    {
+        [$r, $g, $b] = self::toRgb($hex);
+        $f = 1 - $ratio;
+        return sprintf('#%02x%02x%02x', (int) round($r * $f), (int) round($g * $f), (int) round($b * $f));
     }
 }

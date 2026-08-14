@@ -10,19 +10,20 @@
  *
  * Reiter-State via ?tab=. Diese Wrapper-Datei ist HAND-geschrieben (nicht generiert).
  */
-$sgTab = $_GET['tab'] ?? 'corporate';
-if (!in_array($sgTab, ['corporate', 'tokens', 'vergleich'], true)) {
-    $sgTab = 'corporate';
+$sgTab = $_GET['tab'] ?? 'branding';
+if (!in_array($sgTab, ['branding', 'corporate', 'tokens', 'vergleich'], true)) {
+    $sgTab = 'branding';
 }
 ?>
 <div class="thx-page-header">
     <div>
         <h1 class="thx-page-title">Styleguide</h1>
-        <p class="thx-page-subtitle">Thoxan Corporate-Design und die Design-Tokens des Tools.</p>
+        <p class="thx-page-subtitle">Erscheinungsbild dieser Installation anpassen, Corporate-Design und Design-Tokens.</p>
     </div>
 </div>
 
 <nav class="thx-tabs" aria-label="Styleguide-Bereiche">
+    <a href="/admin/styleguide?tab=branding" class="thx-tab<?= $sgTab === 'branding' ? ' is-active' : '' ?>">Eigenes Branding</a>
     <a href="/admin/styleguide?tab=corporate" class="thx-tab<?= $sgTab === 'corporate' ? ' is-active' : '' ?>">Corporate Design</a>
     <a href="/admin/styleguide?tab=tokens" class="thx-tab<?= $sgTab === 'tokens' ? ' is-active' : '' ?>">Tokens &amp; Live-Tuning</a>
     <a href="/admin/styleguide?tab=vergleich" class="thx-tab<?= $sgTab === 'vergleich' ? ' is-active' : '' ?>">Soll/Ist</a>
