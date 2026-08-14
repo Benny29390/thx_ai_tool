@@ -12,14 +12,14 @@
 # oder den encryption_key zerstoeren.
 #
 # Aufruf (Beispiel):
-#   sudo APP_DIR=/var/www REPO_URL=git@host:ki-tool.git BRANCH=stable \
+#   sudo APP_DIR=/var/www REPO_URL=git@host:ki-tool.git BRANCH=main \
 #        DB_HOST=localhost DB_NAME=ki_tool DB_USER=ki_tool DB_PASS='...' \
 #        APP_URL=https://kunde.example.de \
 #        ADMIN_EMAIL=chef@kunde.de ADMIN_PASS='...' ADMIN_NAME='Max Muster' \
 #        bash scripts/provision.sh
 #
 # Umgebungsvariablen (Vorgaben in Klammern):
-#   APP_DIR (/var/www)   REPO_URL   BRANCH (stable)
+#   APP_DIR (/var/www)   REPO_URL   BRANCH (main)
 #   DB_HOST (localhost)  DB_PORT (3306)  DB_NAME  DB_USER  DB_PASS
 #   APP_URL              WEB_USER (www-data)
 #   ADMIN_EMAIL  ADMIN_PASS  ADMIN_NAME (Administrator)
@@ -28,7 +28,7 @@
 set -euo pipefail
 
 APP_DIR="${APP_DIR:-/var/www}"
-BRANCH="${BRANCH:-stable}"
+BRANCH="${BRANCH:-main}"
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-3306}"
 DB_NAME="${DB_NAME:-ki_tool}"

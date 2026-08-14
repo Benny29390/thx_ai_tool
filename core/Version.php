@@ -85,7 +85,7 @@ class Version
         if (!self::hasRemote()) {
             return null;
         }
-        $branch = $branch ?: (self::branch() ?: 'stable');
+        $branch = $branch ?: (self::branch() ?: 'main');
         $r = self::git('rev-list --count HEAD..origin/' . escapeshellarg($branch));
         if ($r['code'] !== 0 || !is_numeric($r['out'])) {
             return null;
@@ -99,7 +99,7 @@ class Version
         if (!self::hasRemote()) {
             return null;
         }
-        $branch = $branch ?: (self::branch() ?: 'stable');
+        $branch = $branch ?: (self::branch() ?: 'main');
         $r = self::git('describe --tags --abbrev=0 origin/' . escapeshellarg($branch));
         if ($r['code'] === 0 && $r['out'] !== '') {
             return $r['out'];
@@ -118,7 +118,7 @@ class Version
         if (!self::hasRemote()) {
             return [];
         }
-        $branch = $branch ?: (self::branch() ?: 'stable');
+        $branch = $branch ?: (self::branch() ?: 'main');
         $r = self::git('log --pretty=%s HEAD..origin/' . escapeshellarg($branch) . ' -n ' . (int) $limit);
         if ($r['code'] !== 0 || $r['out'] === '') {
             return [];
@@ -129,7 +129,7 @@ class Version
     /** Kompakter Statusblock fuer die Admin-UI. */
     public static function status(?string $branch = null): array
     {
-        $branch = $branch ?: (self::branch() ?: 'stable');
+        $branch = $branch ?: (self::branch() ?: 'main');
         $hasRemote = self::hasRemote();
         return [
             'git'        => self::gitAvailable(),

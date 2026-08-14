@@ -23,7 +23,7 @@
  *
  * Aufruf:
  *   php scripts/update.php                 # interaktiv/manuell
- *   php scripts/update.php --branch=stable
+ *   php scripts/update.php --branch=main
  *   php scripts/update.php --auto          # fuer Cron: nur wenn Update da, still
  *   php scripts/update.php --check         # nur pruefen, nichts aendern
  */
@@ -46,7 +46,7 @@ $auto      = in_array('--auto', $args, true);
 $checkOnly = in_array('--check', $args, true);
 $writeStatus = in_array('--write-status', $args, true);
 $ifRequested = in_array('--if-requested', $args, true);
-$branch    = 'stable';
+$branch    = 'main';
 foreach ($args as $a) {
     if (strpos($a, '--branch=') === 0) $branch = substr($a, strlen('--branch='));
 }
