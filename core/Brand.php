@@ -55,10 +55,10 @@ class Brand
         return ($v !== null && $v !== '') ? $v : '#006fb9';
     }
 
-    /** Favicon-Pfad. Fallback: bestehendes Favicon. */
+    /** Favicon: eigenes Favicon -> sonst das Symbol -> sonst Standard. */
     public static function favicon(): string
     {
-        $v = self::setting('brand_favicon');
+        $v = self::setting('brand_favicon') ?? self::setting('brand_logo_icon_path');
         return ($v !== null && $v !== '') ? $v : '/assets/images/thoxan-x.svg';
     }
 
@@ -97,15 +97,46 @@ class Brand
     public static function cssVars(): string
     {
         $ramp = self::primaryRamp();
-        if ($ramp === null) {
+        $accent = self::accentRamp();
+        if ($ramp === null && $accent === null) {
             return '';
         }
         $css = ':root{';
-        foreach ($ramp as $stop => $hex) {
-            $css .= '--thoxan-' . $stop . ':' . $hex . ';';
+        if ($ramp !== null) {
+            foreach ($ramp as $stop => $hex) {
+                $css .= '--thoxan-' . $stop . ':' . $hex . ';';
+            }
+        }
+        if ($accent !== null) {
+            // Zweite Akzentfarbe -> Sekundaerpalette (indigo). Bewusst NICHT die
+            // semantischen Farben (emerald/amber/rose = Erfolg/Warnung/Fehler).
+            foreach ($accent as $stop => $hex) {
+                $css .= '--indigo-' . $stop . ':' . $hex . ';';
+            }
         }
         $css .= '}';
         return $css;
+    }
+
+    /**
+     * Rampe fuer die zweite Akzentfarbe (brand_accent_color).
+     * Deckt die in thx-tokens.css definierten indigo-Stops ab.
+     * @return array<int,string>|null
+     */
+    public static function accentRamp(): ?array
+    {
+        $accent = self::setting('brand_accent_color');
+        if ($accent === null || $accent === '' || !self::isHexColor($accent)) {
+            return null;
+        }
+        return [
+            50  => self::mixWhite($accent, 0.90),
+            100 => self::mixWhite($accent, 0.80),
+            200 => self::mixWhite($accent, 0.60),
+            500 => self::normalizeHex($accent),
+            600 => self::mixBlack($accent, 0.10),
+            700 => self::mixBlack($accent, 0.30),
+        ];
     }
 
     /**

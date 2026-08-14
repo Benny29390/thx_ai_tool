@@ -51,6 +51,26 @@ $iconPath  = $sv('brand_logo_icon_path');
         </div>
     </div>
 
+    <!-- Zweite Akzentfarbe -->
+    <div class="thx-card">
+        <h2 class="brand-h2">Zweite Akzentfarbe</h2>
+        <p class="brand-sub">Sekundärfarbe für dekorative Akzente (z.&nbsp;B. Status-Markierungen). Kleinerer Effekt als die Primärfarbe. Leer&nbsp;= Standard.</p>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <?php $accent = $sv('brand_accent_color'); ?>
+            <input type="color" id="ba-picker" value="<?= htmlspecialchars($accent !== '' ? $accent : '#6366f1') ?>"
+                   style="width:56px;height:44px;border:1px solid var(--slate-300);border-radius:8px;background:none;cursor:pointer;">
+            <input type="text" id="ba-hex" class="thx-input" value="<?= htmlspecialchars($accent) ?>" placeholder="#6366f1"
+                   pattern="^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$" style="width:130px;font-family:var(--font-mono,monospace);">
+        </div>
+        <div class="brand-ramp" id="ba-ramp" style="margin-top:16px;"></div>
+        <div style="margin-top:16px;display:flex;gap:8px;">
+            <button class="thx-btn thx-btn-primary" onclick="baSave()">Akzent speichern</button>
+            <?php if ($accent !== ''): ?>
+            <button class="thx-btn" onclick="App.post('/admin/settings',{brand_accent_color:''}).then(()=>location.reload());">Zurücksetzen</button>
+            <?php endif; ?>
+        </div>
+    </div>
+
     <!-- Logo -->
     <div class="thx-card">
         <h2 class="brand-h2">Logo</h2>
@@ -71,10 +91,10 @@ $iconPath  = $sv('brand_logo_icon_path');
         <input type="hidden" id="logo-code" value="<?= htmlspecialchars($appLogo) ?>">
     </div>
 
-    <!-- Icon / Favicon -->
+    <!-- Symbol (eingeklappte Leiste) -->
     <div class="thx-card">
-        <h2 class="brand-h2">Symbol (eingeklappte Leiste &amp; Favicon)</h2>
-        <p class="brand-sub">Kleines quadratisches Zeichen für die eingeklappte Seitenleiste und den Browser-Tab. PNG oder SVG.</p>
+        <h2 class="brand-h2">Symbol (eingeklappte Leiste)</h2>
+        <p class="brand-sub">Kleines quadratisches Zeichen für die eingeklappte Seitenleiste. PNG oder SVG.</p>
         <div class="brand-drop" id="icon-drop">
             <div>Symbol hierher ziehen oder klicken</div>
             <input type="file" id="icon-input" accept=".svg,.png,image/svg+xml,image/png" hidden>
@@ -85,10 +105,31 @@ $iconPath  = $sv('brand_logo_icon_path');
         <div style="margin-top:12px;display:flex;gap:8px;">
             <button class="thx-btn thx-btn-primary" onclick="iconSave()">Symbol speichern</button>
             <?php if ($iconPath !== ''): ?>
-            <button class="thx-btn" onclick="App.post('/admin/settings',{brand_logo_icon_path:''}).then(()=>{App.post('/admin/settings',{brand_favicon:''}).then(()=>location.reload());});">Entfernen</button>
+            <button class="thx-btn" onclick="App.post('/admin/settings',{brand_logo_icon_path:''}).then(()=>location.reload());">Entfernen</button>
             <?php endif; ?>
         </div>
         <input type="hidden" id="icon-data" value="<?= htmlspecialchars($iconPath) ?>">
+    </div>
+
+    <!-- Favicon (Browser-Tab) -->
+    <div class="thx-card">
+        <?php $favicon = $sv('brand_favicon'); ?>
+        <h2 class="brand-h2">Favicon (Browser-Tab)</h2>
+        <p class="brand-sub">Eigenes Symbol für den Browser-Tab. Ohne eigenes Favicon wird das Symbol oben verwendet.</p>
+        <div class="brand-drop" id="fav-drop">
+            <div>Favicon hierher ziehen oder klicken</div>
+            <input type="file" id="fav-input" accept=".svg,.png,.ico,image/svg+xml,image/png,image/x-icon" hidden>
+        </div>
+        <div class="brand-icon-preview" id="fav-preview" style="<?= $favicon === '' ? 'display:none;' : '' ?>">
+            <img src="<?= htmlspecialchars($favicon) ?>" alt="Favicon">
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="thx-btn thx-btn-primary" onclick="faviconSave()">Favicon speichern</button>
+            <?php if ($favicon !== ''): ?>
+            <button class="thx-btn" onclick="App.post('/admin/settings',{brand_favicon:''}).then(()=>location.reload());">Entfernen</button>
+            <?php endif; ?>
+        </div>
+        <input type="hidden" id="fav-data" value="<?= htmlspecialchars($favicon) ?>">
     </div>
 
 </div>
@@ -158,7 +199,31 @@ $iconPath  = $sv('brand_logo_icon_path');
         });
     };
 
-    // --- Datei-Uploads (Logo + Symbol) ---
+    // --- Zweite Akzentfarbe (Sekundaerpalette / indigo-Stops) ---
+    var baPicker=document.getElementById('ba-picker'), baHex=document.getElementById('ba-hex'),
+        baRampBox=document.getElementById('ba-ramp');
+    function accentRamp(c){ return {50:mixW(c,0.90),100:mixW(c,0.80),200:mixW(c,0.60),500:hex.apply(null,toRgb(c)),600:mixB(c,0.10),700:mixB(c,0.30)}; }
+    function paintAccent(c){
+        if(!isHex(c)) return;
+        var r=accentRamp(c), stops=[50,100,200,500,600,700];
+        baRampBox.innerHTML='';
+        stops.forEach(function(s){
+            var d=document.createElement('div'); d.className='stop'+(s<=200?' light':''); d.style.background=r[s];
+            var sp=document.createElement('span'); sp.textContent=s; d.appendChild(sp); baRampBox.appendChild(d);
+        });
+    }
+    baPicker.addEventListener('input',function(){ baHex.value=this.value; paintAccent(this.value); });
+    baHex.addEventListener('input',function(){ var v=normalize(this.value); if(isHex(v)){ baPicker.value=v; paintAccent(v);} });
+    paintAccent(normalize(baHex.value) || '#6366f1');
+    window.baSave=function(){
+        var v=normalize(baHex.value);
+        if(!isHex(v)){ App.showNotification('Ungültiger Farbwert','error'); return; }
+        App.post('/admin/settings',{brand_accent_color:v}).then(function(){
+            App.showNotification('Akzent gespeichert','success'); setTimeout(()=>location.reload(),700);
+        });
+    };
+
+    // --- Datei-Uploads (Logo / Symbol / Favicon) ---
     function wireDrop(dropId, inputId, onData){
         var drop=document.getElementById(dropId), input=document.getElementById(inputId);
         drop.addEventListener('click',()=>input.click());
@@ -167,24 +232,28 @@ $iconPath  = $sv('brand_logo_icon_path');
         drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');if(e.dataTransfer.files[0])onData(e.dataTransfer.files[0]);});
         input.addEventListener('change',e=>{if(e.target.files[0])onData(e.target.files[0]);});
     }
-    function readLogo(file, asInline){
+    // mode: 'logo' (inline SVG/img ins Sidebar-Logo) | 'icon' | 'fav' (kleines Bild als data-URL)
+    function readLogo(file, mode){
         var isSvg=file.type.includes('svg')||file.name.endsWith('.svg');
         var isPng=file.type.includes('png')||file.name.endsWith('.png');
-        if(!isSvg&&!isPng){ App.showNotification('Nur SVG oder PNG','error'); return; }
+        var isIco=file.name.endsWith('.ico')||file.type.includes('icon');
+        if(!isSvg&&!isPng&&!(isIco&&mode==='fav')){ App.showNotification('Nur SVG oder PNG'+(mode==='fav'?'/ICO':''),'error'); return; }
         var reader=new FileReader();
-        if(isSvg && asInline){ reader.onload=e=>{ if(!e.target.result.includes('<svg')){App.showNotification('Ungültiges SVG','error');return;}
+        if(isSvg && mode==='logo'){ reader.onload=e=>{ if(!e.target.result.includes('<svg')){App.showNotification('Ungültiges SVG','error');return;}
             document.getElementById('logo-code').value=e.target.result;
             var p=document.getElementById('logo-preview'); p.style.display=''; p.innerHTML=e.target.result;
             App.showNotification('Logo geladen — speichern','info'); }; reader.readAsText(file); }
         else { reader.onload=e=>{ var url=e.target.result;
-            if(asInline){ document.getElementById('logo-code').value='<img src="'+url+'" alt="Logo">';
+            if(mode==='logo'){ document.getElementById('logo-code').value='<img src="'+url+'" alt="Logo">';
                 var p=document.getElementById('logo-preview'); p.style.display=''; p.innerHTML='<img src="'+url+'" alt="Logo">'; }
-            else { document.getElementById('icon-data').value=url;
-                var p=document.getElementById('icon-preview'); p.style.display=''; p.querySelector('img').src=url; }
-            App.showNotification((asInline?'Logo':'Symbol')+' geladen — speichern','info'); }; reader.readAsDataURL(file); }
+            else { document.getElementById(mode+'-data').value=url;
+                var p=document.getElementById(mode+'-preview'); p.style.display=''; p.querySelector('img').src=url; }
+            var label=mode==='logo'?'Logo':(mode==='fav'?'Favicon':'Symbol');
+            App.showNotification(label+' geladen — speichern','info'); }; reader.readAsDataURL(file); }
     }
-    wireDrop('logo-drop','logo-input',f=>readLogo(f,true));
-    wireDrop('icon-drop','icon-input',f=>readLogo(f,false));
+    wireDrop('logo-drop','logo-input',f=>readLogo(f,'logo'));
+    wireDrop('icon-drop','icon-input',f=>readLogo(f,'icon'));
+    wireDrop('fav-drop','fav-input',f=>readLogo(f,'fav'));
 
     window.logoSave=function(){
         App.post('/admin/settings',{app_logo:document.getElementById('logo-code').value}).then(function(){
@@ -192,12 +261,13 @@ $iconPath  = $sv('brand_logo_icon_path');
         });
     };
     window.iconSave=function(){
-        var url=document.getElementById('icon-data').value;
-        // Symbol dient zugleich als Favicon.
-        App.post('/admin/settings',{brand_logo_icon_path:url}).then(function(){
-            App.post('/admin/settings',{brand_favicon:url}).then(function(){
-                App.showNotification('Symbol gespeichert','success'); setTimeout(()=>location.reload(),700);
-            });
+        App.post('/admin/settings',{brand_logo_icon_path:document.getElementById('icon-data').value}).then(function(){
+            App.showNotification('Symbol gespeichert','success'); setTimeout(()=>location.reload(),700);
+        });
+    };
+    window.faviconSave=function(){
+        App.post('/admin/settings',{brand_favicon:document.getElementById('fav-data').value}).then(function(){
+            App.showNotification('Favicon gespeichert','success'); setTimeout(()=>location.reload(),700);
         });
     };
 })();
