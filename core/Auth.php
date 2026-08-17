@@ -23,6 +23,7 @@ class Auth
         ROLE_ADMIN => [
             CAP_CHAT, CAP_ARTIFACTS, CAP_KNOWLEDGE, CAP_COWORKER, CAP_LAM,
             CAP_PROJEKTPLANNER, CAP_MAIL, CAP_SITE_MONITOR, CAP_PROMPT_INSIGHTS, CAP_TRANSCRIPTION,
+            CAP_KI_MITARBEITER,
             CAP_CUSTOMERS_VIEW, CAP_CUSTOMERS_MANAGE,
             CAP_CRM, CAP_CRM_DSGVO, CAP_CRM_MIGRATION, CAP_CRM_VOKABULAR,
             CAP_USERS_MANAGE, CAP_SETTINGS_MANAGE, CAP_FIREWALL, CAP_STYLEGUIDE,
@@ -30,12 +31,14 @@ class Auth
         ROLE_MANAGER => [
             CAP_CHAT, CAP_ARTIFACTS, CAP_KNOWLEDGE, CAP_COWORKER, CAP_LAM,
             CAP_PROJEKTPLANNER, CAP_MAIL, CAP_SITE_MONITOR, CAP_PROMPT_INSIGHTS, CAP_TRANSCRIPTION,
+            CAP_KI_MITARBEITER,
             CAP_CUSTOMERS_VIEW, CAP_CUSTOMERS_MANAGE,
             CAP_CRM, CAP_CRM_MIGRATION, CAP_CRM_VOKABULAR, CAP_STYLEGUIDE,
         ],
         ROLE_USER => [
             CAP_CHAT, CAP_ARTIFACTS, CAP_KNOWLEDGE, CAP_COWORKER,
             CAP_PROJEKTPLANNER, CAP_CUSTOMERS_VIEW,
+            CAP_KI_MITARBEITER,
             CAP_CRM,
         ],
         ROLE_GUEST => [
@@ -56,6 +59,7 @@ class Auth
         CAP_PROJEKTPLANNER, CAP_LAM, CAP_MAIL, CAP_SITE_MONITOR,
         CAP_CRM, CAP_CRM_VOKABULAR, CAP_CRM_MIGRATION, CAP_CRM_DSGVO,
         CAP_PROMPT_INSIGHTS,
+        CAP_KI_MITARBEITER,
         CAP_USERS_MANAGE, CAP_SETTINGS_MANAGE, CAP_FIREWALL, CAP_STYLEGUIDE,
     ];
 
@@ -86,6 +90,8 @@ class Auth
         CAP_CRM_DSGVO      => ['gruppe' => 'CRM', 'label' => 'DSGVO-Tools', 'beschreibung' => 'Datenauskunft erstellen, Hard-Delete ausführen'],
 
         CAP_PROMPT_INSIGHTS => ['gruppe' => 'KI & Modelle', 'label' => 'Prompt-Insights', 'beschreibung' => 'Eigene Chatverläufe importieren, Muster erkennen, Spielregeln ableiten'],
+
+        CAP_KI_MITARBEITER  => ['gruppe' => 'Werkzeuge fürs Schreiben', 'label' => 'KI-Mitarbeiter', 'beschreibung' => 'Spezialisierte KI-Mitarbeiter im Sparring entwerfen, testen und führen'],
 
         CAP_USERS_MANAGE    => ['gruppe' => 'Administration', 'label' => 'Benutzer', 'beschreibung' => 'Rechte vergeben (de facto Admin-Funktion)'],
         CAP_SETTINGS_MANAGE => ['gruppe' => 'Administration', 'label' => 'Einstellungen', 'beschreibung' => 'API-Keys, SMTP, Sistrix etc.'],

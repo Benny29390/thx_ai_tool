@@ -338,6 +338,12 @@ $appLogoIsPath = is_string($appLogo) && (bool) preg_match('#^(/|https?://|data:)
                     Regeln
                 </a>
                 <?php endif; ?>
+                <?php if (\Core\Modules::navVisible(CAP_KI_MITARBEITER)): ?>
+                <a href="/ki-mitarbeiter" class="nav-item <?= strpos($currentUri, '/ki-mitarbeiter') === 0 ? 'active' : '' ?>">
+                    <span class="nav-icon material-symbols-rounded">badge</span>
+                    KI-Mitarbeiter
+                </a>
+                <?php endif; ?>
                 <?php if (\Core\Modules::navVisible(CAP_PROJEKTPLANNER)): ?>
                 <a href="/admin/projektplanner" class="nav-item <?= strpos($currentUri, '/admin/projektplanner') === 0 ? 'active' : '' ?>">
                     <span class="nav-icon material-symbols-rounded">view_kanban</span>

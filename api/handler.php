@@ -154,6 +154,11 @@ if (Auth::check() && !$isPublic) {
         ['/knowledge/',            CAP_KNOWLEDGE],
         ['/wissen',                CAP_KNOWLEDGE],
 
+        // --- KI-Mitarbeiter ---
+        ['/ki-mitarbeiter',        CAP_KI_MITARBEITER],
+        ['/ai-runs',               CAP_KI_MITARBEITER],
+        ['/ai-permissions',        CAP_KI_MITARBEITER],
+
         // --- LAM ---
         ['/lam/',                  CAP_LAM],
 
@@ -1869,6 +1874,11 @@ try {
                 if (!Auth::can(CAP_TRANSCRIPTION)) Response::forbidden();
                 $_GET['template_id'] = $m[1];
                 require API_PATH . '/v1/admin/transkription/templates.php';
+            }
+            // ====== KI-Mitarbeiter-Builder ======
+            elseif (strpos($uri, '/ki-mitarbeiter') === 0 || strpos($uri, '/ai-runs') === 0 || strpos($uri, '/ai-permissions') === 0) {
+                // Cap-Gate ist bereits ueber capRules erledigt; interne Sub-Route-Verteilung im File.
+                require API_PATH . '/v1/ki-mitarbeiter.php';
             }
             // ====== LAM-System (Linkaufbau-Management) ======
             elseif ($uri === '/lam/dashboard') {

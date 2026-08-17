@@ -1,0 +1,1 @@
+<div class="thx-page-header"><h1 class="thx-page-title">Detail (in Arbeit)</h1></div><p style="padding:20px;color:var(--slate-500);">Die Detailansicht wird im nächsten Schritt gebaut. ID: <?= (int)($employeeId ?? 0) ?></p>

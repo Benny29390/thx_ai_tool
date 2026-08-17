@@ -66,6 +66,7 @@ define('CAP_CRM_MIGRATION',     'crm_migration');
 define('CAP_CRM_VOKABULAR',     'crm_vokabular');
 define('CAP_FIREWALL',          'firewall');
 define('CAP_STYLEGUIDE',        'styleguide');
+define('CAP_KI_MITARBEITER',    'ki_mitarbeiter');
 
 // Regel-Typen
 define('RULE_STYLE', 'style');

@@ -4553,6 +4553,20 @@ class App
         }, [$authMiddleware, $capMiddleware(CAP_TRANSCRIPTION)]);
 
         // ====== CRM (Kontakte) ======
+        // ===== KI-Mitarbeiter =====
+        $router->get('/ki-mitarbeiter', function () {
+            Response::view('ki-mitarbeiter/liste', ['title' => 'KI-Mitarbeiter']);
+        }, [$authMiddleware, $capMiddleware(CAP_KI_MITARBEITER)]);
+        $router->get('/ki-mitarbeiter/neu', function () {
+            Response::view('ki-mitarbeiter/wizard', ['title' => 'Neuer KI-Mitarbeiter', 'employeeId' => null]);
+        }, [$authMiddleware, $capMiddleware(CAP_KI_MITARBEITER)]);
+        $router->get('/ki-mitarbeiter/{id}', function ($id) {
+            Response::view('ki-mitarbeiter/detail', ['title' => 'KI-Mitarbeiter', 'employeeId' => (int) $id]);
+        }, [$authMiddleware, $capMiddleware(CAP_KI_MITARBEITER)]);
+        $router->get('/ki-mitarbeiter/{id}/wizard', function ($id) {
+            Response::view('ki-mitarbeiter/wizard', ['title' => 'KI-Mitarbeiter bearbeiten', 'employeeId' => (int) $id]);
+        }, [$authMiddleware, $capMiddleware(CAP_KI_MITARBEITER)]);
+
         $router->get('/crm', function () {
             // Dashboard war inhaltsleer → direkt auf Kontakte-Liste weiterleiten
             header('Location: /crm/kontakte', true, 302);

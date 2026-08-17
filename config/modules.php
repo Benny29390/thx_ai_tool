@@ -65,6 +65,16 @@ return [
         'deps' => [],
         'core' => false,
     ],
+    'ki_mitarbeiter' => [
+        'label' => 'KI-Mitarbeiter',
+        'beschreibung' => 'Spezialisierte KI-Mitarbeiter im Sparring entwerfen, testen und führen',
+        'caps' => [CAP_KI_MITARBEITER],
+        'gruppe' => 'Werkzeuge fürs Schreiben',
+        'icon' => 'badge',
+        'externals' => [],
+        'deps' => [],
+        'core' => false,
+    ],
     'transcription' => [
         'label' => 'Transkription',
         'beschreibung' => 'Audio/Video transkribieren, Protokolle ableiten, in Wissen einspeisen',
