@@ -96,6 +96,16 @@ if (preg_match('#^/ki-mitarbeiter/(\d+)(/.*)?$#', $uri, $m)) {
         Response::success(['profile' => $profile, 'completeness' => $svc->completeness($profile)], 'Gespeichert');
     }
 
+    // Avatar-Bild generieren (OpenAI)
+    if ($sub === '/avatar/generate' && $method === 'POST') {
+        require_once SERVICES_PATH . '/KiAvatarService.php';
+        set_time_limit(150);
+        try {
+            $path = (new \Services\KiAvatarService($db))->generate($id, $actor);
+            Response::success(['avatar_image' => $path], 'Avatar erstellt');
+        } catch (\Throwable $ex) { Response::error($ex->getMessage()); }
+    }
+
     // Lebenszyklus
     if (($sub === '/transition') && $method === 'POST') {
         $to = (string) ($input['to'] ?? '');

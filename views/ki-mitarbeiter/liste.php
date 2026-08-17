@@ -6,11 +6,15 @@ $filter = [];
 if (!\Core\Auth::isAdmin()) $filter['allowed_customer_ids'] = \Core\Auth::customers();
 $employees = $svc->liste($filter);
 // Fürs Frontend aufbereiten (nur benötigte Felder)
-$data = array_map(fn($e) => [
-    'id' => (int) $e['id'], 'name' => $e['name'], 'role_title' => $e['role_title'],
-    'status' => $e['status'], 'owner' => $e['owner_name'] ?: 'Ohne Verantwortlichen',
-    'customer' => $e['customer_name'] ?: 'Installationsweit', 'open' => (int) $e['open_permissions'],
-], $employees);
+$data = array_map(function ($e) {
+    $prof = $e['profile'] ?? [];
+    return [
+        'id' => (int) $e['id'], 'name' => $e['name'], 'role_title' => $e['role_title'],
+        'status' => $e['status'], 'owner' => $e['owner_name'] ?: 'Ohne Verantwortlichen',
+        'customer' => $e['customer_name'] ?: 'Installationsweit', 'open' => (int) $e['open_permissions'],
+        'avatar' => $prof['avatar'] ?? '', 'avatar_image' => $prof['avatar_image'] ?? '',
+    ];
+}, $employees);
 ?>
 <div class="thx-page-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
     <div>
@@ -100,8 +104,9 @@ $data = array_map(fn($e) => [
 
     function card(e){
         var sm=SM[e.status]||[e.status,'var(--slate-500)','var(--slate-100)'];
+        var ava=e.avatar_image?'<span class="km-avatar" style="overflow:hidden;padding:0;"><img src="'+h(e.avatar_image)+'" style="width:100%;height:100%;object-fit:cover;"></span>':(e.avatar?'<span class="km-avatar">'+h(e.avatar)+'</span>':'<span class="km-avatar material-symbols-rounded">smart_toy</span>');
         var open=e.open>0?'<span style="color:var(--amber-700);"><span class="material-symbols-rounded">lock_open</span>'+e.open+' offen</span>':'';
-        return '<a class="km-card" href="/ki-mitarbeiter/'+e.id+'"><div class="km-card-head"><span class="km-avatar material-symbols-rounded">smart_toy</span><div style="flex:1;min-width:0;"><div class="km-name">'+h(e.name)+'</div><div class="km-role">'+h(e.role_title||'Ohne Rollenbezeichnung')+'</div></div><span class="km-badge" style="color:'+sm[1]+';background:'+sm[2]+';">'+h(sm[0])+'</span></div><div class="km-meta"><span><span class="material-symbols-rounded">person</span>'+h(e.owner)+'</span><span><span class="material-symbols-rounded">apartment</span>'+h(e.customer)+'</span>'+open+'</div></a>';
+        return '<a class="km-card" href="/ki-mitarbeiter/'+e.id+'"><div class="km-card-head">'+ava+'<div style="flex:1;min-width:0;"><div class="km-name">'+h(e.name)+'</div><div class="km-role">'+h(e.role_title||'Ohne Rollenbezeichnung')+'</div></div><span class="km-badge" style="color:'+sm[1]+';background:'+sm[2]+';">'+h(sm[0])+'</span></div><div class="km-meta"><span><span class="material-symbols-rounded">person</span>'+h(e.owner)+'</span><span><span class="material-symbols-rounded">apartment</span>'+h(e.customer)+'</span>'+open+'</div></a>';
     }
     function groupKey(e){ return group==='none'?'':(group==='status'?(SM[e.status]?SM[e.status][0]:e.status):(group==='owner'?e.owner:e.customer)); }
 

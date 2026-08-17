@@ -45,6 +45,8 @@ class KiMitarbeiterService
         'knowledge_sources', 'positive_examples', 'negative_examples',
         'quality_rules', 'forbidden', 'personality', 'test_cases', 'department',
         'problem_statement', 'expected_benefit', 'need_classification',
+        // Vermenschlichung (Steckbrief)
+        'avatar', 'avatar_image', 'persona',
     ];
 
     /** Pflicht-Sektionen fürs Einreichen zur Prüfung. */
