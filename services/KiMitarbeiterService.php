@@ -71,10 +71,11 @@ class KiMitarbeiterService
             $in = implode(',', array_map('intval', $filter['allowed_customer_ids']));
             $where[] = "(e.customer_id IS NULL OR e.customer_id IN ($in))";
         }
-        $sql = "SELECT e.*, u.name AS owner_name,
+        $sql = "SELECT e.*, u.name AS owner_name, c.name AS customer_name,
                     (SELECT COUNT(*) FROM ai_tool_permissions p WHERE p.ai_employee_id = e.id AND p.status = 'requested') AS open_permissions
                 FROM ai_employees e
-                LEFT JOIN users u ON u.id = e.owner_user_id";
+                LEFT JOIN users u ON u.id = e.owner_user_id
+                LEFT JOIN customers c ON c.id = e.customer_id";
         if ($where) { $sql .= ' WHERE ' . implode(' AND ', $where); }
         $sql .= ' ORDER BY e.updated_at DESC';
         $rows = $this->db->query($sql, $params);
