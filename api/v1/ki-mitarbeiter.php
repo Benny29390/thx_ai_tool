@@ -160,6 +160,23 @@ if (preg_match('#^/ki-mitarbeiter/(\d+)(/.*)?$#', $uri, $m)) {
         Response::success($svc->get($id), 'Version wiederhergestellt');
     }
 
+    // Feedback + Lernkreis (Vorschlag → menschliche Freigabe → neue Version)
+    if (strpos($sub, '/feedback') === 0) {
+        require_once SERVICES_PATH . '/KiSuggestionService.php';
+        $sug = new \Services\KiSuggestionService($db);
+        if ($sub === '/feedback' && $method === 'GET') {
+            Response::success(['feedback' => $sug->feedbackListe($id)]);
+        }
+        if (preg_match('#^/feedback/(\d+)/(suggest|apply|reject)$#', $sub, $mm) && $method === 'POST') {
+            $fid = (int) $mm[1];
+            try {
+                if ($mm[2] === 'suggest') Response::success(['suggestion' => $sug->vorschlagErzeugen($fid, $actor)]);
+                if ($mm[2] === 'apply')   Response::success(['version' => $sug->uebernehmen($fid, $actor)], 'Übernommen — neue Version erstellt');
+                if ($mm[2] === 'reject')  { $sug->ablehnen($fid, $actor); Response::success(null, 'Abgelehnt'); }
+            } catch (\Throwable $ex) { Response::error($ex->getMessage()); }
+        }
+    }
+
     // Audit-Log (Aktivität)
     if ($sub === '/audit-log' && $method === 'GET') {
         Response::success(['events' => $db->query(

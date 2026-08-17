@@ -196,7 +196,20 @@ $tabs = ['uebersicht'=>'Übersicht','stelle'=>'Stellenbeschreibung','workflows'=
     window.kmRestore=function(n){ if(!confirm('Version v'+n+' wiederherstellen? Der aktuelle Stand wird vorher als Version gesichert.'))return; post(base+'/versions/'+n+'/restore',{}).then(function(res){ if(res.success)location.reload(); else alert(res.message); }); };
 
     function loadAudit(){ get(base+'/audit-log').then(function(res){ var box=document.getElementById('km-audit'); if(!res.success){box.textContent='Fehler';return;} var evs=res.data.events||[]; if(!evs.length){box.innerHTML='<p class="km-empty">Noch keine Aktivität.</p>';return;} box.innerHTML='<ul class="km-ul">'+evs.map(function(a){ return '<li><strong>'+h(a.action)+'</strong> · '+h(a.actor_name||'System')+' · '+h(a.occurred_at)+'</li>'; }).join('')+'</ul>'; }); }
-    function loadFeedback(){ document.getElementById('km-feedback').innerHTML='<p class="km-empty">Feedback erscheint nach Testläufen (Test-Chat).</p>'; }
+    function loadFeedback(){ get(base+'/feedback').then(function(res){
+        var box=document.getElementById('km-feedback'); if(!res.success){box.textContent='Fehler';return;}
+        var fs=res.data.feedback||[]; if(!fs.length){box.innerHTML='<p class="km-empty">Noch kein Feedback. Bewerte einen Testlauf, um den Lernkreis zu starten.</p>';return;}
+        box.innerHTML=fs.map(function(f){
+            var st={open:'offen',accepted:'übernommen',rejected:'abgelehnt'}[f.status]||f.status;
+            var sug=''; if(f.suggested_change){ sug='<div class="km-field" style="background:var(--thoxan-50);padding:8px;border-radius:6px;margin-top:6px;"><strong>KI-Vorschlag:</strong> '+h(f.suggested_change.summary||'')+'<br><span class="km-empty">Betrifft: '+h(Object.keys(f.suggested_change.profile_patch||{}).join(', '))+'</span></div>'; }
+            var actions=''; if(f.status==='open'){ if(!f.suggested_change){ actions='<button class="thx-btn thx-btn-small" onclick="kmSuggest('+f.id+')">Verbesserungsvorschlag erzeugen</button>'; } else { actions='<button class="thx-btn thx-btn-small thx-btn-primary" onclick="kmApplyFb('+f.id+')">Übernehmen (neue Version)</button> <button class="thx-btn thx-btn-small" onclick="kmRejectFb('+f.id+')">Ablehnen</button>'; } }
+            return '<div class="km-perm-row" style="flex-direction:column;align-items:stretch;"><div><strong>'+h(f.feedback_type)+'</strong> '+(f.rating?('· '+(f.rating>0?'👍':'👎')):'')+' <span class="km-badge" style="background:var(--slate-100);color:var(--slate-500);">'+h(st)+'</span><br><span class="km-empty">'+h(f.comment||'')+' — '+h(f.user_name||'')+'</span></div>'+sug+'<div style="margin-top:6px;">'+actions+'</div></div>';
+        }).join('');
+    }); }
+    window.kmSuggest=function(fid){ post(base+'/feedback/'+fid+'/suggest',{}).then(function(res){ if(res.success){loaded['feedback']=false;loadFeedback();} else alert(res.message); }); };
+    window.kmApplyFb=function(fid){ if(!confirm('Vorschlag übernehmen? Es entsteht eine neue Profilversion.'))return; post(base+'/feedback/'+fid+'/apply',{}).then(function(res){ if(res.success){App.showNotification&&App.showNotification('Übernommen','success');loaded['feedback']=false;loadFeedback();} else alert(res.message); }); };
+    window.kmRejectFb=function(fid){ post(base+'/feedback/'+fid+'/reject',{}).then(function(res){ loaded['feedback']=false;loadFeedback(); }); };
+    window.kmRunFeedback=function(runId,rating,type,comment){ post('/api/v1/ai-runs/'+runId+'/feedback',{rating:rating,feedback_type:type,comment:comment||''}).then(function(res){ if(res.success && App.showNotification) App.showNotification('Danke für das Feedback','success'); loaded['feedback']=false; }); };
 
     // Test-Chat (Runner)
     window.kmTestSend=function(){
@@ -204,7 +217,18 @@ $tabs = ['uebersicht'=>'Übersicht','stelle'=>'Stellenbeschreibung','workflows'=
         var box=document.getElementById('km-tc-messages');
         var u=document.createElement('div'); u.className='wz-msg user'; u.textContent=msg; box.appendChild(u);
         var a=document.createElement('div'); a.className='wz-msg assistant'; a.textContent='…'; box.appendChild(a); box.scrollTop=box.scrollHeight;
-        post(base+'/test-runs',{message:msg}).then(function(res){ a.textContent = res.success ? (res.data.reply||'(keine Antwort)') : ('Fehler: '+(res.message||'')); box.scrollTop=box.scrollHeight; }).catch(function(){ a.textContent='Netzwerkfehler.'; });
+        post(base+'/test-runs',{message:msg}).then(function(res){
+            a.textContent = res.success ? (res.data.reply||'(keine Antwort)') : ('Fehler: '+(res.message||''));
+            if(res.success && res.data.run_id){
+                var fb=document.createElement('div'); fb.style.cssText='align-self:flex-start;margin-top:-4px;display:flex;gap:6px;';
+                fb.innerHTML='<button class="thx-btn thx-btn-small" title="gut">👍</button><button class="thx-btn thx-btn-small" title="nicht gut">👎</button>';
+                var rid=res.data.run_id;
+                fb.children[0].onclick=function(){ kmRunFeedback(rid,1,'gut'); fb.remove(); };
+                fb.children[1].onclick=function(){ var c=prompt('Was war nicht gut?')||''; kmRunFeedback(rid,-1,'fachlich_falsch',c); fb.remove(); };
+                box.appendChild(fb);
+            }
+            box.scrollTop=box.scrollHeight;
+        }).catch(function(){ a.textContent='Netzwerkfehler.'; });
     };
 })();
 </script>
