@@ -73,7 +73,12 @@ class KiWizardService
         // Name/Rolle auch in die Skalarspalten spiegeln, wenn geliefert
         $meta = [];
         if (!empty($patch['role_title'])) $meta['role_title'] = (string) $patch['role_title'];
-        if (isset($data['profile_patch']['name'])) $meta['name'] = (string) $data['profile_patch']['name'];
+        if (!empty($patch['name'])) {
+            $meta['name'] = (string) $patch['name'];
+        } elseif (($employee['name'] ?? '') === 'Neuer KI-Mitarbeiter' && !empty($patch['role_title'])) {
+            // Solange noch der Default-Name steht, die Rollenbezeichnung als Name uebernehmen.
+            $meta['name'] = (string) $patch['role_title'];
+        }
         if ($meta) $this->svc->updateMeta($employeeId, $meta, $actorId);
 
         $completion = $this->svc->completeness($profile);
@@ -146,7 +151,7 @@ $profileJson
 Antworte AUSSCHLIESSLICH mit EINEM JSON-Objekt (kein Markdown, kein Text davor/danach):
 {
   "assistant_message": "Deine nächste Nachricht/Frage an das Teammitglied (kurz, konkret).",
-  "profile_patch": { nur geänderte/ergänzte Profilfelder aus: role_title, short_description, goals[], tasks[{title,included}], non_tasks[], responsibilities[], escalation_rules[], workflows[{name,steps[]}], skills[], knowledge_sources[], positive_examples[], negative_examples[], quality_rules[], forbidden[], personality{tone,length,address,languages,on_uncertainty}, test_cases[{name,category,input,expected,must_have[],must_not_have[]}], problem_statement, expected_benefit, need_classification },
+  "profile_patch": { nur geänderte/ergänzte Felder aus: name (kurzer, sprechender Name des KI-Mitarbeiters), role_title, short_description, goals[], tasks[{title,included}], non_tasks[], responsibilities[], escalation_rules[], workflows[{name,steps[]}], skills[], knowledge_sources[], positive_examples[], negative_examples[], quality_rules[], forbidden[], personality{tone,length,address,languages,on_uncertainty}, test_cases[{name,category,input,expected,must_have[],must_not_have[]}], problem_statement, expected_benefit, need_classification },
   "next_questions": [{"id":"...","question":"...","type":"text|single_choice","options":[]}],
   "completion": {"percentage": 0, "missing_sections": []},
   "risk_flags": []
