@@ -164,7 +164,9 @@ $tabs = ['uebersicht'=>'Übersicht','stelle'=>'Stellenbeschreibung','workflows'=
     var wrap=document.querySelector('.km-panels'); var eid=wrap.getAttribute('data-employee'); var isAdmin=wrap.getAttribute('data-admin')==='1';
     var base='/api/v1/ki-mitarbeiter/'+eid;
     function h(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-    function post(u,b){return fetch(u,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':App.csrfToken},body:JSON.stringify(b||{})}).then(r=>r.json());}
+    var CSRF=(document.querySelector('meta[name="csrf-token"]')||{}).content||'';
+    function notify(m,t){ if(window.App && App.showNotification) App.showNotification(m,t); }
+    function post(u,b){return fetch(u,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':CSRF},body:JSON.stringify(b||{})}).then(r=>r.json());}
     function get(u){return fetch(u).then(r=>r.json());}
     var loaded={};
     function showTab(slug){
@@ -207,9 +209,9 @@ $tabs = ['uebersicht'=>'Übersicht','stelle'=>'Stellenbeschreibung','workflows'=
         }).join('');
     }); }
     window.kmSuggest=function(fid){ post(base+'/feedback/'+fid+'/suggest',{}).then(function(res){ if(res.success){loaded['feedback']=false;loadFeedback();} else alert(res.message); }); };
-    window.kmApplyFb=function(fid){ if(!confirm('Vorschlag übernehmen? Es entsteht eine neue Profilversion.'))return; post(base+'/feedback/'+fid+'/apply',{}).then(function(res){ if(res.success){App.showNotification&&App.showNotification('Übernommen','success');loaded['feedback']=false;loadFeedback();} else alert(res.message); }); };
+    window.kmApplyFb=function(fid){ if(!confirm('Vorschlag übernehmen? Es entsteht eine neue Profilversion.'))return; post(base+'/feedback/'+fid+'/apply',{}).then(function(res){ if(res.success){notify('Übernommen','success');loaded['feedback']=false;loadFeedback();} else alert(res.message); }); };
     window.kmRejectFb=function(fid){ post(base+'/feedback/'+fid+'/reject',{}).then(function(res){ loaded['feedback']=false;loadFeedback(); }); };
-    window.kmRunFeedback=function(runId,rating,type,comment){ post('/api/v1/ai-runs/'+runId+'/feedback',{rating:rating,feedback_type:type,comment:comment||''}).then(function(res){ if(res.success && App.showNotification) App.showNotification('Danke für das Feedback','success'); loaded['feedback']=false; }); };
+    window.kmRunFeedback=function(runId,rating,type,comment){ post('/api/v1/ai-runs/'+runId+'/feedback',{rating:rating,feedback_type:type,comment:comment||''}).then(function(res){ if(res.success) notify('Danke für das Feedback','success'); loaded['feedback']=false; }); };
 
     // Test-Chat (Runner)
     window.kmTestSend=function(){

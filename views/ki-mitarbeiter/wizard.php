@@ -64,8 +64,10 @@
 <script>
 (function () {
     var employeeId = <?= $employeeId ? (int) $employeeId : 'null' ?>;
-    function h(s){ return App.escapeHtml ? App.escapeHtml(String(s==null?'':s)) : String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-    function post(url, body){ return fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':App.csrfToken},body:JSON.stringify(body||{})}).then(r=>r.json()); }
+    var CSRF = (document.querySelector('meta[name="csrf-token"]')||{}).content || '';
+    function notify(m,t){ if(window.App && App.showNotification) App.showNotification(m,t); }
+    function h(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function post(url, body){ return fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':CSRF},body:JSON.stringify(body||{})}).then(r=>r.json()); }
     function get(url){ return fetch(url).then(r=>r.json()); }
 
     var elMsgs=document.getElementById('wz-messages'), elQuick=document.getElementById('wz-quick'),
@@ -142,8 +144,8 @@
 
     window.wzSubmit=function(){
         post('/api/v1/ki-mitarbeiter/'+employeeId+'/submit-review',{}).then(function(res){
-            if(res.success){ App.showNotification && App.showNotification('Zur Prüfung eingereicht','success'); setStatus('review'); }
-            else { App.showNotification ? App.showNotification(res.message,'error') : alert(res.message); }
+            if(res.success){ notify('Zur Prüfung eingereicht','success'); setStatus('review'); }
+            else { notify(res.message,'error'); }
         });
     };
 

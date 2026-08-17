@@ -1,0 +1,111 @@
+- generic [active] [ref=f4e1]:
+  - banner "Globale Navigation" [ref=f4e2]:
+    - button "Sidebar ein-/ausklappen" [ref=f4e3] [cursor=pointer]:
+      - generic [ref=f4e4]: menu
+    - generic [ref=f4e5]:
+      - group "Schriftgröße" [ref=f4e6]:
+        - button "Schrift verkleinern" [ref=f4e7] [cursor=pointer]:
+          - generic [ref=f4e8]: A−
+        - button "Standardgröße" [ref=f4e9] [cursor=pointer]:
+          - generic [ref=f4e10]: A
+        - button "Schrift vergrößern" [ref=f4e11] [cursor=pointer]:
+          - generic [ref=f4e12]: A+
+        - generic "Aktuelle Stufe" [ref=f4e13]: "0"
+      - link "KT KI Test User" [ref=f4e15] [cursor=pointer]:
+        - /url: /settings/security
+        - generic [ref=f4e16]: KT
+        - generic [ref=f4e17]: KI Test
+        - generic [ref=f4e18]: User
+      - link "Abmelden" [ref=f4e19] [cursor=pointer]:
+        - /url: /logout
+  - generic [ref=f4e20]:
+    - complementary [ref=f4e21]:
+      - link [ref=f4e23] [cursor=pointer]:
+        - /url: /
+        - img "Thoxan" [ref=f4e24]
+      - navigation [ref=f4e25]:
+        - link "dashboard Dashboard" [ref=f4e26] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f4e27]: dashboard
+          - text: Dashboard
+        - link "explore KI Kompass" [ref=f4e28] [cursor=pointer]:
+          - /url: /canvas
+          - generic [ref=f4e29]: explore
+          - text: KI Kompass
+        - link "badge KI-Mitarbeiter" [ref=f4e30] [cursor=pointer]:
+          - /url: /ki-mitarbeiter
+          - generic [ref=f4e31]: badge
+          - text: KI-Mitarbeiter
+        - link "today Tagesplan" [ref=f4e32] [cursor=pointer]:
+          - /url: /tagesplan
+          - generic [ref=f4e33]: today
+          - text: Tagesplan
+      - generic [ref=f4e34]:
+        - generic [ref=f4e35]:
+          - generic [ref=f4e36]: KI Test
+          - generic [ref=f4e37]: User
+        - generic [ref=f4e38]:
+          - link "account_circle" [ref=f4e39] [cursor=pointer]:
+            - /url: /settings/security
+          - button "rate_review" [ref=f4e41] [cursor=pointer]
+          - link "Abmelden" [ref=f4e43] [cursor=pointer]:
+            - /url: /logout
+    - main [ref=f4e44]:
+      - generic [ref=f4e45]:
+        - generic [ref=f4e46]:
+          - heading "badge Neuer KI-Mitarbeiter" [level=1] [ref=f4e47]:
+            - generic [ref=f4e48]: badge
+            - generic [ref=f4e49]: Neuer KI-Mitarbeiter
+          - paragraph [ref=f4e50]: Beantworte die Fragen im Chat — das Profil rechts füllt sich automatisch.
+        - generic [ref=f4e51]:
+          - generic [ref=f4e52]: Entwurf
+          - link "Zur Detailansicht" [ref=f4e53] [cursor=pointer]:
+            - /url: /ki-mitarbeiter/7
+          - button "Zur Prüfung einreichen" [disabled] [ref=f4e54]
+      - generic [ref=f4e55]:
+        - generic [ref=f4e56]:
+          - generic [ref=f4e57]:
+            - generic [ref=f4e58]: "Hi! Erzähl mir kurz: Was soll Dir oder Deinem Team dieser KI-Mitarbeiter abnehmen? Wo ist gerade der größte Engpass?"
+            - generic [ref=f4e70]: Mara soll neue Kundenanfragen für Websites analysieren, sie bestehenden Kunden zuordnen, fehlende Infos erkennen und Rückfragen als Entwurf vorbereiten. Sie darf nichts selbst versenden.
+            - generic [ref=f4e72]: "Gut abgegrenzt. Damit ich den Bedarf sauber festhalte: Was ist heute das Hauptproblem im aktuellen Prozess – eher falsche Zuordnung, übersehene fehlende Infos, zu viel manuelle Sichtung oder langsame Erstreaktion?"
+          - generic [ref=f4e73]:
+            - button "Falsche Zuordnung" [ref=f4e74] [cursor=pointer]
+            - button "Übersehene fehlende Infos" [ref=f4e75] [cursor=pointer]
+            - button "Zu viel manuelle Sichtung" [ref=f4e76] [cursor=pointer]
+            - button "Langsame Erstreaktion" [ref=f4e77] [cursor=pointer]
+            - button "Mehreres gleichzeitig" [ref=f4e78] [cursor=pointer]
+          - generic [ref=f4e59]:
+            - textbox "Antwort schreiben…" [ref=f4e60]
+            - button "Senden" [ref=f4e61] [cursor=pointer]
+        - generic [ref=f4e62]:
+          - generic [ref=f4e64]:
+            - generic [ref=f4e65]: Vollständigkeit
+            - generic [ref=f4e66]: 38%
+          - generic [ref=f4e68]:
+            - heading "Rollenbezeichnung" [level=3] [ref=f4e80]
+            - generic [ref=f4e81]: Mara
+            - heading "Kurzbeschreibung" [level=3] [ref=f4e82]
+            - generic [ref=f4e83]: Spezialisierter KI-Mitarbeiter zur Analyse neuer Kundenanfragen für Websites, zur Zuordnung zu bestehenden Kunden, zum Erkennen fehlender Informationen und zum Vorbereiten von Rückfrage-Entwürfen. Mara versendet nichts selbst.
+            - heading "Problem" [level=3] [ref=f4e84]
+            - generic [ref=f4e85]: Neue Website-Anfragen müssen vorsortiert, bestehenden Kunden zugeordnet, auf fehlende Informationen geprüft und für die manuelle Weiterbearbeitung vorbereitet werden.
+            - heading "Ziele" [level=3] [ref=f4e86]
+            - list [ref=f4e87]:
+              - listitem [ref=f4e88]: Neue Kundenanfragen strukturiert analysieren
+              - listitem [ref=f4e89]: Anfragen bestehenden Kunden zuordnen, wenn eine belastbare Zuordnung möglich ist
+              - listitem [ref=f4e90]: Fehlende Informationen früh erkennen
+              - listitem [ref=f4e91]: Rückfragen als Entwurf vorbereiten, ohne selbst zu versenden
+            - heading "Nicht-Aufgaben" [level=3] [ref=f4e92]
+            - list [ref=f4e93]:
+              - listitem [ref=f4e94]: Keine Nachrichten selbst versenden
+              - listitem [ref=f4e95]: Keine verbindlichen Zusagen an Interessenten oder Kunden machen
+              - listitem [ref=f4e96]: Keine Änderungen an Kundendaten eigenständig durchführen
+            - heading "Eskalation" [level=3] [ref=f4e97]
+            - list [ref=f4e98]:
+              - listitem [ref=f4e99]: Bei unklarer oder widersprüchlicher Kundenzuordnung an einen Menschen eskalieren statt zu raten
+              - listitem [ref=f4e100]: Bei fehlenden Kerndaten, die eine sinnvolle Einordnung verhindern, Rückfrage-Entwurf vorbereiten und zur Freigabe geben
+              - listitem [ref=f4e101]: Bei sensiblen oder ungewöhnlichen Anfragen keine Annahmen treffen, sondern markieren und eskalieren
+            - heading "Verboten" [level=3] [ref=f4e102]
+            - list [ref=f4e103]:
+              - listitem [ref=f4e104]: Eigenständiger Versand von Nachrichten
+              - listitem [ref=f4e105]: Eigenständige Freigabe oder Ausführung von Folgeaktionen
+              - listitem [ref=f4e106]: Raten bei unklarer Zuordnung

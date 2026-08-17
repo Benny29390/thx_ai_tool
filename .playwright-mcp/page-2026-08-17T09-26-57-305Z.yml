@@ -1,0 +1,119 @@
+- generic [active] [ref=f1e1]:
+  - banner "Globale Navigation" [ref=f1e2]:
+    - button "Sidebar ein-/ausklappen" [ref=f1e3] [cursor=pointer]:
+      - generic [ref=f1e4]: menu
+    - generic [ref=f1e5]:
+      - group "Schriftgröße" [ref=f1e6]:
+        - button "Schrift verkleinern" [ref=f1e7] [cursor=pointer]:
+          - generic [ref=f1e8]: A−
+        - button "Standardgröße" [ref=f1e9] [cursor=pointer]:
+          - generic [ref=f1e10]: A
+        - button "Schrift vergrößern" [ref=f1e11] [cursor=pointer]:
+          - generic [ref=f1e12]: A+
+        - generic "Aktuelle Stufe" [ref=f1e13]: "0"
+      - link "KT KI Test User" [ref=f1e15] [cursor=pointer]:
+        - /url: /settings/security
+        - generic [ref=f1e16]: KT
+        - generic [ref=f1e17]: KI Test
+        - generic [ref=f1e18]: User
+      - link "Abmelden" [ref=f1e19] [cursor=pointer]:
+        - /url: /logout
+  - generic [ref=f1e20]:
+    - complementary [ref=f1e21]:
+      - link [ref=f1e23] [cursor=pointer]:
+        - /url: /
+        - img "Thoxan" [ref=f1e24]
+      - navigation [ref=f1e25]:
+        - link "dashboard Dashboard" [ref=f1e26] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f1e27]: dashboard
+          - text: Dashboard
+        - link "explore KI Kompass" [ref=f1e28] [cursor=pointer]:
+          - /url: /canvas
+          - generic [ref=f1e29]: explore
+          - text: KI Kompass
+        - link "badge KI-Mitarbeiter" [ref=f1e30] [cursor=pointer]:
+          - /url: /ki-mitarbeiter
+          - generic [ref=f1e31]: badge
+          - text: KI-Mitarbeiter
+        - link "today Tagesplan" [ref=f1e32] [cursor=pointer]:
+          - /url: /tagesplan
+          - generic [ref=f1e33]: today
+          - text: Tagesplan
+      - generic [ref=f1e34]:
+        - generic [ref=f1e35]:
+          - generic [ref=f1e36]: KI Test
+          - generic [ref=f1e37]: User
+        - generic [ref=f1e38]:
+          - link "account_circle" [ref=f1e39] [cursor=pointer]:
+            - /url: /settings/security
+          - button "rate_review" [ref=f1e41] [cursor=pointer]
+          - link "Abmelden" [ref=f1e43] [cursor=pointer]:
+            - /url: /logout
+    - main [ref=f1e44]:
+      - generic [ref=f1e48]:
+        - generic [ref=f1e49]:
+          - generic [ref=f1e50]:
+            - generic [ref=f1e51]: "09"
+            - text: ":"
+            - generic [ref=f1e52]: "26"
+            - text: "56"
+          - generic [ref=f1e53]: Montag, 17.08.2026
+        - generic [ref=f1e54]:
+          - generic [ref=f1e55]: THOXAN · AI ASSISTANT
+          - heading "Guten Morgen, KI _" [level=1] [ref=f1e56]:
+            - generic [ref=f1e57]: Guten Morgen,
+            - generic [ref=f1e58]: KI
+            - generic [ref=f1e59]: _
+        - generic [ref=f1e60]:
+          - text: "\""
+          - paragraph [ref=f1e61]: Hey KI, Kaffee steht bereit? Dann ab an die Tasten.
+          - button "Neue Motivation" [ref=f1e62] [cursor=pointer]
+      - generic [ref=f1e65]:
+        - generic [ref=f1e66]: waving_hand
+        - heading "Willkommen, KI!" [level=2] [ref=f1e68]
+        - paragraph [ref=f1e69]: Dein Account ist angelegt, aber Dir sind noch keine Kunden zugewiesen — ohne Kunden gibt es nichts zu sehen.
+        - paragraph [ref=f1e70]: Frag bitte den Admin nach den passenden Freischaltungen.
+        - link "mail Admin per E-Mail anschreiben" [ref=f1e71] [cursor=pointer]:
+          - /url: mailto:admin@thoxan-dev.de?subject=Account-Freischaltung%20ben%C3%B6tigt&body=Hi%2C%5Cn%5Cnmein%20Account%20ist%20angelegt%2C%20aber%20ich%20kann%20noch%20nichts%20machen.%20Bitte%20schalte%20mir%20die%20n%C3%B6tigen%20Funktionen%20frei.%5Cn%5CnDanke%21%5CnKI
+          - generic [ref=f1e72]: mail
+          - text: Admin per E-Mail anschreiben
+      - generic [ref=f1e73]:
+        - link "forum Chat starten Direkt mit der KI sprechen arrow_forward" [ref=f1e74] [cursor=pointer]:
+          - /url: /chat
+          - generic [ref=f1e75]: forum
+          - generic [ref=f1e77]:
+            - heading "Chat starten" [level=3] [ref=f1e78]
+            - paragraph [ref=f1e79]: Direkt mit der KI sprechen
+          - generic [ref=f1e80]: arrow_forward
+        - link "library_books Wissen 14,127 Einträge" [ref=f1e81] [cursor=pointer]:
+          - /url: /wissen
+          - generic [ref=f1e82]: library_books
+          - generic [ref=f1e84]:
+            - heading "Wissen" [level=3] [ref=f1e85]
+            - paragraph [ref=f1e86]: 14,127 Einträge
+        - link "explore KI Kompass Briefings & Sparring" [ref=f1e87] [cursor=pointer]:
+          - /url: /canvas
+          - generic [ref=f1e88]: explore
+          - generic [ref=f1e90]:
+            - heading "KI Kompass" [level=3] [ref=f1e91]
+            - paragraph [ref=f1e92]: Briefings & Sparring
+      - generic [ref=f1e93]:
+        - heading "Status" [level=2] [ref=f1e94]
+        - generic [ref=f1e95]:
+          - generic [ref=f1e97]:
+            - generic [ref=f1e98]: library_books
+            - generic [ref=f1e100]: "0"
+            - generic [ref=f1e101]: Wissens-Eintraege
+          - generic [ref=f1e103]:
+            - generic [ref=f1e104]: scatter_plot
+            - generic [ref=f1e106]: "0"
+            - generic [ref=f1e107]: Indexierte Chunks
+          - generic [ref=f1e109]:
+            - generic [ref=f1e110]: task_alt
+            - generic [ref=f1e112]: "0"
+            - generic [ref=f1e113]: Asana-Tasks
+          - generic [ref=f1e115]:
+            - generic [ref=f1e116]: forum
+            - generic [ref=f1e118]: "0"
+            - generic [ref=f1e119]: Deine Chats
