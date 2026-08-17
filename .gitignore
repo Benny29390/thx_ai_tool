@@ -38,6 +38,10 @@
 /storage/MAINTENANCE
 /storage/UPDATE.lock
 
+# --- Browser-Test-Artefakte (Playwright/Screenshots) ---
+/.playwright-mcp/
+/km-*.png
+
 # --- Betriebssystem / Editor ---
 .DS_Store
 Thumbs.db
