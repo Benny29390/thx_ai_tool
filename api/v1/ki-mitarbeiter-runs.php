@@ -18,16 +18,23 @@ require_once SERVICES_PATH . '/KiRunnerService.php';
 $runner = new \Services\KiRunnerService($db);
 $actor = (int) Auth::id();
 
-// --- Test-Chat / Lauf starten ---
-if (isset($employeeId) && (($runSub ?? '') === '/test-runs' || ($runSub ?? '') === '/runs') && $method === 'POST') {
+// --- Test-Chat (reiner Dialog) ---
+if (isset($employeeId) && ($runSub ?? '') === '/test-runs' && $method === 'POST') {
     $msg = trim((string) ($input['message'] ?? ''));
     if ($msg === '') Response::error('Eingabe fehlt.');
     set_time_limit(120);
-    try {
-        $res = $runner->testReply((int) $employeeId, $msg, $actor);
-    } catch (\Throwable $ex) {
-        Response::error($ex->getMessage());
-    }
+    try { $res = $runner->testReply((int) $employeeId, $msg, $actor); }
+    catch (\Throwable $ex) { Response::error($ex->getMessage()); }
+    Response::success($res);
+}
+
+// --- Echter Lauf MIT Werkzeugen (deterministischer Guard) ---
+if (isset($employeeId) && ($runSub ?? '') === '/runs' && $method === 'POST') {
+    $msg = trim((string) ($input['message'] ?? ''));
+    if ($msg === '') Response::error('Eingabe fehlt.');
+    set_time_limit(180);
+    try { $res = $runner->realRun((int) $employeeId, $msg, $actor); }
+    catch (\Throwable $ex) { Response::error($ex->getMessage()); }
     Response::success($res);
 }
 

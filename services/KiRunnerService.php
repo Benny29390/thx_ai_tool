@@ -78,6 +78,90 @@ class KiRunnerService
         }
     }
 
+    /**
+     * Echter Lauf MIT Werkzeugen (Anthropic Tool-Use). Jeder Werkzeug-Aufruf
+     * wird deterministisch über KiToolGuard geprüft — nie durch Modell-Output
+     * autorisiert. Hoch-Risiko wird geblockt (menschliche Einzel-Freigabe).
+     * @return array {run_id, reply, permission_events, requires_approval}
+     */
+    public function realRun(int $employeeId, string $userMessage, int $actorId): array
+    {
+        if ($this->emergencyStop()) throw new \RuntimeException('Not-Aus aktiv: alle KI-Mitarbeiter sind gestoppt.');
+        $e = $this->svc->get($employeeId);
+        if (!$e) throw new \RuntimeException('KI-Mitarbeiter nicht gefunden.');
+        if (in_array($e['status'], ['paused', 'archived'], true)) {
+            throw new \RuntimeException('Dieser KI-Mitarbeiter ist ' . $e['status'] . ' und kann nicht laufen.');
+        }
+
+        require_once SERVICES_PATH . '/KiToolGuard.php';
+        $guard = new KiToolGuard($this->db);
+        [$ai, $model] = $this->getAnthropic();
+
+        $systemPrompt = $this->compileSystemPrompt($e)
+            . "\n\n# WERKZEUGE\nNutze Werkzeuge nur, wenn nötig. Bekommst Du 'nicht freigegeben' zurück, dann eskaliere an den Menschen statt es zu umgehen. Schliesse mit dem Werkzeug 'done' und einer kurzen Zusammenfassung ab.";
+
+        $tools = array_merge($guard->toolDefs(), [
+            ['name' => 'done', 'description' => 'Aufgabe abschliessen mit kurzer Zusammenfassung.', 'input_schema' => ['type' => 'object', 'properties' => ['summary' => ['type' => 'string']], 'required' => ['summary']]],
+            ['name' => 'ask_user', 'description' => 'Rueckfrage an den Menschen, wenn Info fehlt.', 'input_schema' => ['type' => 'object', 'properties' => ['question' => ['type' => 'string']], 'required' => ['question']]],
+        ]);
+
+        $runId = $this->db->insert('ai_runs', [
+            'ai_employee_id' => $employeeId, 'kind' => 'real', 'initiated_by' => $actorId,
+            'status' => 'running', 'input_data' => json_encode(['message' => $userMessage], JSON_UNESCAPED_UNICODE),
+            'model_info' => json_encode(['model' => $model], JSON_UNESCAPED_UNICODE),
+        ]);
+        $this->db->insert('ai_run_messages', ['run_id' => $runId, 'role' => 'user', 'content' => $userMessage]);
+
+        $permEvents = [];
+        $requiresApproval = false;
+        $assistant = '';
+
+        $dispatcher = function ($name, $args) use ($guard, $employeeId, &$permEvents, &$requiresApproval) {
+            if ($name === 'done' || $name === 'ask_user') return ['ok' => true];
+            $chk = $guard->check($employeeId, $name);
+            $permEvents[] = ['tool' => $name, 'allowed' => $chk['allowed'], 'reason' => $chk['reason'], 'high_risk' => $chk['high_risk']];
+            if (!$chk['allowed']) {
+                if ($chk['high_risk']) $requiresApproval = true;
+                return ['__error' => true, '__text' => 'NICHT FREIGEGEBEN: ' . $chk['reason']];
+            }
+            return $guard->execute($name, is_array($args) ? $args : [], $employeeId);
+        };
+        $onEvent = function ($type, $data) use (&$assistant) {
+            if ($type === 'assistant_message' && !empty($data['text'])) $assistant .= $data['text'];
+        };
+
+        try {
+            $result = $ai->chatWithTools($systemPrompt, $userMessage, $tools, $dispatcher, $onEvent, 12);
+            $reply = trim($assistant) ?: trim((string) ($result['summary'] ?? ''));
+            $this->db->insert('ai_run_messages', ['run_id' => $runId, 'role' => 'assistant', 'content' => $reply]);
+            $this->db->update('ai_runs', [
+                'status' => 'finished',
+                'output_data' => json_encode(['reply' => $reply, 'summary' => $result['summary'] ?? ''], JSON_UNESCAPED_UNICODE),
+                'permission_events' => json_encode($permEvents, JSON_UNESCAPED_UNICODE),
+                'requires_approval' => $requiresApproval ? 1 : 0,
+                'tokens_input' => $result['tokens_input'] ?? 0, 'tokens_output' => $result['tokens_output'] ?? 0,
+                'finished_at' => date('Y-m-d H:i:s'),
+            ], 'id = ?', [$runId]);
+            return ['run_id' => $runId, 'reply' => $reply, 'permission_events' => $permEvents, 'requires_approval' => $requiresApproval];
+        } catch (\Throwable $ex) {
+            $this->db->update('ai_runs', ['status' => 'failed', 'error_message' => $ex->getMessage(), 'permission_events' => json_encode($permEvents, JSON_UNESCAPED_UNICODE), 'finished_at' => date('Y-m-d H:i:s')], 'id = ?', [$runId]);
+            throw $ex;
+        }
+    }
+
+    /** Anthropic-AIService (Tool-Use ist Anthropic-only). */
+    private function getAnthropic(): array
+    {
+        $key = (string) \Core\Settings::get('anthropic_api_key');
+        if ($key === '') throw new \RuntimeException('Werkzeug-Läufe brauchen einen Anthropic-Schlüssel (Einstellungen → KI-Modelle).');
+        $model = (string) ($this->db->queryValue("SELECT model_id FROM ai_models WHERE provider = 'anthropic' AND is_active = 1 ORDER BY sort_order LIMIT 1") ?: 'claude-3-5-sonnet-20241022');
+        $ai = new \Services\AIService($key, 'anthropic');
+        $ai->setModel($model);
+        $ai->setMaxTokens(1500);
+        $ai->setTimeout(120);
+        return [$ai, $model];
+    }
+
     /** Kompiliert Profil + Sicherheitsrahmen zum System-Prompt. */
     public function compileSystemPrompt(array $e): string
     {
