@@ -12,6 +12,20 @@ pro Kunde, zentrale Updates über dieses Repo, Module per Lizenz freischaltbar.
 **Vollständige, idiotensichere Anleitung: [docs/kunden-installation.md](docs/kunden-installation.md)**
 (in der laufenden App auch unter **System → Kunden-Installation**).
 
+### Empfohlen: interaktiver Installer
+
+`scripts/install-server.sh` auf einen frischen Ubuntu/Debian-Server kopieren und starten:
+
+```bash
+sudo bash install-server.sh
+```
+
+Er fragt alles ab und richtet Systempakete, Code, Datenbank, Konfiguration,
+Apache, HTTPS und den Update-Cron ein. Zwei geführte Handgriffe bleiben:
+Deploy-Key bei GitHub eintragen (der Installer zeigt ihn) und die Lizenz einspielen.
+
+### Oder manuell
+
 Kurzfassung auf einem frischen Ubuntu/Debian-Server:
 
 ```bash

@@ -24,6 +24,27 @@ DNS: Vor dem Start einen A-Record von `DOMAIN` auf die IP des KUNDENSERVERS setz
 
 ---
 
+## Schnellweg: der Installer (empfohlen)
+
+Statt die Schritte 1–9 einzeln abzutippen, gibt es einen **interaktiven
+Installer**, der alles erledigt und Dich durchfragt. Die Datei
+`scripts/install-server.sh` auf den frischen KUNDENSERVER kopieren (z. B. per scp
+oder Copy-&-Paste in eine Datei) und starten:
+
+```
+sudo bash install-server.sh
+```
+
+Er installiert Systempakete, richtet den Deploy-Key-Schritt geführt ein, klont,
+konfiguriert Datenbank/App/Admin, Apache, HTTPS und den Update-Cron und macht am
+Ende den Selbsttest. Zwei Dinge bleiben (der Installer führt hindurch):
+den **Deploy-Key bei GitHub eintragen** (er zeigt ihn und wartet) und die
+**Lizenz** einspielen (Schritt 7 unten).
+
+Wer lieber jeden Schritt selbst macht oder Fehler sucht, nutzt die Einzelschritte:
+
+---
+
 ## 1. Grundsoftware installieren  (KUNDENSERVER, als root)
 
 ```
