@@ -1327,6 +1327,11 @@ class App
             ]);
         }, [$authMiddleware, $capMiddleware(CAP_SETTINGS_MANAGE)]);
 
+        // Anleitung: neue Kundeninstallation (nur Admin)
+        $router->get('/admin/install-guide', function () {
+            Response::view('admin/install-guide', []);
+        }, [$authMiddleware, $adminMiddleware]);
+
         // Migration Route (temporaer)
         $router->get('/admin/migrate', function () use ($db) {
             $results = [];

@@ -516,6 +516,12 @@ $appLogoIsPath = is_string($appLogo) && (bool) preg_match('#^(/|https?://|data:)
                                 <span class="nav-icon material-symbols-rounded">system_update_alt</span>
                                 System-Update
                             </a>
+                            <?php if (\Core\Auth::isAdmin()): ?>
+                            <a href="/admin/install-guide" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/install-guide') === 0 ? 'active' : '' ?>">
+                                <span class="nav-icon material-symbols-rounded">rocket_launch</span>
+                                Kunden-Installation
+                            </a>
+                            <?php endif; ?>
                             <a href="/admin/backups" class="nav-item nav-sub-item <?= strpos($currentUri, '/admin/backups') === 0 ? 'active' : '' ?>">
                                 <span class="nav-icon material-symbols-rounded">backup</span>
                                 Backups
