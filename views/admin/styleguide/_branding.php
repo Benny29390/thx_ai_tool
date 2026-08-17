@@ -54,7 +54,7 @@ $iconPath  = $sv('brand_logo_icon_path');
     <!-- Zweite Akzentfarbe -->
     <div class="thx-card">
         <h2 class="brand-h2">Zweite Akzentfarbe</h2>
-        <p class="brand-sub">Sekundärfarbe für dekorative Akzente (z.&nbsp;B. Status-Markierungen). Kleinerer Effekt als die Primärfarbe. Leer&nbsp;= Standard.</p>
+        <p class="brand-sub">Sekundärfarbe für <strong>aktive Reiter</strong> (Unterstrich) und <strong>aktive Filter-Chips</strong>. Leer&nbsp;= gleich der Primärfarbe.</p>
         <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
             <?php $accent = $sv('brand_accent_color'); ?>
             <input type="color" id="ba-picker" value="<?= htmlspecialchars($accent !== '' ? $accent : '#6366f1') ?>"
@@ -62,7 +62,15 @@ $iconPath  = $sv('brand_logo_icon_path');
             <input type="text" id="ba-hex" class="thx-input" value="<?= htmlspecialchars($accent) ?>" placeholder="#6366f1"
                    pattern="^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$" style="width:130px;font-family:var(--font-mono,monospace);">
         </div>
+        <!-- Live-Vorschau der tatsaechlich betroffenen Elemente -->
         <div class="brand-ramp" id="ba-ramp" style="margin-top:16px;"></div>
+        <div id="ba-demo" style="margin-top:14px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+            <div class="ba-tabs">
+                <span class="ba-tab">Reiter</span>
+                <span class="ba-tab is-active" id="ba-demo-tab">Aktiver Reiter</span>
+            </div>
+            <span class="ba-chip" id="ba-demo-chip">Aktiver Filter</span>
+        </div>
         <div style="margin-top:16px;display:flex;gap:8px;">
             <button class="thx-btn thx-btn-primary" onclick="baSave()">Akzent speichern</button>
             <?php if ($accent !== ''): ?>
@@ -143,6 +151,10 @@ $iconPath  = $sv('brand_logo_icon_path');
 .brand-ramp .stop span { position:absolute; bottom:2px; left:0; right:0; text-align:center; font-size:9px;
     color:rgba(255,255,255,.9); text-shadow:0 1px 1px rgba(0,0,0,.4); }
 .brand-ramp .stop.light span { color:rgba(0,0,0,.55); text-shadow:none; }
+.ba-tabs { display:inline-flex; gap:2px; border-bottom:1px solid var(--slate-200); }
+.ba-tab { padding:6px 12px; font-size:var(--d-fs-sm); color:var(--slate-500); border-bottom:2px solid transparent; margin-bottom:-1px; }
+.ba-tab.is-active { color:var(--ba-700,#004a86); border-bottom-color:var(--ba-600,#005da8); font-weight:700; }
+.ba-chip { padding:4px 14px; border-radius:20px; font-size:var(--d-fs-sm); font-weight:600; color:#fff; background:var(--ba-600,#005da8); }
 .brand-preview { display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:14px; border:1px dashed var(--slate-200); border-radius:8px; }
 .bp-demo-btn { background:var(--bp-500,#006fb9); color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:600; cursor:default; }
 .bp-demo-chip { background:var(--bp-50,#e6f0f8); color:var(--bp-700,#004a86); padding:4px 12px; border-radius:20px; font-size:var(--d-fs-sm); font-weight:600; }
@@ -202,15 +214,18 @@ $iconPath  = $sv('brand_logo_icon_path');
     // --- Zweite Akzentfarbe (Sekundaerpalette / indigo-Stops) ---
     var baPicker=document.getElementById('ba-picker'), baHex=document.getElementById('ba-hex'),
         baRampBox=document.getElementById('ba-ramp');
-    function accentRamp(c){ return {50:mixW(c,0.90),100:mixW(c,0.80),200:mixW(c,0.60),500:hex.apply(null,toRgb(c)),600:mixB(c,0.10),700:mixB(c,0.30)}; }
+    function accentRamp(c){ return {50:mixW(c,0.90),100:mixW(c,0.80),300:mixW(c,0.40),500:hex.apply(null,toRgb(c)),600:mixB(c,0.10),700:mixB(c,0.30)}; }
+    var baDemo=document.getElementById('ba-demo');
     function paintAccent(c){
         if(!isHex(c)) return;
-        var r=accentRamp(c), stops=[50,100,200,500,600,700];
+        var r=accentRamp(c), stops=[50,100,300,500,600,700];
         baRampBox.innerHTML='';
         stops.forEach(function(s){
-            var d=document.createElement('div'); d.className='stop'+(s<=200?' light':''); d.style.background=r[s];
+            var d=document.createElement('div'); d.className='stop'+(s<=100?' light':''); d.style.background=r[s];
             var sp=document.createElement('span'); sp.textContent=s; d.appendChild(sp); baRampBox.appendChild(d);
         });
+        // Mock-Elemente live einfaerben
+        baDemo.style.setProperty('--ba-600',r[600]); baDemo.style.setProperty('--ba-700',r[700]);
     }
     baPicker.addEventListener('input',function(){ baHex.value=this.value; paintAccent(this.value); });
     baHex.addEventListener('input',function(){ var v=normalize(this.value); if(isHex(v)){ baPicker.value=v; paintAccent(v);} });

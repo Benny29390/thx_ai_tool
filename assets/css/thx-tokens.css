@@ -71,6 +71,16 @@
     --thoxan-900: #002542;
     --thoxan-950: #001329;
 
+    /* Zweite Akzentfarbe (White-Label). Standard = Primaerfarbe, d.h. ohne
+       gesetzten brand_accent_color aendert sich nichts. Core\Brand::cssVars()
+       ueberschreibt diese Werte mit der Kunden-Akzentfarbe. Genutzt fuer
+       aktive Reiter und aktive Filter-Chips. */
+    --brand-accent-50:  var(--thoxan-50);
+    --brand-accent-100: var(--thoxan-100);
+    --brand-accent-500: var(--thoxan-500);
+    --brand-accent-600: var(--thoxan-600);
+    --brand-accent-700: var(--thoxan-700);
+
     /* Slate (Text, Borders, Hintergruende) */
     --slate-50:  #f8fafc;
     --slate-100: #f1f5f9;

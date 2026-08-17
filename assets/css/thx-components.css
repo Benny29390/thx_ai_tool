@@ -1241,12 +1241,12 @@ body.in-iframe-drawer .crm-editmode-toggle { display: none !important; }
     font-family: inherit;
 }
 .thx-tab:hover:not(.is-disabled) {
-    color: var(--thoxan-700);
-    border-bottom-color: var(--thoxan-300);
+    color: var(--brand-accent-700);
+    border-bottom-color: var(--brand-accent-300);
 }
 .thx-tab.is-active {
-    color: var(--thoxan-700);
-    border-bottom-color: var(--thoxan-600);
+    color: var(--brand-accent-700);
+    border-bottom-color: var(--brand-accent-600);
     font-weight: 700;
 }
 .thx-tab.is-disabled {
@@ -1579,9 +1579,9 @@ body.in-iframe-drawer .crm-editmode-toggle { display: none !important; }
 .pp-filter-chip.is-active,
 .pp-fb-chip.is-active,
 .cw-filter-btn.active {
-    background: var(--thoxan-600);
+    background: var(--brand-accent-600);
     color: #fff;
-    border-color: var(--thoxan-600);
+    border-color: var(--brand-accent-600);
 }
 
 /* === Icon-Only-Buttons — quadratisch, nur Icon === */

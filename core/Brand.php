@@ -108,10 +108,11 @@ class Brand
             }
         }
         if ($accent !== null) {
-            // Zweite Akzentfarbe -> Sekundaerpalette (indigo). Bewusst NICHT die
-            // semantischen Farben (emerald/amber/rose = Erfolg/Warnung/Fehler).
+            // Zweite Akzentfarbe -> --brand-accent-* (Standard = Primaerfarbe).
+            // Wirkt sichtbar auf aktive Reiter und aktive Filter-Chips. Bewusst
+            // NICHT die semantischen Farben (emerald/amber/rose).
             foreach ($accent as $stop => $hex) {
-                $css .= '--indigo-' . $stop . ':' . $hex . ';';
+                $css .= '--brand-accent-' . $stop . ':' . $hex . ';';
             }
         }
         $css .= '}';
@@ -132,7 +133,7 @@ class Brand
         return [
             50  => self::mixWhite($accent, 0.90),
             100 => self::mixWhite($accent, 0.80),
-            200 => self::mixWhite($accent, 0.60),
+            300 => self::mixWhite($accent, 0.40),
             500 => self::normalizeHex($accent),
             600 => self::mixBlack($accent, 0.10),
             700 => self::mixBlack($accent, 0.30),
